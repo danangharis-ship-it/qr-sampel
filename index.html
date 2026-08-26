@@ -366,8 +366,7 @@ Jenis Pengujian
 <script>
 
 
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbxJKtAp6dAKDj-9a--uJYScmdESG-4HZnb5AkpP3C8Zji0OBeOn_OUNeoLBmddRe3MhTw/exec";
+const API_URL = "/api/sample";
 
 
 let scanner;
@@ -513,58 +512,120 @@ status.innerHTML =
 
 async function cariSampel(uuid) {
 
-
-const status =
-  document.getElementById(
-    "status"
-  );
-
-
-status.innerHTML =
-  "🔍 Mencari data sampel...";
-
-
-document.getElementById(
-  "uuid"
-).innerText =
-  uuid;
-
-
-
-try {
-
-
-const url =
-
-  API_URL +
-
-  "?action=getSample&uuid=" +
-
-  encodeURIComponent(uuid);
-
-
-
-const response =
-  await fetch(url);
-
-
-const result =
-  await response.json();
-
-
-
-if (!result.success) {
+  const status =
+    document.getElementById("status");
 
 
   status.innerHTML =
-    "❌ " +
-    result.message;
+    "🔍 Mencari data sampel...";
 
 
-  return;
+  document.getElementById(
+    "uuid"
+  ).innerText = uuid;
+
+
+  try {
+
+    const url =
+      API_URL +
+      "?uuid=" +
+      encodeURIComponent(uuid);
+
+
+    console.log(
+      "Mencari:",
+      url
+    );
+
+
+    const response =
+      await fetch(url);
+
+
+    const result =
+      await response.json();
+
+
+    console.log(
+      "Hasil API:",
+      result
+    );
+
+
+    if (!result.success) {
+
+      status.innerHTML =
+        "❌ " +
+        (
+          result.message ||
+          "Sampel tidak ditemukan"
+        );
+
+      return;
+
+    }
+
+
+    currentData =
+      result.data;
+
+
+    document.getElementById(
+      "uuid"
+    ).innerText =
+      currentData.uuid || "-";
+
+
+    document.getElementById(
+      "idSampel"
+    ).innerText =
+      currentData.idSampel || "-";
+
+
+    document.getElementById(
+      "tanggal"
+    ).innerText =
+      currentData.tanggal || "-";
+
+
+    document.getElementById(
+      "posisi"
+    ).innerText =
+      currentData.posisi || "-";
+
+
+    document.getElementById(
+      "pengujian"
+    ).innerText =
+      currentData.pengujian || "-";
+
+
+    document.getElementById(
+      "resultCard"
+    ).style.display =
+      "block";
+
+
+    status.innerHTML =
+      "✅ Sampel ditemukan";
+
+
+  } catch (error) {
+
+    console.error(
+      "API ERROR:",
+      error
+    );
+
+
+    status.innerHTML =
+      "❌ Gagal mengambil data: " +
+      error.message;
+
+  }
 
 }
-
 
 
 currentData =
