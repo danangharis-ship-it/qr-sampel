@@ -1,119 +1,627 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>Scan ID Sampel</title>
+
+
+<script
+  src="https://unpkg.com/html5-qrcode">
+</script>
+
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+
+body {
+
+  margin: 0;
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  background:
+    #f3f6f9;
+
+  color:
+    #1f2937;
+
+}
+
+
+.header {
+
+  background:
+    #0078bd;
+
+  color:
+    white;
+
+  padding:
+    18px;
+
+  text-align:
+    center;
+
+}
+
+
+.header h2 {
+
+  margin: 0;
+
+  font-size:
+    24px;
+
+}
+
+
+.container {
+
+  max-width:
+    600px;
+
+  margin:
+    auto;
+
+  padding:
+    16px;
+
+}
+
+
+.card {
+
+  background:
+    white;
+
+  border-radius:
+    16px;
+
+  padding:
+    16px;
+
+  margin-bottom:
+    16px;
+
+  box-shadow:
+    0 4px 16px
+    rgba(0,0,0,0.10);
+
+}
+
+
+#reader {
+
+  width:
+    100%;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    12px;
+
+}
+
+
+.status {
+
+  margin-top:
+    12px;
+
+  padding:
+    14px;
+
+  border-radius:
+    10px;
+
+  background:
+    #e8f4fc;
+
+  text-align:
+    center;
+
+  font-weight:
+    bold;
+
+}
+
+
+.label {
+
+  font-size:
+    12px;
+
+  color:
+    #6b7280;
+
+  margin-top:
+    14px;
+
+}
+
+
+.value {
+
+  font-size:
+    17px;
+
+  font-weight:
+    bold;
+
+  margin-top:
+    4px;
+
+}
+
+
+.uuid {
+
+  color:
+    #0078bd;
+
+  word-break:
+    break-all;
+
+}
+
+
+.result-card {
+
+  display:
+    none;
+
+}
+
+
+button {
+
+  width:
+    100%;
+
+  border:
+    none;
+
+  padding:
+    14px;
+
+  margin-top:
+    12px;
+
+  border-radius:
+    10px;
+
+  font-size:
+    16px;
+
+  font-weight:
+    bold;
+
+  cursor:
+    pointer;
+
+}
+
+
+.primary {
+
+  background:
+    #0078bd;
+
+  color:
+    white;
+
+}
+
+
+.secondary {
+
+  background:
+    #e5e7eb;
+
+  color:
+    #111827;
+
+}
+
+
+.success {
+
+  background:
+    #dcfce7;
+
+  color:
+    #166534;
+
+}
+
+
+.error {
+
+  background:
+    #fee2e2;
+
+  color:
+    #991b1b;
+
+}
+
+
+#message {
+
+  display:
+    none;
+
+  margin-top:
+    12px;
+
+  padding:
+    12px;
+
+  border-radius:
+    10px;
+
+  text-align:
+    center;
+
+}
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+<div class="header">
+
+  <h2>
+    📷 Scan ID Sampel
+  </h2>
+
+</div>
+
+
+
+<div class="container">
+
+
+<div class="card">
+
+
+  <div id="reader"></div>
+
+
+  <div
+    id="status"
+    class="status"
+  >
+
+    Tekan tombol untuk mengaktifkan kamera
+
+  </div>
+
+
+  <button
+    class="primary"
+    onclick="startScanner()"
+    id="btnStart"
+  >
+
+    📷 Aktifkan Kamera
+
+  </button>
+
+
+</div>
+
+
+
+<div
+  id="resultCard"
+  class="card result-card"
+>
+
+
+  <div class="label">
+    UUID
+  </div>
+
+
+  <div
+    id="uuid"
+    class="value uuid"
+  >
+    -
+  </div>
+
+
+
+  <div class="label">
+    ID Sampel
+  </div>
+
+
+  <div
+    id="idSampel"
+    class="value"
+  >
+    -
+  </div>
+
+
+
+  <div class="label">
+    Tanggal
+  </div>
+
+
+  <div
+    id="tanggal"
+    class="value"
+  >
+    -
+  </div>
+
+
+
+  <div class="label">
+    Posisi Sampel
+  </div>
+
+
+  <div
+    id="posisi"
+    class="value"
+  >
+    -
+  </div>
+
+
+
+  <div class="label">
+    Jenis Pengujian
+  </div>
+
+
+  <div
+    id="pengujian"
+    class="value"
+  >
+    -
+  </div>
+
+
+
+  <button
+    class="primary"
+    onclick="simpanData()"
+  >
+
+    💾 Simpan
+
+  </button>
+
+
+
+  <button
+    class="secondary"
+    onclick="scanLagi()"
+  >
+
+    🔄 Scan Berikutnya
+
+  </button>
+
+
+  <div id="message"></div>
+
+
+</div>
+
+
+</div>
+
+
+
 <script>
 
-const API_URL = "/api/sample";
 
-let scanner = null;
-let scannerAktif = false;
-let currentData = null;
+/*
+ * Frontend memanggil
+ * Vercel API proxy
+ */
+const API_URL =
+  "/api/sample";
 
 
-window.addEventListener("load", function () {
+let scanner =
+  null;
 
-  document.getElementById("status").innerHTML =
-    "Tekan tombol untuk mengaktifkan kamera";
 
-});
+let scannerAktif =
+  false;
+
+
+let currentData =
+  null;
+
 
 
 async function startScanner() {
 
+
   const status =
-    document.getElementById("status");
+    document.getElementById(
+      "status"
+    );
+
+
+  const btn =
+    document.getElementById(
+      "btnStart"
+    );
+
+
+  if (scannerAktif) {
+
+    return;
+  }
+
 
   try {
+
+
+    btn.disabled =
+      true;
+
 
     status.innerHTML =
       "Meminta izin kamera...";
 
 
-    // Cek apakah browser mendukung kamera
     if (
       !navigator.mediaDevices ||
       !navigator.mediaDevices.getUserMedia
     ) {
 
       throw new Error(
-        "Browser tidak mendukung akses kamera"
+        "Browser tidak mendukung kamera"
       );
-
     }
 
 
-    // Tes permission kamera
+    /*
+     * Uji permission kamera
+     */
+
     const testStream =
-      await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: false
-      });
+      await navigator.mediaDevices
+        .getUserMedia({
+
+          video: true,
+
+          audio: false
+
+        });
 
 
-    // Setelah permission berhasil, hentikan test stream
-    testStream.getTracks().forEach(
-      track => track.stop()
-    );
+    testStream
+      .getTracks()
+      .forEach(
+
+        track =>
+          track.stop()
+
+      );
 
 
     status.innerHTML =
-      "Kamera ditemukan, membuka scanner...";
+      "Kamera ditemukan. Membuka scanner...";
 
 
     if (scanner) {
 
       try {
+
         await scanner.clear();
+
       } catch (e) {}
 
     }
 
 
     scanner =
-      new Html5Qrcode("reader");
+      new Html5Qrcode(
+        "reader"
+      );
 
 
     const config = {
 
-      fps: 10,
+      fps:
+        10,
 
-      qrbox: function(
-        viewfinderWidth,
-        viewfinderHeight
-      ) {
+      qrbox:
+        function(
+          width,
+          height
+        ) {
 
-        const ukuran =
-          Math.floor(
-            Math.min(
-              viewfinderWidth,
-              viewfinderHeight
-            ) * 0.7
-          );
+          const size =
+            Math.floor(
 
-        return {
-          width: ukuran,
-          height: ukuran
-        };
+              Math.min(
+                width,
+                height
+              ) * 0.7
 
-      }
+            );
+
+
+          return {
+
+            width:
+              size,
+
+            height:
+              size
+
+          };
+
+        }
 
     };
 
 
     await scanner.start(
 
+
       {
+
         facingMode: {
-          ideal: "environment"
+          ideal:
+            "environment"
         }
+
       },
+
 
       config,
 
-      async function(decodedText) {
 
-        if (!scannerAktif) {
+      async function(
+        decodedText
+      ) {
+
+
+        if (
+          !scannerAktif
+        ) {
+
           return;
         }
 
-        scannerAktif = false;
+
+        scannerAktif =
+          false;
 
 
         status.innerHTML =
@@ -121,7 +629,9 @@ async function startScanner() {
 
 
         try {
+
           await scanner.stop();
+
         } catch (e) {}
 
 
@@ -129,13 +639,21 @@ async function startScanner() {
           decodedText
         );
 
+
       },
 
-      function(errorMessage) {
 
-        // Tidak perlu tampilkan error setiap frame
+      function(
+        errorMessage
+      ) {
+
+        /*
+         * Error per frame
+         * tidak ditampilkan
+         */
 
       }
+
 
     );
 
@@ -144,18 +662,32 @@ async function startScanner() {
       true;
 
 
+    btn.disabled =
+      false;
+
+
     status.innerHTML =
       "📷 Kamera aktif — arahkan QR Code";
 
 
   }
 
-  catch (error) {
+
+  catch(error) {
+
 
     console.error(
       "CAMERA ERROR:",
       error
     );
+
+
+    scannerAktif =
+      false;
+
+
+    btn.disabled =
+      false;
 
 
     status.innerHTML =
@@ -165,16 +697,22 @@ async function startScanner() {
         error
       );
 
+
   }
 
 }
 
 
 
-async function cariSampel(uuid) {
+async function cariSampel(
+  uuid
+) {
+
 
   const status =
-    document.getElementById("status");
+    document.getElementById(
+      "status"
+    );
 
 
   status.innerHTML =
@@ -189,21 +727,44 @@ async function cariSampel(uuid) {
 
   try {
 
+
     const url =
+
       API_URL +
+
       "?uuid=" +
-      encodeURIComponent(uuid);
+
+      encodeURIComponent(
+        uuid
+      );
 
 
     const response =
-      await fetch(url);
+      await fetch(
+        url
+      );
+
+
+    if (
+      !response.ok
+    ) {
+
+      throw new Error(
+        "HTTP " +
+        response.status
+      );
+
+    }
 
 
     const result =
       await response.json();
 
 
-    if (!result.success) {
+    if (
+      !result.success
+    ) {
+
 
       status.innerHTML =
         "❌ " +
@@ -211,6 +772,7 @@ async function cariSampel(uuid) {
           result.message ||
           "Data tidak ditemukan"
         );
+
 
       return;
 
@@ -224,31 +786,36 @@ async function cariSampel(uuid) {
     document.getElementById(
       "uuid"
     ).innerText =
-      currentData.uuid || "-";
+      currentData.uuid ||
+      "-";
 
 
     document.getElementById(
       "idSampel"
     ).innerText =
-      currentData.idSampel || "-";
+      currentData.idSampel ||
+      "-";
 
 
     document.getElementById(
       "tanggal"
     ).innerText =
-      currentData.tanggal || "-";
+      currentData.tanggal ||
+      "-";
 
 
     document.getElementById(
       "posisi"
     ).innerText =
-      currentData.posisi || "-";
+      currentData.posisi ||
+      "-";
 
 
     document.getElementById(
       "pengujian"
     ).innerText =
-      currentData.pengujian || "-";
+      currentData.pengujian ||
+      "-";
 
 
     document.getElementById(
@@ -260,9 +827,12 @@ async function cariSampel(uuid) {
     status.innerHTML =
       "✅ Sampel ditemukan";
 
+
   }
 
+
   catch(error) {
+
 
     console.error(
       "API ERROR:",
@@ -277,6 +847,143 @@ async function cariSampel(uuid) {
         error
       );
 
+
+  }
+
+}
+
+
+
+async function simpanData() {
+
+
+  const message =
+    document.getElementById(
+      "message"
+    );
+
+
+  if (
+    !currentData
+  ) {
+
+    message.style.display =
+      "block";
+
+
+    message.className =
+      "error";
+
+
+    message.innerHTML =
+      "Data sampel belum tersedia";
+
+
+    return;
+  }
+
+
+  message.style.display =
+    "block";
+
+
+  message.className =
+    "";
+
+
+  message.innerHTML =
+    "Menyimpan...";
+
+
+  try {
+
+
+    const response =
+      await fetch(
+
+        API_URL,
+
+        {
+
+          method:
+            "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json"
+
+          },
+
+          body:
+            JSON.stringify({
+
+              action:
+                "saveScan",
+
+              ...currentData
+
+            })
+
+        }
+
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      result.success
+    ) {
+
+
+      message.className =
+        "success";
+
+
+      message.innerHTML =
+        "✅ Data berhasil disimpan";
+
+
+    }
+
+
+    else {
+
+
+      message.className =
+        "error";
+
+
+      message.innerHTML =
+        "❌ " +
+        result.message;
+
+
+    }
+
+
+  }
+
+
+  catch(error) {
+
+
+    console.error(
+      error
+    );
+
+
+    message.className =
+      "error";
+
+
+    message.innerHTML =
+      "❌ Gagal menyimpan data";
+
+
   }
 
 }
@@ -284,6 +991,7 @@ async function cariSampel(uuid) {
 
 
 async function scanLagi() {
+
 
   currentData =
     null;
@@ -306,12 +1014,47 @@ async function scanLagi() {
 
 
   document.getElementById(
+    "uuid"
+  ).innerText =
+    "-";
+
+
+  document.getElementById(
+    "idSampel"
+  ).innerText =
+    "-";
+
+
+  document.getElementById(
+    "tanggal"
+  ).innerText =
+    "-";
+
+
+  document.getElementById(
+    "posisi"
+  ).innerText =
+    "-";
+
+
+  document.getElementById(
+    "pengujian"
+  ).innerText =
+    "-";
+
+
+  document.getElementById(
     "status"
   ).innerHTML =
     "Tekan tombol untuk mengaktifkan kamera";
 
+
 }
 
 
-
 </script>
+
+
+</body>
+
+</html>
