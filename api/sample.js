@@ -2,73 +2,109 @@ const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbxJKtAp6dAKDj-9a--uJYScmdESG-4HZnb5AkpP3C8Zji0OBeOn_OUNeoLBmddRe3MhTw/exec";
 
 
-export default async function handler(
-  req,
-  res
-) {
+export default async function handler(req, res) {
 
+  // Supaya kita mudah mengetahui sumber error
   try {
+
+    if (
+      !APPS_SCRIPT_URL ||
+      APPS_SCRIPT_URL.includes("MASUKKAN_URL")
+    ) {
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "URL Apps Script belum dimasukkan di api/sample.js"
+      });
+
+    }
 
 
     /*
-     * GET
-     * Cari data sampel
+     * ============================================
+     * GET = CARI DATA SAMPEL
+     * ============================================
      */
 
-    if (
-      req.method ===
-      "GET"
-    ) {
-
+    if (req.method === "GET") {
 
       const uuid =
         String(
-          req.query.uuid ||
-          ""
+          req.query.uuid || ""
         ).trim();
 
 
       if (!uuid) {
 
-        return res
-          .status(400)
-          .json({
-
-            success:
-              false,
-
-            message:
-              "UUID kosong"
-
-          });
+        return res.status(400).json({
+          success: false,
+          message: "UUID kosong"
+        });
 
       }
 
 
-      const url =
-
+      const targetURL =
         APPS_SCRIPT_URL +
-
         "?action=getSample&uuid=" +
+        encodeURIComponent(uuid);
 
-        encodeURIComponent(
-          uuid
-        );
+
+      console.log(
+        "Menghubungi Apps Script:",
+        targetURL
+      );
 
 
       const response =
-        await fetch(
-          url,
-          {
-            redirect:
-              "follow"
-          }
-        );
+        await fetch(targetURL, {
+          method: "GET",
+          redirect: "follow"
+        });
 
 
       const text =
         await response.text();
 
+
+      console.log(
+        "Status Apps Script:",
+        response.status
+      );
+
+
+      console.log(
+        "Response Apps Script:",
+        text
+      );
+
+
+      /*
+       * Kalau Google mengembalikan error HTTP
+       */
+
+      if (!response.ok) {
+
+        return res.status(502).json({
+
+          success: false,
+
+          message:
+            "Apps Script HTTP " +
+            response.status,
+
+          detail:
+            text.substring(0, 500)
+
+        });
+
+      }
+
+
+      /*
+       * Pastikan response Apps Script benar-benar JSON
+       */
 
       let data;
 
@@ -76,53 +112,44 @@ export default async function handler(
       try {
 
         data =
-          JSON.parse(
-            text
-          );
+          JSON.parse(text);
+
+      }
+
+      catch (error) {
+
+        return res.status(502).json({
+
+          success: false,
+
+          message:
+            "Apps Script tidak mengembalikan JSON",
+
+          detail:
+            text.substring(0, 500)
+
+        });
 
       }
 
 
-      catch(error) {
+      /*
+       * Teruskan response Apps Script
+       */
 
-        return res
-          .status(500)
-          .json({
-
-            success:
-              false,
-
-            message:
-              "Response Apps Script bukan JSON",
-
-            response:
-              text
-
-          });
-
-      }
-
-
-      return res
-        .status(200)
-        .json(
-          data
-        );
+      return res.status(200).json(data);
 
     }
 
 
 
     /*
-     * POST
-     * Simpan hasil scan
+     * ============================================
+     * POST = SIMPAN DATA
+     * ============================================
      */
 
-    if (
-      req.method ===
-      "POST"
-    ) {
-
+    if (req.method === "POST") {
 
       const body =
         req.body || {};
@@ -130,36 +157,45 @@ export default async function handler(
 
       const response =
         await fetch(
-
           APPS_SCRIPT_URL,
-
           {
 
-            method:
-              "POST",
+            method: "POST",
 
-            redirect:
-              "follow",
+            redirect: "follow",
 
             headers: {
-
               "Content-Type":
                 "text/plain;charset=utf-8"
-
             },
 
             body:
-              JSON.stringify(
-                body
-              )
+              JSON.stringify(body)
 
           }
-
         );
 
 
       const text =
         await response.text();
+
+
+      if (!response.ok) {
+
+        return res.status(502).json({
+
+          success: false,
+
+          message:
+            "Apps Script HTTP " +
+            response.status,
+
+          detail:
+            text.substring(0, 500)
+
+        });
+
+      }
 
 
       let data;
@@ -168,78 +204,64 @@ export default async function handler(
       try {
 
         data =
-          JSON.parse(
-            text
-          );
+          JSON.parse(text);
+
+      }
+
+      catch (error) {
+
+        return res.status(502).json({
+
+          success: false,
+
+          message:
+            "Response Apps Script bukan JSON",
+
+          detail:
+            text.substring(0, 500)
+
+        });
 
       }
 
 
-      catch(error) {
-
-        return res
-          .status(500)
-          .json({
-
-            success:
-              false,
-
-            message:
-              "Response Apps Script bukan JSON",
-
-            response:
-              text
-
-          });
-
-      }
-
-
-      return res
-        .status(200)
-        .json(
-          data
-        );
+      return res.status(200).json(data);
 
     }
 
 
 
-    return res
-      .status(405)
-      .json({
+    return res.status(405).json({
 
-        success:
-          false,
+      success: false,
 
-        message:
-          "Method tidak diizinkan"
+      message:
+        "Method tidak diizinkan"
 
-      });
+    });
 
 
   }
 
-
-  catch(error) {
-
+  catch (error) {
 
     console.error(
+      "VERCEL FUNCTION ERROR:",
       error
     );
 
 
-    return res
-      .status(500)
-      .json({
+    return res.status(500).json({
 
-        success:
-          false,
+      success: false,
 
-        message:
-          error.message
+      message:
+        "Vercel server error",
 
-      });
+      detail:
+        error.message
+
+    });
 
   }
 
