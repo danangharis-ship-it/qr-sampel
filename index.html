@@ -10,11 +10,9 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>Scan ID Sampel</title>
-
+<title>Scan Label Sampel</title>
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-
 
 <style>
 
@@ -30,86 +28,186 @@ body {
 }
 
 .header {
-  background: #0078bd;
+  background: #087fbd;
   color: white;
-  padding: 18px;
   text-align: center;
+  padding: 18px;
 }
 
 .header h2 {
   margin: 0;
+  font-size: 23px;
 }
 
 .container {
-  max-width: 600px;
+  max-width: 620px;
   margin: auto;
-  padding: 16px;
+  padding: 15px;
 }
 
 .card {
   background: white;
   padding: 16px;
-  border-radius: 16px;
+  border-radius: 18px;
   margin-bottom: 16px;
-
-  box-shadow:
-    0 4px 16px
-    rgba(0,0,0,0.10);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.10);
 }
 
-video {
+/* =========================
+   CAMERA
+========================= */
+
+.camera-box {
+  position: relative;
   width: 100%;
-  border-radius: 12px;
+  overflow: hidden;
+  border-radius: 14px;
   background: black;
 }
 
-canvas {
-  display: none;
+video {
+  display: block;
+  width: 100%;
+  max-height: 68vh;
+  object-fit: cover;
+}
+
+/*
+  Kotak ini menjadi panduan.
+  Tempatkan TEKS label pada kotak ini.
+*/
+.guide {
+  position: absolute;
+
+  left: 7%;
+  right: 7%;
+
+  bottom: 7%;
+
+  height: 30%;
+
+  border: 3px solid #00e676;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 0 0 9999px
+    rgba(0,0,0,0.28);
+
+  pointer-events: none;
+}
+
+.guide-label {
+  position: absolute;
+  bottom: 3%;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  pointer-events: none;
 }
 
 .status {
   margin-top: 12px;
-  padding: 12px;
+  padding: 13px;
   background: #e8f4fc;
   border-radius: 10px;
   text-align: center;
   font-weight: bold;
 }
 
-.label {
-  margin-top: 14px;
-  font-size: 12px;
-  color: #6b7280;
-}
-
-.value {
-  margin-top: 4px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.result-card {
-  display: none;
-}
-
 button {
   width: 100%;
   border: none;
-  padding: 14px;
+  padding: 15px;
   margin-top: 12px;
-  border-radius: 10px;
+  border-radius: 11px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
 }
 
 .primary {
-  background: #0078bd;
+  background: #087fbd;
   color: white;
 }
 
 .secondary {
   background: #e5e7eb;
+  color: #111827;
+}
+
+.green {
+  background: #15803d;
+  color: white;
+}
+
+button:disabled {
+  opacity: 0.55;
+}
+
+.hidden {
+  display: none;
+}
+
+/* =========================
+   RESULT
+========================= */
+
+.result-card {
+  display: none;
+}
+
+.field {
+  margin-top: 15px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 5px;
+}
+
+input,
+textarea {
+  width: 100%;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 9px;
+
+  padding: 11px;
+
+  font-size: 16px;
+
+  background: white;
+}
+
+input {
+  font-weight: bold;
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.preview-title {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 18px;
+  margin-bottom: 7px;
+}
+
+#ocrPreview {
+  width: 100%;
+  border-radius: 9px;
+  border: 1px solid #ddd;
+  display: none;
 }
 
 .success {
@@ -125,17 +223,17 @@ button {
 #message {
   display: none;
   margin-top: 12px;
-  padding: 12px;
+  padding: 13px;
   border-radius: 10px;
   text-align: center;
+  font-weight: bold;
 }
 
-textarea {
-  width: 100%;
-  min-height: 120px;
-  margin-top: 8px;
-  padding: 10px;
-  border-radius: 8px;
+.tip {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.5;
 }
 
 </style>
@@ -147,130 +245,190 @@ textarea {
 
 
 <div class="header">
-  <h2>📷 Scan ID Sampel</h2>
+  <h2>📷 Scan Label Sampel</h2>
 </div>
 
 
 <div class="container">
 
 
+<!-- ==============================
+     CAMERA CARD
+================================ -->
+
 <div class="card">
 
+  <div class="camera-box">
 
-  <video
-    id="video"
-    autoplay
-    playsinline
-  ></video>
+    <video
+      id="video"
+      autoplay
+      playsinline
+      muted>
+    </video>
+
+    <div
+      id="guide"
+      class="guide">
+    </div>
+
+    <div class="guide-label">
+      Tempatkan 4 baris teks label di dalam kotak hijau
+    </div>
+
+  </div>
 
 
-  <canvas id="canvas"></canvas>
+  <canvas
+    id="captureCanvas"
+    class="hidden">
+  </canvas>
+
+  <canvas
+    id="processCanvas"
+    class="hidden">
+  </canvas>
 
 
   <div
     id="status"
-    class="status"
-  >
+    class="status">
+
     Tekan Aktifkan Kamera
+
   </div>
 
 
   <button
+    id="btnCamera"
     class="primary"
-    onclick="startCamera()"
-  >
+    onclick="startCamera()">
+
     📷 Aktifkan Kamera
+
   </button>
 
 
   <button
-    class="primary"
-    onclick="captureAndOCR()"
-  >
+    id="btnCapture"
+    class="green"
+    onclick="captureAndOCR()">
+
     📸 Ambil Gambar & Baca Teks
+
   </button>
 
+
+  <div class="tip">
+
+    Arahkan kamera hingga bagian <b>teks di bawah QR</b>
+    memenuhi kotak hijau. QR tidak perlu masuk ke kotak hijau.
+
+  </div>
 
 </div>
 
 
 
+<!-- ==============================
+     RESULT
+================================ -->
+
 <div
   id="resultCard"
-  class="card result-card"
->
+  class="card result-card">
 
 
-  <div class="label">
-    ID Sampel
-  </div>
+  <div class="field">
 
-  <div
-    id="idSampel"
-    class="value"
-  >
-    -
-  </div>
+    <label>
+      ID Sampel
+    </label>
 
+    <input
+      type="text"
+      id="idSampel"
+      placeholder="260933-1002-28853">
 
-  <div class="label">
-    Tanggal
-  </div>
-
-  <div
-    id="tanggal"
-    class="value"
-  >
-    -
   </div>
 
 
-  <div class="label">
-    Posisi
-  </div>
+  <div class="field">
 
-  <div
-    id="posisi"
-    class="value"
-  >
-    -
-  </div>
+    <label>
+      Tanggal
+    </label>
 
+    <input
+      type="text"
+      id="tanggal"
+      placeholder="23-08-2026">
 
-  <div class="label">
-    Pengujian
-  </div>
-
-  <div
-    id="pengujian"
-    class="value"
-  >
-    -
   </div>
 
 
-  <div class="label">
-    Raw OCR
+  <div class="field">
+
+    <label>
+      Posisi
+    </label>
+
+    <input
+      type="text"
+      id="posisi"
+      placeholder="BOTTOM MAINTANK">
+
   </div>
 
-  <textarea
-    id="rawText"
-  ></textarea>
+
+  <div class="field">
+
+    <label>
+      Pengujian
+    </label>
+
+    <input
+      type="text"
+      id="pengujian"
+      placeholder="Dissolved Gas Analysis (DGA)">
+
+  </div>
+
+
+  <div class="preview-title">
+    Area gambar yang dibaca OCR
+  </div>
+
+  <img id="ocrPreview">
+
+
+  <div class="field">
+
+    <label>
+      Raw OCR
+    </label>
+
+    <textarea id="rawText"></textarea>
+
+  </div>
 
 
   <button
+    id="btnSave"
     class="primary"
-    onclick="saveData()"
-  >
-    💾 Simpan
+    onclick="saveData()">
+
+    💾 Simpan ke Google Sheet
+
   </button>
 
 
   <button
     class="secondary"
-    onclick="resetScan()"
-  >
-    🔄 Scan Berikutnya
+    onclick="scanLagi()">
+
+    🔄 Scan Sampel Berikutnya
+
   </button>
 
 
@@ -283,21 +441,24 @@ textarea {
 </div>
 
 
-
 <script>
 
+/* ==========================================
+   GLOBAL
+========================================== */
 
 let stream = null;
+let prosesOCR = false;
 
-let hasilData = null;
 
-
+/* ==========================================
+   CAMERA
+========================================== */
 
 async function startCamera() {
 
   const status =
     document.getElementById("status");
-
 
   try {
 
@@ -305,301 +466,617 @@ async function startCamera() {
       "Membuka kamera...";
 
 
-    if (stream) {
+    if (
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ) {
 
-      stream.getTracks().forEach(
-        track => track.stop()
+      throw new Error(
+        "Browser tidak mendukung kamera"
       );
 
     }
 
 
+    if (stream) {
+
+      stream
+        .getTracks()
+        .forEach(track => track.stop());
+
+    }
+
+
+    /*
+      Minta resolusi cukup tinggi.
+
+      Resolusi tinggi sangat penting karena
+      teks label relatif kecil.
+    */
+
+    const constraints = {
+
+      audio: false,
+
+      video: {
+
+        facingMode: "environment",
+
+        width: {
+          ideal: 1920
+        },
+
+        height: {
+          ideal: 1080
+        }
+
+      }
+
+    };
+
+
     stream =
       await navigator.mediaDevices
-        .getUserMedia({
-
-          video: {
-            facingMode: {
-              ideal: "environment"
-            }
-          },
-
-          audio: false
-
-        });
+        .getUserMedia(constraints);
 
 
     const video =
-      document.getElementById(
-        "video"
-      );
+      document.getElementById("video");
 
 
     video.srcObject =
       stream;
 
 
+    await video.play();
+
+
     status.innerHTML =
-      "📷 Kamera aktif — arahkan ke label sampel";
+      "📷 Kamera aktif — arahkan teks label ke kotak hijau";
 
 
-  } catch (error) {
+  } catch(error) {
 
     console.error(error);
 
     status.innerHTML =
       "❌ Kamera gagal: " +
-      error.message;
+      (error.message || error);
 
   }
 
 }
 
 
+/* ==========================================
+   CAPTURE + OCR
+========================================== */
 
 async function captureAndOCR() {
 
-  const status =
-    document.getElementById("status");
+  if (prosesOCR) {
+    return;
+  }
 
 
   const video =
     document.getElementById("video");
 
+  const status =
+    document.getElementById("status");
 
-  const canvas =
-    document.getElementById("canvas");
+  const button =
+    document.getElementById("btnCapture");
 
 
-  if (!stream) {
+  if (
+    !stream ||
+    !video.videoWidth ||
+    !video.videoHeight
+  ) {
 
     status.innerHTML =
       "❌ Aktifkan kamera terlebih dahulu";
 
     return;
+
   }
 
 
-  status.innerHTML =
-    "📸 Mengambil gambar...";
-
-
-  const width =
-    video.videoWidth;
-
-
-  const height =
-    video.videoHeight;
-
-
-  canvas.width =
-    width;
-
-
-  canvas.height =
-    height;
-
-
-  const ctx =
-    canvas.getContext("2d");
-
-
-  ctx.drawImage(
-    video,
-    0,
-    0,
-    width,
-    height
-  );
-
-
-  status.innerHTML =
-    "🔎 Membaca teks...";
+  prosesOCR = true;
+  button.disabled = true;
 
 
   try {
 
+    status.innerHTML =
+      "📸 Mengambil gambar...";
+
+
+    const sourceCanvas =
+      document.getElementById(
+        "captureCanvas"
+      );
+
+
+    const sourceCtx =
+      sourceCanvas.getContext(
+        "2d",
+        {
+          willReadFrequently: true
+        }
+      );
+
+
+    /*
+      Capture resolusi kamera ASLI.
+      Jangan memakai ukuran CSS video.
+    */
+
+    sourceCanvas.width =
+      video.videoWidth;
+
+    sourceCanvas.height =
+      video.videoHeight;
+
+
+    sourceCtx.drawImage(
+      video,
+      0,
+      0,
+      sourceCanvas.width,
+      sourceCanvas.height
+    );
+
+
+    /*
+      =============================
+      CROP AREA TEKS
+      =============================
+
+      Mengambil area tengah-horizontal
+      dan bagian bawah gambar.
+
+      QR di bagian atas sengaja dibuang.
+    */
+
+
+    const cropX =
+      Math.round(
+        sourceCanvas.width * 0.12
+      );
+
+
+    const cropY =
+      Math.round(
+        sourceCanvas.height * 0.60
+      );
+
+
+    const cropWidth =
+      Math.round(
+        sourceCanvas.width * 0.76
+      );
+
+
+    const cropHeight =
+      Math.round(
+        sourceCanvas.height * 0.34
+      );
+
+
+    /*
+      UPSCALE 3X
+      untuk membantu membaca font kecil
+    */
+
+    const scale = 3;
+
+
+    const processCanvas =
+      document.getElementById(
+        "processCanvas"
+      );
+
+
+    processCanvas.width =
+      cropWidth * scale;
+
+    processCanvas.height =
+      cropHeight * scale;
+
+
+    const processCtx =
+      processCanvas.getContext(
+        "2d",
+        {
+          willReadFrequently: true
+        }
+      );
+
+
+    /*
+      Gunakan smoothing bagus ketika diperbesar
+    */
+
+    processCtx.imageSmoothingEnabled =
+      true;
+
+    processCtx.imageSmoothingQuality =
+      "high";
+
+
+    processCtx.drawImage(
+
+      sourceCanvas,
+
+      cropX,
+      cropY,
+      cropWidth,
+      cropHeight,
+
+      0,
+      0,
+      processCanvas.width,
+      processCanvas.height
+
+    );
+
+
+    /*
+      =============================
+      PREPROCESSING
+      grayscale + contrast
+      =============================
+    */
+
+    preprocessImage(
+      processCtx,
+      processCanvas.width,
+      processCanvas.height
+    );
+
+
+    /*
+      Preview area sebenarnya yang
+      dibaca oleh OCR.
+    */
+
+    const preview =
+      document.getElementById(
+        "ocrPreview"
+      );
+
+
+    preview.src =
+      processCanvas.toDataURL(
+        "image/jpeg",
+        0.95
+      );
+
+
+    preview.style.display =
+      "block";
+
+
+    status.innerHTML =
+      "🔎 Menyiapkan OCR...";
+
+
+    /*
+      OCR
+    */
+
     const result =
       await Tesseract.recognize(
-        canvas,
+
+        processCanvas,
+
         "eng",
+
         {
-          logger: function(info) {
+
+          logger: info => {
 
             if (
               info.status ===
               "recognizing text"
             ) {
 
-              const progress =
+              const persen =
                 Math.round(
                   info.progress * 100
                 );
 
+
               status.innerHTML =
                 "🔎 Membaca teks " +
-                progress +
+                persen +
                 "%";
 
             }
 
           }
+
         }
+
       );
 
 
-    const text =
-      result.data.text;
+    const raw =
+      result.data.text || "";
 
 
     console.log(
-      "OCR:",
-      text
+      "RAW OCR:",
+      raw
     );
 
 
-    parseText(text);
+    parseOCR(raw);
 
 
     status.innerHTML =
-      "✅ Teks berhasil dibaca";
+      "✅ Teks berhasil diproses";
 
 
-  } catch (error) {
+  } catch(error) {
 
     console.error(error);
 
-
     status.innerHTML =
       "❌ OCR gagal: " +
-      error.message;
+      (error.message || error);
 
   }
+
+
+  prosesOCR = false;
+  button.disabled = false;
 
 }
 
 
+/* ==========================================
+   IMAGE PREPROCESSING
+========================================== */
 
-function parseText(text) {
+function preprocessImage(
+  ctx,
+  width,
+  height
+) {
+
+  const imageData =
+    ctx.getImageData(
+      0,
+      0,
+      width,
+      height
+    );
 
 
-  const cleaned =
-    text
+  const pixels =
+    imageData.data;
+
+
+  /*
+    Threshold sederhana.
+
+    Background terang -> putih
+    teks gelap -> hitam.
+  */
+
+  for (
+    let i = 0;
+    i < pixels.length;
+    i += 4
+  ) {
+
+    const r =
+      pixels[i];
+
+    const g =
+      pixels[i + 1];
+
+    const b =
+      pixels[i + 2];
+
+
+    const gray =
+      (
+        0.299 * r +
+        0.587 * g +
+        0.114 * b
+      );
+
+
+    /*
+      Adaptive-ish threshold sederhana
+      yang cocok untuk label putih.
+    */
+
+    let value;
+
+
+    if (gray > 165) {
+
+      value = 255;
+
+    } else {
+
+      value = 0;
+
+    }
+
+
+    pixels[i] =
+      value;
+
+    pixels[i + 1] =
+      value;
+
+    pixels[i + 2] =
+      value;
+
+  }
+
+
+  ctx.putImageData(
+    imageData,
+    0,
+    0
+  );
+
+}
+
+
+/* ==========================================
+   OCR PARSER
+========================================== */
+
+function parseOCR(text) {
+
+  let cleaned =
+    String(text || "")
+
+      .replace(/\r/g, "\n")
+
+      .replace(/[|]/g, "I")
+
+      .replace(/[–—]/g, "-")
+
+      .replace(/\s+/g, " ")
+
+      .trim();
+
+
+  /*
+    Kita juga mempertahankan line breaks
+    untuk raw OCR.
+  */
+
+  const rawClean =
+    String(text || "")
       .replace(/\r/g, "")
       .trim();
 
 
-  const lines =
-    cleaned
-      .split("\n")
-      .map(
-        line => line.trim()
-      )
-      .filter(Boolean);
-
-
-  let idSampel =
-    "";
-
-
-  let tanggal =
-    "";
-
-
-  let posisi =
-    "";
-
-
-  let pengujian =
-    "";
+  document.getElementById(
+    "rawText"
+  ).value =
+    rawClean;
 
 
   /*
-   * ID Sampel
-   * contoh:
-   * 260933-1002-28853
-   */
+    =====================================
+    ID SAMPEL
+    =====================================
 
-  const idRegex =
-    /\b\d{6}-\d{4}-\d{5}\b/;
+    Target:
+    260933-1002-28853
+
+    dibuat sedikit toleran terhadap
+    spasi hasil OCR.
+  */
+
+  let idSampel = "";
 
 
-  const idMatch =
+  let idMatch =
     cleaned.match(
-      idRegex
+      /\b\d{6}\s*-\s*\d{4}\s*-\s*\d{5}\b/
     );
 
 
   if (idMatch) {
 
     idSampel =
-      idMatch[0];
+      idMatch[0]
+        .replace(/\s/g, "");
 
   }
 
 
-
   /*
-   * Tanggal
-   * contoh:
-   * 23-08-2026
-   */
+    =====================================
+    TANGGAL
+    =====================================
+  */
 
-  const tanggalRegex =
-    /\b\d{2}[-\/]\d{2}[-\/]\d{4}\b/;
+  let tanggal = "";
 
 
-  const tanggalMatch =
+  let dateMatch =
     cleaned.match(
-      tanggalRegex
+      /\b\d{2}\s*[-\/.]\s*\d{2}\s*[-\/.]\s*\d{4}\b/
     );
 
 
-  if (tanggalMatch) {
+  if (dateMatch) {
 
     tanggal =
-      tanggalMatch[0]
-        .replace(/\//g, "-");
+      dateMatch[0]
+
+        .replace(/\s/g, "")
+
+        .replace(/[\/.]/g, "-");
 
   }
 
 
-
   /*
-   * Posisi
-   */
+    =====================================
+    POSISI
+    =====================================
+  */
 
-  const posisiKnown = [
+  let posisi = "";
+
+
+  const upper =
+    cleaned.toUpperCase();
+
+
+  const posisiList = [
 
     "BOTTOM MAINTANK",
 
+    "BOTTOM MAIN TANK",
+
     "TOP MAINTANK",
 
+    "TOP MAIN TANK",
+
     "MIDDLE MAINTANK",
+
+    "MIDDLE MAIN TANK",
 
     "OLTC",
 
     "BUCHHOLZ",
 
-    "RADIATOR",
+    "CONSERVATOR",
 
-    "CONSERVATOR"
+    "RADIATOR"
 
   ];
 
 
   for (
-    const item of posisiKnown
+    const item of posisiList
   ) {
 
     if (
-      cleaned
-        .toUpperCase()
-        .includes(item)
+      upper.includes(item)
     ) {
 
       posisi =
-        item;
+        item
+          .replace(
+            "MAIN TANK",
+            "MAINTANK"
+          );
 
       break;
 
@@ -608,20 +1085,53 @@ function parseText(text) {
   }
 
 
+  /*
+    Bila OCR hanya mendapatkan kata
+    BOTTOM + MAINTANK secara terpisah.
+  */
+
+  if (
+    !posisi &&
+    upper.includes("BOTTOM") &&
+    (
+      upper.includes("MAINTANK") ||
+      upper.includes("MAIN TANK")
+    )
+  ) {
+
+    posisi =
+      "BOTTOM MAINTANK";
+
+  }
+
 
   /*
-   * Jenis pengujian
-   */
+    =====================================
+    PENGUJIAN
+    =====================================
+  */
 
-  const upper =
-    cleaned.toUpperCase();
+  let pengujian = "";
 
 
   if (
+
     upper.includes(
-      "DISSOLVED GAS ANALYSIS"
-    ) ||
-    upper.includes("(DGA)")
+      "DISSOLVED GAS"
+    )
+
+    ||
+
+    upper.includes(
+      "GAS ANALYSIS"
+    )
+
+    ||
+
+    upper.includes(
+      "DGA"
+    )
+
   ) {
 
     pengujian =
@@ -631,10 +1141,17 @@ function parseText(text) {
 
 
   else if (
+
     upper.includes(
-      "BREAKDOWN VOLTAGE"
-    ) ||
-    upper.includes("BDV")
+      "BREAKDOWN"
+    )
+
+    ||
+
+    upper.includes(
+      "BDV"
+    )
+
   ) {
 
     pengujian =
@@ -644,7 +1161,11 @@ function parseText(text) {
 
 
   else if (
-    upper.includes("FURAN")
+
+    upper.includes(
+      "FURAN"
+    )
+
   ) {
 
     pengujian =
@@ -654,10 +1175,17 @@ function parseText(text) {
 
 
   else if (
+
     upper.includes(
-      "INTERFACIAL TENSION"
-    ) ||
-    upper.includes("IFT")
+      "INTERFACIAL"
+    )
+
+    ||
+
+    upper.includes(
+      "IFT"
+    )
+
   ) {
 
     pengujian =
@@ -666,55 +1194,32 @@ function parseText(text) {
   }
 
 
-
-  hasilData = {
-
-    idSampel:
-      idSampel,
-
-    tanggal:
-      tanggal,
-
-    posisi:
-      posisi,
-
-    pengujian:
-      pengujian,
-
-    rawText:
-      cleaned
-
-  };
-
+  /*
+    OUTPUT KE FORM
+  */
 
   document.getElementById(
     "idSampel"
-  ).innerText =
-    idSampel || "Tidak terbaca";
+  ).value =
+    idSampel;
 
 
   document.getElementById(
     "tanggal"
-  ).innerText =
-    tanggal || "Tidak terbaca";
+  ).value =
+    tanggal;
 
 
   document.getElementById(
     "posisi"
-  ).innerText =
-    posisi || "Tidak terbaca";
+  ).value =
+    posisi;
 
 
   document.getElementById(
     "pengujian"
-  ).innerText =
-    pengujian || "Tidak terbaca";
-
-
-  document.getElementById(
-    "rawText"
   ).value =
-    cleaned;
+    pengujian;
 
 
   document.getElementById(
@@ -722,12 +1227,29 @@ function parseText(text) {
   ).style.display =
     "block";
 
+
+  /*
+    Scroll otomatis ke hasil
+  */
+
+  document.getElementById(
+    "resultCard"
+  ).scrollIntoView({
+
+    behavior: "smooth",
+
+    block: "start"
+
+  });
+
 }
 
 
+/* ==========================================
+   SAVE
+========================================== */
 
 async function saveData() {
-
 
   const message =
     document.getElementById(
@@ -735,46 +1257,111 @@ async function saveData() {
     );
 
 
-  if (!hasilData) {
+  const btn =
+    document.getElementById(
+      "btnSave"
+    );
+
+
+  /*
+    PENTING:
+    Data selalu dibaca LANGSUNG
+    dari form.
+
+    Jadi kalau OCR salah,
+    pengguna boleh edit manual
+    lalu tetap dapat disimpan.
+  */
+
+  const data = {
+
+    idSampel:
+      document
+        .getElementById(
+          "idSampel"
+        )
+        .value
+        .trim(),
+
+    tanggal:
+      document
+        .getElementById(
+          "tanggal"
+        )
+        .value
+        .trim(),
+
+    posisi:
+      document
+        .getElementById(
+          "posisi"
+        )
+        .value
+        .trim(),
+
+    pengujian:
+      document
+        .getElementById(
+          "pengujian"
+        )
+        .value
+        .trim(),
+
+    rawText:
+      document
+        .getElementById(
+          "rawText"
+        )
+        .value
+        .trim()
+
+  };
+
+
+  /*
+    Minimal ID Sampel harus tersedia.
+  */
+
+  if (!data.idSampel) {
+
+    message.style.display =
+      "block";
+
+    message.className =
+      "error";
+
+    message.innerHTML =
+      "❌ ID Sampel belum terbaca. Silakan koreksi manual.";
 
     return;
 
   }
 
 
-  /*
-   * Ambil raw text terbaru
-   * jika diedit manual
-   */
-
-  hasilData.rawText =
-    document.getElementById(
-      "rawText"
-    ).value;
-
-
-  message.style.display =
-    "block";
-
-
-  message.className =
-    "";
-
-
-  message.innerHTML =
-    "Menyimpan...";
-
-
   try {
+
+    btn.disabled =
+      true;
+
+
+    message.style.display =
+      "block";
+
+    message.className =
+      "";
+
+    message.innerHTML =
+      "⏳ Menyimpan data...";
 
 
     const response =
       await fetch(
+
         "/api/save",
+
         {
 
-          method:
-            "POST",
+          method: "POST",
 
           headers: {
 
@@ -784,44 +1371,65 @@ async function saveData() {
           },
 
           body:
-            JSON.stringify(
-              hasilData
-            )
+            JSON.stringify(data)
 
         }
+
       );
 
 
-    const result =
-      await response.json();
+    const text =
+      await response.text();
 
 
-    if (result.success) {
+    let result;
 
 
-      message.className =
-        "success";
+    try {
 
+      result =
+        JSON.parse(text);
 
-      message.innerHTML =
-        "✅ Data berhasil disimpan";
+    } catch(e) {
 
-
-    } else {
-
-
-      message.className =
-        "error";
-
-
-      message.innerHTML =
-        "❌ " +
-        result.message;
+      throw new Error(
+        "Server tidak mengembalikan JSON"
+      );
 
     }
 
 
-  } catch (error) {
+    if (!response.ok) {
+
+      throw new Error(
+        result.message ||
+        "HTTP " + response.status
+      );
+
+    }
+
+
+    if (!result.success) {
+
+      throw new Error(
+        result.message ||
+        "Gagal menyimpan"
+      );
+
+    }
+
+
+    message.className =
+      "success";
+
+
+    message.innerHTML =
+      "✅ Data berhasil disimpan ke Google Sheet";
+
+
+  } catch(error) {
+
+    console.error(error);
 
 
     message.className =
@@ -829,20 +1437,47 @@ async function saveData() {
 
 
     message.innerHTML =
-      "❌ Gagal menyimpan";
-
+      "❌ Gagal menyimpan: " +
+      (error.message || error);
 
   }
+
+
+  btn.disabled =
+    false;
 
 }
 
 
+/* ==========================================
+   NEXT SCAN
+========================================== */
 
-function resetScan() {
+function scanLagi() {
+
+  document.getElementById(
+    "idSampel"
+  ).value = "";
 
 
-  hasilData =
-    null;
+  document.getElementById(
+    "tanggal"
+  ).value = "";
+
+
+  document.getElementById(
+    "posisi"
+  ).value = "";
+
+
+  document.getElementById(
+    "pengujian"
+  ).value = "";
+
+
+  document.getElementById(
+    "rawText"
+  ).value = "";
 
 
   document.getElementById(
@@ -858,16 +1493,26 @@ function resetScan() {
 
 
   document.getElementById(
+    "ocrPreview"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
     "status"
   ).innerHTML =
     "📷 Kamera siap — arahkan label berikutnya";
 
-}
 
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
 
 </script>
 
 
 </body>
-
 </html>
