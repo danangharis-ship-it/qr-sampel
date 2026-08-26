@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="id">
 
 <head>
@@ -14,9 +13,7 @@
 <title>Scan ID Sampel</title>
 
 
-<script
-  src="https://unpkg.com/html5-qrcode">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 
 <style>
@@ -25,260 +22,120 @@
   box-sizing: border-box;
 }
 
-
 body {
-
   margin: 0;
-
-  font-family:
-    Arial,
-    sans-serif;
-
-  background:
-    #f3f6f9;
-
-  color:
-    #1f2937;
-
+  font-family: Arial, sans-serif;
+  background: #f3f6f9;
+  color: #1f2937;
 }
-
 
 .header {
-
-  background:
-    #0078bd;
-
-  color:
-    white;
-
-  padding:
-    18px;
-
-  text-align:
-    center;
-
+  background: #0078bd;
+  color: white;
+  padding: 18px;
+  text-align: center;
 }
-
 
 .header h2 {
-
   margin: 0;
-
-  font-size:
-    24px;
-
 }
-
 
 .container {
-
-  max-width:
-    600px;
-
-  margin:
-    auto;
-
-  padding:
-    16px;
-
+  max-width: 600px;
+  margin: auto;
+  padding: 16px;
 }
 
-
 .card {
-
-  background:
-    white;
-
-  border-radius:
-    16px;
-
-  padding:
-    16px;
-
-  margin-bottom:
-    16px;
+  background: white;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 16px;
 
   box-shadow:
     0 4px 16px
     rgba(0,0,0,0.10);
-
 }
 
-
-#reader {
-
-  width:
-    100%;
-
-  overflow:
-    hidden;
-
-  border-radius:
-    12px;
-
+video {
+  width: 100%;
+  border-radius: 12px;
+  background: black;
 }
 
+canvas {
+  display: none;
+}
 
 .status {
-
-  margin-top:
-    12px;
-
-  padding:
-    14px;
-
-  border-radius:
-    10px;
-
-  background:
-    #e8f4fc;
-
-  text-align:
-    center;
-
-  font-weight:
-    bold;
-
+  margin-top: 12px;
+  padding: 12px;
+  background: #e8f4fc;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
 }
-
 
 .label {
-
-  font-size:
-    12px;
-
-  color:
-    #6b7280;
-
-  margin-top:
-    14px;
-
+  margin-top: 14px;
+  font-size: 12px;
+  color: #6b7280;
 }
-
 
 .value {
-
-  font-size:
-    17px;
-
-  font-weight:
-    bold;
-
-  margin-top:
-    4px;
-
+  margin-top: 4px;
+  font-size: 18px;
+  font-weight: bold;
 }
-
-
-.uuid {
-
-  color:
-    #0078bd;
-
-  word-break:
-    break-all;
-
-}
-
 
 .result-card {
-
-  display:
-    none;
-
+  display: none;
 }
-
 
 button {
-
-  width:
-    100%;
-
-  border:
-    none;
-
-  padding:
-    14px;
-
-  margin-top:
-    12px;
-
-  border-radius:
-    10px;
-
-  font-size:
-    16px;
-
-  font-weight:
-    bold;
-
-  cursor:
-    pointer;
-
+  width: 100%;
+  border: none;
+  padding: 14px;
+  margin-top: 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
 }
-
 
 .primary {
-
-  background:
-    #0078bd;
-
-  color:
-    white;
-
+  background: #0078bd;
+  color: white;
 }
-
 
 .secondary {
-
-  background:
-    #e5e7eb;
-
-  color:
-    #111827;
-
+  background: #e5e7eb;
 }
-
 
 .success {
-
-  background:
-    #dcfce7;
-
-  color:
-    #166534;
-
+  background: #dcfce7;
+  color: #166534;
 }
-
 
 .error {
-
-  background:
-    #fee2e2;
-
-  color:
-    #991b1b;
-
+  background: #fee2e2;
+  color: #991b1b;
 }
 
-
 #message {
+  display: none;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+}
 
-  display:
-    none;
-
-  margin-top:
-    12px;
-
-  padding:
-    12px;
-
-  border-radius:
-    10px;
-
-  text-align:
-    center;
-
+textarea {
+  width: 100%;
+  min-height: 120px;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 8px;
 }
 
 </style>
@@ -286,18 +143,12 @@ button {
 </head>
 
 
-
 <body>
 
 
 <div class="header">
-
-  <h2>
-    📷 Scan ID Sampel
-  </h2>
-
+  <h2>📷 Scan ID Sampel</h2>
 </div>
-
 
 
 <div class="container">
@@ -306,27 +157,37 @@ button {
 <div class="card">
 
 
-  <div id="reader"></div>
+  <video
+    id="video"
+    autoplay
+    playsinline
+  ></video>
+
+
+  <canvas id="canvas"></canvas>
 
 
   <div
     id="status"
     class="status"
   >
-
-    Tekan tombol untuk mengaktifkan kamera
-
+    Tekan Aktifkan Kamera
   </div>
 
 
   <button
     class="primary"
-    onclick="startScanner()"
-    id="btnStart"
+    onclick="startCamera()"
   >
-
     📷 Aktifkan Kamera
+  </button>
 
+
+  <button
+    class="primary"
+    onclick="captureAndOCR()"
+  >
+    📸 Ambil Gambar & Baca Teks
   </button>
 
 
@@ -341,23 +202,8 @@ button {
 
 
   <div class="label">
-    UUID
-  </div>
-
-
-  <div
-    id="uuid"
-    class="value uuid"
-  >
-    -
-  </div>
-
-
-
-  <div class="label">
     ID Sampel
   </div>
-
 
   <div
     id="idSampel"
@@ -367,11 +213,9 @@ button {
   </div>
 
 
-
   <div class="label">
     Tanggal
   </div>
-
 
   <div
     id="tanggal"
@@ -381,11 +225,9 @@ button {
   </div>
 
 
-
   <div class="label">
-    Posisi Sampel
+    Posisi
   </div>
-
 
   <div
     id="posisi"
@@ -395,11 +237,9 @@ button {
   </div>
 
 
-
   <div class="label">
-    Jenis Pengujian
+    Pengujian
   </div>
-
 
   <div
     id="pengujian"
@@ -409,25 +249,28 @@ button {
   </div>
 
 
+  <div class="label">
+    Raw OCR
+  </div>
+
+  <textarea
+    id="rawText"
+  ></textarea>
+
 
   <button
     class="primary"
-    onclick="simpanData()"
+    onclick="saveData()"
   >
-
     💾 Simpan
-
   </button>
-
 
 
   <button
     class="secondary"
-    onclick="scanLagi()"
+    onclick="resetScan()"
   >
-
     🔄 Scan Berikutnya
-
   </button>
 
 
@@ -444,252 +287,69 @@ button {
 <script>
 
 
-/*
- * Frontend memanggil
- * Vercel API proxy
- */
-const API_URL =
-  "/api/sample";
+let stream = null;
 
-
-let scanner =
-  null;
-
-
-let scannerAktif =
-  false;
-
-
-let currentData =
-  null;
+let hasilData = null;
 
 
 
-async function startScanner() {
-
+async function startCamera() {
 
   const status =
-    document.getElementById(
-      "status"
-    );
-
-
-  const btn =
-    document.getElementById(
-      "btnStart"
-    );
-
-
-  if (scannerAktif) {
-
-    return;
-  }
+    document.getElementById("status");
 
 
   try {
 
-
-    btn.disabled =
-      true;
-
-
     status.innerHTML =
-      "Meminta izin kamera...";
+      "Membuka kamera...";
 
 
-    if (
-      !navigator.mediaDevices ||
-      !navigator.mediaDevices.getUserMedia
-    ) {
+    if (stream) {
 
-      throw new Error(
-        "Browser tidak mendukung kamera"
+      stream.getTracks().forEach(
+        track => track.stop()
       );
+
     }
 
 
-    /*
-     * Uji permission kamera
-     */
-
-    const testStream =
+    stream =
       await navigator.mediaDevices
         .getUserMedia({
 
-          video: true,
+          video: {
+            facingMode: {
+              ideal: "environment"
+            }
+          },
 
           audio: false
 
         });
 
 
-    testStream
-      .getTracks()
-      .forEach(
-
-        track =>
-          track.stop()
-
+    const video =
+      document.getElementById(
+        "video"
       );
 
 
-    status.innerHTML =
-      "Kamera ditemukan. Membuka scanner...";
-
-
-    if (scanner) {
-
-      try {
-
-        await scanner.clear();
-
-      } catch (e) {}
-
-    }
-
-
-    scanner =
-      new Html5Qrcode(
-        "reader"
-      );
-
-
-    const config = {
-
-      fps:
-        10,
-
-      qrbox:
-        function(
-          width,
-          height
-        ) {
-
-          const size =
-            Math.floor(
-
-              Math.min(
-                width,
-                height
-              ) * 0.7
-
-            );
-
-
-          return {
-
-            width:
-              size,
-
-            height:
-              size
-
-          };
-
-        }
-
-    };
-
-
-   await scanner.start(
-
-  {
-    facingMode: "environment"
-  },
-
-  config,
-
-
-      async function(
-        decodedText
-      ) {
-
-
-        if (
-          !scannerAktif
-        ) {
-
-          return;
-        }
-
-
-        scannerAktif =
-          false;
-
-
-        status.innerHTML =
-          "✅ QR berhasil dibaca";
-
-
-        try {
-
-          await scanner.stop();
-
-        } catch (e) {}
-
-
-        await cariSampel(
-          decodedText
-        );
-
-
-      },
-
-
-      function(
-        errorMessage
-      ) {
-
-        /*
-         * Error per frame
-         * tidak ditampilkan
-         */
-
-      }
-
-
-    );
-
-
-    scannerAktif =
-      true;
-
-
-    btn.disabled =
-      false;
+    video.srcObject =
+      stream;
 
 
     status.innerHTML =
-      "📷 Kamera aktif — arahkan QR Code";
+      "📷 Kamera aktif — arahkan ke label sampel";
 
 
-  }
+  } catch (error) {
 
-
-  catch(error) {
-
-
-    console.error(
-      "CAMERA ERROR:",
-      error
-    );
-
-
-    scannerAktif =
-      false;
-
-
-    btn.disabled =
-      false;
-
+    console.error(error);
 
     status.innerHTML =
       "❌ Kamera gagal: " +
-      (
-        error.message ||
-        error
-      );
-
+      error.message;
 
   }
 
@@ -697,149 +357,122 @@ async function startScanner() {
 
 
 
-async function cariSampel(
-  uuid
-) {
-
+async function captureAndOCR() {
 
   const status =
-    document.getElementById(
-      "status"
-    );
+    document.getElementById("status");
+
+
+  const video =
+    document.getElementById("video");
+
+
+  const canvas =
+    document.getElementById("canvas");
+
+
+  if (!stream) {
+
+    status.innerHTML =
+      "❌ Aktifkan kamera terlebih dahulu";
+
+    return;
+  }
 
 
   status.innerHTML =
-    "🔍 Mencari data sampel...";
+    "📸 Mengambil gambar...";
 
 
-  document.getElementById(
-    "uuid"
-  ).innerText =
-    uuid;
+  const width =
+    video.videoWidth;
+
+
+  const height =
+    video.videoHeight;
+
+
+  canvas.width =
+    width;
+
+
+  canvas.height =
+    height;
+
+
+  const ctx =
+    canvas.getContext("2d");
+
+
+  ctx.drawImage(
+    video,
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  status.innerHTML =
+    "🔎 Membaca teks...";
 
 
   try {
 
-
-    const url =
-
-      API_URL +
-
-      "?uuid=" +
-
-      encodeURIComponent(
-        uuid
-      );
-
-
-    const response =
-      await fetch(
-        url
-      );
-
-
-    if (
-      !response.ok
-    ) {
-
-      throw new Error(
-        "HTTP " +
-        response.status
-      );
-
-    }
-
-
     const result =
-      await response.json();
+      await Tesseract.recognize(
+        canvas,
+        "eng",
+        {
+          logger: function(info) {
+
+            if (
+              info.status ===
+              "recognizing text"
+            ) {
+
+              const progress =
+                Math.round(
+                  info.progress * 100
+                );
+
+              status.innerHTML =
+                "🔎 Membaca teks " +
+                progress +
+                "%";
+
+            }
+
+          }
+        }
+      );
 
 
-    if (
-      !result.success
-    ) {
+    const text =
+      result.data.text;
 
 
-      status.innerHTML =
-        "❌ " +
-        (
-          result.message ||
-          "Data tidak ditemukan"
-        );
-
-
-      return;
-
-    }
-
-
-    currentData =
-      result.data;
-
-
-    document.getElementById(
-      "uuid"
-    ).innerText =
-      currentData.uuid ||
-      "-";
-
-
-    document.getElementById(
-      "idSampel"
-    ).innerText =
-      currentData.idSampel ||
-      "-";
-
-
-    document.getElementById(
-      "tanggal"
-    ).innerText =
-      currentData.tanggal ||
-      "-";
-
-
-    document.getElementById(
-      "posisi"
-    ).innerText =
-      currentData.posisi ||
-      "-";
-
-
-    document.getElementById(
-      "pengujian"
-    ).innerText =
-      currentData.pengujian ||
-      "-";
-
-
-    document.getElementById(
-      "resultCard"
-    ).style.display =
-      "block";
-
-
-    status.innerHTML =
-      "✅ Sampel ditemukan";
-
-
-  }
-
-
-  catch(error) {
-
-
-    console.error(
-      "API ERROR:",
-      error
+    console.log(
+      "OCR:",
+      text
     );
 
 
-    status.innerHTML =
-      "❌ Gagal mengambil data: " +
-      (
-        error.message ||
-        error
-      );
+    parseText(text);
 
+
+    status.innerHTML =
+      "✅ Teks berhasil dibaca";
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    status.innerHTML =
+      "❌ OCR gagal: " +
+      error.message;
 
   }
 
@@ -847,7 +480,253 @@ async function cariSampel(
 
 
 
-async function simpanData() {
+function parseText(text) {
+
+
+  const cleaned =
+    text
+      .replace(/\r/g, "")
+      .trim();
+
+
+  const lines =
+    cleaned
+      .split("\n")
+      .map(
+        line => line.trim()
+      )
+      .filter(Boolean);
+
+
+  let idSampel =
+    "";
+
+
+  let tanggal =
+    "";
+
+
+  let posisi =
+    "";
+
+
+  let pengujian =
+    "";
+
+
+  /*
+   * ID Sampel
+   * contoh:
+   * 260933-1002-28853
+   */
+
+  const idRegex =
+    /\b\d{6}-\d{4}-\d{5}\b/;
+
+
+  const idMatch =
+    cleaned.match(
+      idRegex
+    );
+
+
+  if (idMatch) {
+
+    idSampel =
+      idMatch[0];
+
+  }
+
+
+
+  /*
+   * Tanggal
+   * contoh:
+   * 23-08-2026
+   */
+
+  const tanggalRegex =
+    /\b\d{2}[-\/]\d{2}[-\/]\d{4}\b/;
+
+
+  const tanggalMatch =
+    cleaned.match(
+      tanggalRegex
+    );
+
+
+  if (tanggalMatch) {
+
+    tanggal =
+      tanggalMatch[0]
+        .replace(/\//g, "-");
+
+  }
+
+
+
+  /*
+   * Posisi
+   */
+
+  const posisiKnown = [
+
+    "BOTTOM MAINTANK",
+
+    "TOP MAINTANK",
+
+    "MIDDLE MAINTANK",
+
+    "OLTC",
+
+    "BUCHHOLZ",
+
+    "RADIATOR",
+
+    "CONSERVATOR"
+
+  ];
+
+
+  for (
+    const item of posisiKnown
+  ) {
+
+    if (
+      cleaned
+        .toUpperCase()
+        .includes(item)
+    ) {
+
+      posisi =
+        item;
+
+      break;
+
+    }
+
+  }
+
+
+
+  /*
+   * Jenis pengujian
+   */
+
+  const upper =
+    cleaned.toUpperCase();
+
+
+  if (
+    upper.includes(
+      "DISSOLVED GAS ANALYSIS"
+    ) ||
+    upper.includes("(DGA)")
+  ) {
+
+    pengujian =
+      "Dissolved Gas Analysis (DGA)";
+
+  }
+
+
+  else if (
+    upper.includes(
+      "BREAKDOWN VOLTAGE"
+    ) ||
+    upper.includes("BDV")
+  ) {
+
+    pengujian =
+      "Breakdown Voltage (BDV)";
+
+  }
+
+
+  else if (
+    upper.includes("FURAN")
+  ) {
+
+    pengujian =
+      "Furan";
+
+  }
+
+
+  else if (
+    upper.includes(
+      "INTERFACIAL TENSION"
+    ) ||
+    upper.includes("IFT")
+  ) {
+
+    pengujian =
+      "Interfacial Tension (IFT)";
+
+  }
+
+
+
+  hasilData = {
+
+    idSampel:
+      idSampel,
+
+    tanggal:
+      tanggal,
+
+    posisi:
+      posisi,
+
+    pengujian:
+      pengujian,
+
+    rawText:
+      cleaned
+
+  };
+
+
+  document.getElementById(
+    "idSampel"
+  ).innerText =
+    idSampel || "Tidak terbaca";
+
+
+  document.getElementById(
+    "tanggal"
+  ).innerText =
+    tanggal || "Tidak terbaca";
+
+
+  document.getElementById(
+    "posisi"
+  ).innerText =
+    posisi || "Tidak terbaca";
+
+
+  document.getElementById(
+    "pengujian"
+  ).innerText =
+    pengujian || "Tidak terbaca";
+
+
+  document.getElementById(
+    "rawText"
+  ).value =
+    cleaned;
+
+
+  document.getElementById(
+    "resultCard"
+  ).style.display =
+    "block";
+
+}
+
+
+
+async function saveData() {
 
 
   const message =
@@ -856,24 +735,22 @@ async function simpanData() {
     );
 
 
-  if (
-    !currentData
-  ) {
-
-    message.style.display =
-      "block";
-
-
-    message.className =
-      "error";
-
-
-    message.innerHTML =
-      "Data sampel belum tersedia";
-
+  if (!hasilData) {
 
     return;
+
   }
+
+
+  /*
+   * Ambil raw text terbaru
+   * jika diedit manual
+   */
+
+  hasilData.rawText =
+    document.getElementById(
+      "rawText"
+    ).value;
 
 
   message.style.display =
@@ -893,9 +770,7 @@ async function simpanData() {
 
     const response =
       await fetch(
-
-        API_URL,
-
+        "/api/save",
         {
 
           method:
@@ -909,17 +784,11 @@ async function simpanData() {
           },
 
           body:
-            JSON.stringify({
-
-              action:
-                "saveScan",
-
-              ...currentData
-
-            })
+            JSON.stringify(
+              hasilData
+            )
 
         }
-
       );
 
 
@@ -927,9 +796,7 @@ async function simpanData() {
       await response.json();
 
 
-    if (
-      result.success
-    ) {
+    if (result.success) {
 
 
       message.className =
@@ -940,10 +807,7 @@ async function simpanData() {
         "✅ Data berhasil disimpan";
 
 
-    }
-
-
-    else {
+    } else {
 
 
       message.className =
@@ -954,19 +818,10 @@ async function simpanData() {
         "❌ " +
         result.message;
 
-
     }
 
 
-  }
-
-
-  catch(error) {
-
-
-    console.error(
-      error
-    );
+  } catch (error) {
 
 
     message.className =
@@ -974,7 +829,7 @@ async function simpanData() {
 
 
     message.innerHTML =
-      "❌ Gagal menyimpan data";
+      "❌ Gagal menyimpan";
 
 
   }
@@ -983,15 +838,11 @@ async function simpanData() {
 
 
 
-async function scanLagi() {
+function resetScan() {
 
 
-  currentData =
+  hasilData =
     null;
-
-
-  scannerAktif =
-    false;
 
 
   document.getElementById(
@@ -1007,40 +858,9 @@ async function scanLagi() {
 
 
   document.getElementById(
-    "uuid"
-  ).innerText =
-    "-";
-
-
-  document.getElementById(
-    "idSampel"
-  ).innerText =
-    "-";
-
-
-  document.getElementById(
-    "tanggal"
-  ).innerText =
-    "-";
-
-
-  document.getElementById(
-    "posisi"
-  ).innerText =
-    "-";
-
-
-  document.getElementById(
-    "pengujian"
-  ).innerText =
-    "-";
-
-
-  document.getElementById(
     "status"
   ).innerHTML =
-    "Tekan tombol untuk mengaktifkan kamera";
-
+    "📷 Kamera siap — arahkan label berikutnya";
 
 }
 
