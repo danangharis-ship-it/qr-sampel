@@ -591,20 +591,13 @@ async function startScanner() {
     };
 
 
-    await scanner.start(
+   await scanner.start(
 
+  {
+    facingMode: "environment"
+  },
 
-      {
-
-        facingMode: {
-          ideal:
-            "environment"
-        }
-
-      },
-
-
-      config,
+  config,
 
 
       async function(
