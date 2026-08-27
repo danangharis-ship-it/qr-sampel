@@ -1263,64 +1263,40 @@ async function saveData() {
     );
 
 
-  /*
-    PENTING:
-    Data selalu dibaca LANGSUNG
-    dari form.
-
-    Jadi kalau OCR salah,
-    pengguna boleh edit manual
-    lalu tetap dapat disimpan.
-  */
-
   const data = {
 
     idSampel:
       document
-        .getElementById(
-          "idSampel"
-        )
+        .getElementById("idSampel")
         .value
         .trim(),
 
     tanggal:
       document
-        .getElementById(
-          "tanggal"
-        )
+        .getElementById("tanggal")
         .value
         .trim(),
 
     posisi:
       document
-        .getElementById(
-          "posisi"
-        )
+        .getElementById("posisi")
         .value
         .trim(),
 
     pengujian:
       document
-        .getElementById(
-          "pengujian"
-        )
+        .getElementById("pengujian")
         .value
         .trim(),
 
     rawText:
       document
-        .getElementById(
-          "rawText"
-        )
+        .getElementById("rawText")
         .value
         .trim()
 
   };
 
-
-  /*
-    Minimal ID Sampel harus tersedia.
-  */
 
   if (!data.idSampel) {
 
@@ -1331,7 +1307,7 @@ async function saveData() {
       "error";
 
     message.innerHTML =
-      "❌ ID Sampel belum terbaca. Silakan koreksi manual.";
+      "❌ ID Sampel kosong";
 
     return;
 
@@ -1340,18 +1316,16 @@ async function saveData() {
 
   try {
 
-    btn.disabled =
-      true;
+    btn.disabled = true;
 
 
     message.style.display =
       "block";
 
-    message.className =
-      "";
+    message.className = "";
 
     message.innerHTML =
-      "⏳ Menyimpan data...";
+      "⏳ Menyimpan ke Google Sheet...";
 
 
     const response =
@@ -1361,7 +1335,8 @@ async function saveData() {
 
         {
 
-          method: "POST",
+          method:
+            "POST",
 
           headers: {
 
@@ -1382,6 +1357,12 @@ async function saveData() {
       await response.text();
 
 
+    console.log(
+      "SAVE RESPONSE:",
+      text
+    );
+
+
     let result;
 
 
@@ -1390,20 +1371,13 @@ async function saveData() {
       result =
         JSON.parse(text);
 
-    } catch(e) {
-
-      throw new Error(
-        "Server tidak mengembalikan JSON"
-      );
-
     }
 
-
-    if (!response.ok) {
+    catch(error) {
 
       throw new Error(
-        result.message ||
-        "HTTP " + response.status
+        "Server tidak mengembalikan JSON: " +
+        text.substring(0, 150)
       );
 
     }
@@ -1411,10 +1385,24 @@ async function saveData() {
 
     if (!result.success) {
 
-      throw new Error(
+      let pesan =
         result.message ||
-        "Gagal menyimpan"
-      );
+        "Gagal menyimpan";
+
+
+      if (result.detail) {
+
+        pesan +=
+          " | " +
+          result.detail.substring(
+            0,
+            150
+          );
+
+      }
+
+
+      throw new Error(pesan);
 
     }
 
@@ -1427,7 +1415,9 @@ async function saveData() {
       "✅ Data berhasil disimpan ke Google Sheet";
 
 
-  } catch(error) {
+  }
+
+  catch(error) {
 
     console.error(error);
 
@@ -1438,7 +1428,7 @@ async function saveData() {
 
     message.innerHTML =
       "❌ Gagal menyimpan: " +
-      (error.message || error);
+      error.message;
 
   }
 
@@ -1447,7 +1437,6 @@ async function saveData() {
     false;
 
 }
-
 
 /* ==========================================
    NEXT SCAN
