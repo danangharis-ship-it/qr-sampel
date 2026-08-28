@@ -506,23 +506,27 @@ async function startCamera() {
 
     const constraints = {
 
-      audio: false,
+  audio:false,
 
-      video: {
+  video:{
 
-        facingMode: "environment",
+    facingMode:{
+      exact:"environment"
+    },
 
-        width: {
-          ideal: 1920
-        },
+    width:{
+      ideal:1280
+    },
 
-        height: {
-          ideal: 1080
-        }
+    height:{
+      ideal:720
+    },
 
-      }
+    zoom:2
 
-    };
+  }
+
+};
 
 
     stream =
