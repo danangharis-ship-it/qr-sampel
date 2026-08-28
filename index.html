@@ -750,7 +750,12 @@ const cropHeight =
       processCanvas.width,
       processCanvas.height
     );
-
+    
+// preprocessImage(
+//   processCtx,
+//   processCanvas.width,
+//   processCanvas.height
+// );
 
     /*
       Preview area sebenarnya yang
@@ -914,15 +919,15 @@ function preprocessImage(
     let value;
 
 
-    if (gray > 165) {
+   if (gray > 120) {
 
-      value = 255;
+  value = 255;
 
-    } else {
+} else {
 
-      value = 0;
+  value = 0;
 
-    }
+}
 
 
     pixels[i] =
