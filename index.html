@@ -655,29 +655,30 @@ async function captureAndOCR() {
     */
 
 
-    const cropX =
-      Math.round(
-        sourceCanvas.width * 0.12
-      );
+    // Sesuaikan dengan kotak hijau kamera
+
+const cropX =
+  Math.round(
+    sourceCanvas.width * 0.05
+  );
 
 
-    const cropY =
-      Math.round(
-        sourceCanvas.height * 0.60
-      );
+const cropY =
+  Math.round(
+    sourceCanvas.height * 0.20
+  );
 
 
-    const cropWidth =
-      Math.round(
-        sourceCanvas.width * 0.76
-      );
+const cropWidth =
+  Math.round(
+    sourceCanvas.width * 0.90
+  );
 
 
-    const cropHeight =
-      Math.round(
-        sourceCanvas.height * 0.34
-      );
-
+const cropHeight =
+  Math.round(
+    sourceCanvas.height * 0.35
+  );
 
     /*
       UPSCALE 3X
