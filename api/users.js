@@ -1,5 +1,5 @@
 const APPS_SCRIPT_URL =
-  "MASUKKAN_URL_APPS_SCRIPT_ANDA";
+  "https://script.google.com/macros/s/AKfycbzUzXRfbm44xjlsboTttWF5IjQKMaM5M3byNrkydlPoCv_nQi_UU0RdvXXWaVNyzH38ow/exec";
 
 
 export default async function handler(req, res) {
