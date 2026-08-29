@@ -806,7 +806,330 @@ const cropHeight =
     processCtx.drawImage(
 
       sourceCanvas,
+  function captureGuideArea() {
 
+    const video =
+        document.getElementById("video");
+
+    const guide =
+        document.getElementById("guide");
+
+    if (!video.videoWidth || !video.videoHeight) {
+
+        throw new Error(
+            "Kamera belum siap"
+        );
+
+    }
+
+
+    /*
+     * Ukuran video asli
+     */
+    const videoWidth =
+        video.videoWidth;
+
+    const videoHeight =
+        video.videoHeight;
+
+
+    /*
+     * Ukuran tampilan video
+     */
+    const videoRect =
+        video.getBoundingClientRect();
+
+
+    /*
+     * Posisi kotak hijau
+     */
+    const guideRect =
+        guide.getBoundingClientRect();
+
+
+    /*
+     * object-fit: cover
+     *
+     * Hitung skala video terhadap
+     * area tampilan.
+     */
+    const scale =
+        Math.max(
+
+            videoRect.width /
+            videoWidth,
+
+            videoRect.height /
+            videoHeight
+
+        );
+
+
+    /*
+     * Ukuran video setelah
+     * diperbesar untuk object-fit cover
+     */
+    const renderedWidth =
+        videoWidth * scale;
+
+
+    const renderedHeight =
+        videoHeight * scale;
+
+
+    /*
+     * Bagian video yang terpotong
+     * karena object-fit: cover
+     */
+    const offsetX =
+        (renderedWidth -
+         videoRect.width) / 2;
+
+
+    const offsetY =
+        (renderedHeight -
+         videoRect.height) / 2;
+
+
+    /*
+     * Posisi kotak hijau relatif
+     * terhadap video
+     */
+    const x =
+        guideRect.left -
+        videoRect.left;
+
+
+    const y =
+        guideRect.top -
+        videoRect.top;
+
+
+    /*
+     * Konversi koordinat layar
+     * menjadi koordinat gambar asli
+     */
+    let sourceX =
+        (x + offsetX) / scale;
+
+
+    let sourceY =
+        (y + offsetY) / scale;
+
+
+    let sourceWidth =
+        guideRect.width / scale;
+
+
+    let sourceHeight =
+        guideRect.height / scale;
+
+
+    /*
+     * Batasi agar tidak keluar
+     * dari gambar asli
+     */
+    sourceX =
+        Math.max(
+            0,
+            Math.min(
+                sourceX,
+                videoWidth
+            )
+        );
+
+
+    sourceY =
+        Math.max(
+            0,
+            Math.min(
+                sourceY,
+                videoHeight
+            )
+        );
+
+
+    sourceWidth =
+        Math.min(
+            sourceWidth,
+            videoWidth - sourceX
+        );
+
+
+    sourceHeight =
+        Math.min(
+            sourceHeight,
+            videoHeight - sourceY
+        );
+
+
+    /*
+     * Canvas hasil crop
+     */
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+    canvas.width =
+        Math.round(sourceWidth);
+
+
+    canvas.height =
+        Math.round(sourceHeight);
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    /*
+     * Ambil PERSIS area kotak hijau
+     */
+    ctx.drawImage(
+
+        video,
+
+        Math.round(sourceX),
+        Math.round(sourceY),
+
+        Math.round(sourceWidth),
+        Math.round(sourceHeight),
+
+        0,
+        0,
+
+        canvas.width,
+        canvas.height
+
+    );
+
+
+    return canvas;
+
+}
+
+  async function captureAndOCR() {
+
+    try {
+
+        setStatus(
+            "📸 Mengambil area label..."
+        );
+
+
+        /*
+         * Ambil PERSIS area kotak hijau
+         */
+        const canvas =
+            captureGuideArea();
+
+
+        /*
+         * Tampilkan hasil crop
+         */
+        const preview =
+            document.getElementById(
+                "ocrPreview"
+            );
+
+
+        if (preview) {
+
+            preview.src =
+                canvas.toDataURL(
+                    "image/jpeg",
+                    0.95
+                );
+
+            preview.style.display =
+                "block";
+
+        }
+
+
+        setStatus(
+            "🔎 Membaca teks..."
+        );
+
+
+        /*
+         * OCR
+         */
+        const result =
+            await Tesseract.recognize(
+
+                canvas,
+
+                "eng",
+
+                {
+
+                    logger:
+                        function(info) {
+
+                            console.log(
+                                info
+                            );
+
+                        }
+
+                }
+
+            );
+
+
+        const rawText =
+            result.data.text
+            .trim();
+
+
+        console.log(
+            "RAW OCR:",
+            rawText
+        );
+
+
+        /*
+         * Masukkan hasil OCR
+         */
+        document
+            .getElementById(
+                "rawText"
+            )
+            .value =
+            rawText;
+
+
+        /*
+         * Parsing data
+         */
+        parseOCRText(
+            rawText
+        );
+
+
+        setStatus(
+            "✅ Teks berhasil dibaca"
+        );
+
+
+    } catch(error) {
+
+        console.error(
+            error
+        );
+
+
+        setStatus(
+            "❌ OCR gagal: " +
+            error.message
+        );
+
+    }
+
+}
     
 
       0,
@@ -2010,330 +2333,7 @@ option
 
 }
 
-  function captureGuideArea() {
 
-    const video =
-        document.getElementById("video");
-
-    const guide =
-        document.getElementById("guide");
-
-    if (!video.videoWidth || !video.videoHeight) {
-
-        throw new Error(
-            "Kamera belum siap"
-        );
-
-    }
-
-
-    /*
-     * Ukuran video asli
-     */
-    const videoWidth =
-        video.videoWidth;
-
-    const videoHeight =
-        video.videoHeight;
-
-
-    /*
-     * Ukuran tampilan video
-     */
-    const videoRect =
-        video.getBoundingClientRect();
-
-
-    /*
-     * Posisi kotak hijau
-     */
-    const guideRect =
-        guide.getBoundingClientRect();
-
-
-    /*
-     * object-fit: cover
-     *
-     * Hitung skala video terhadap
-     * area tampilan.
-     */
-    const scale =
-        Math.max(
-
-            videoRect.width /
-            videoWidth,
-
-            videoRect.height /
-            videoHeight
-
-        );
-
-
-    /*
-     * Ukuran video setelah
-     * diperbesar untuk object-fit cover
-     */
-    const renderedWidth =
-        videoWidth * scale;
-
-
-    const renderedHeight =
-        videoHeight * scale;
-
-
-    /*
-     * Bagian video yang terpotong
-     * karena object-fit: cover
-     */
-    const offsetX =
-        (renderedWidth -
-         videoRect.width) / 2;
-
-
-    const offsetY =
-        (renderedHeight -
-         videoRect.height) / 2;
-
-
-    /*
-     * Posisi kotak hijau relatif
-     * terhadap video
-     */
-    const x =
-        guideRect.left -
-        videoRect.left;
-
-
-    const y =
-        guideRect.top -
-        videoRect.top;
-
-
-    /*
-     * Konversi koordinat layar
-     * menjadi koordinat gambar asli
-     */
-    let sourceX =
-        (x + offsetX) / scale;
-
-
-    let sourceY =
-        (y + offsetY) / scale;
-
-
-    let sourceWidth =
-        guideRect.width / scale;
-
-
-    let sourceHeight =
-        guideRect.height / scale;
-
-
-    /*
-     * Batasi agar tidak keluar
-     * dari gambar asli
-     */
-    sourceX =
-        Math.max(
-            0,
-            Math.min(
-                sourceX,
-                videoWidth
-            )
-        );
-
-
-    sourceY =
-        Math.max(
-            0,
-            Math.min(
-                sourceY,
-                videoHeight
-            )
-        );
-
-
-    sourceWidth =
-        Math.min(
-            sourceWidth,
-            videoWidth - sourceX
-        );
-
-
-    sourceHeight =
-        Math.min(
-            sourceHeight,
-            videoHeight - sourceY
-        );
-
-
-    /*
-     * Canvas hasil crop
-     */
-    const canvas =
-        document.createElement(
-            "canvas"
-        );
-
-
-    canvas.width =
-        Math.round(sourceWidth);
-
-
-    canvas.height =
-        Math.round(sourceHeight);
-
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-    /*
-     * Ambil PERSIS area kotak hijau
-     */
-    ctx.drawImage(
-
-        video,
-
-        Math.round(sourceX),
-        Math.round(sourceY),
-
-        Math.round(sourceWidth),
-        Math.round(sourceHeight),
-
-        0,
-        0,
-
-        canvas.width,
-        canvas.height
-
-    );
-
-
-    return canvas;
-
-}
-
-  async function captureAndOCR() {
-
-    try {
-
-        setStatus(
-            "📸 Mengambil area label..."
-        );
-
-
-        /*
-         * Ambil PERSIS area kotak hijau
-         */
-        const canvas =
-            captureGuideArea();
-
-
-        /*
-         * Tampilkan hasil crop
-         */
-        const preview =
-            document.getElementById(
-                "ocrPreview"
-            );
-
-
-        if (preview) {
-
-            preview.src =
-                canvas.toDataURL(
-                    "image/jpeg",
-                    0.95
-                );
-
-            preview.style.display =
-                "block";
-
-        }
-
-
-        setStatus(
-            "🔎 Membaca teks..."
-        );
-
-
-        /*
-         * OCR
-         */
-        const result =
-            await Tesseract.recognize(
-
-                canvas,
-
-                "eng",
-
-                {
-
-                    logger:
-                        function(info) {
-
-                            console.log(
-                                info
-                            );
-
-                        }
-
-                }
-
-            );
-
-
-        const rawText =
-            result.data.text
-            .trim();
-
-
-        console.log(
-            "RAW OCR:",
-            rawText
-        );
-
-
-        /*
-         * Masukkan hasil OCR
-         */
-        document
-            .getElementById(
-                "rawText"
-            )
-            .value =
-            rawText;
-
-
-        /*
-         * Parsing data
-         */
-        parseOCRText(
-            rawText
-        );
-
-
-        setStatus(
-            "✅ Teks berhasil dibaca"
-        );
-
-
-    } catch(error) {
-
-        console.error(
-            error
-        );
-
-
-        setStatus(
-            "❌ OCR gagal: " +
-            error.message
-        );
-
-    }
-
-}
 </script>
 
 
