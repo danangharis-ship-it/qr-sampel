@@ -252,22 +252,60 @@ textarea {
 
 
 <body>
-<div id="loginCard" class="card">
+<div
+  id="loginCard"
+  class="card"
+>
 
-<h3>
-🔐 Login Operator
-</h3>
+  <h3>
+    🔐 Login Operator
+  </h3>
 
-<label>
-Nama User
-</label>
 
-<select id="userSelect">
+  <label>
+    Nama User
+  </label>
 
-<option>
-Memuat user...
-</option>
 
+  <select
+    id="userSelect"
+    style="
+      width:100%;
+      padding:12px;
+      border-radius:8px;
+      border:1px solid #ccc;
+      font-size:16px;
+    "
+  >
+
+    <option value="">
+      Memuat user...
+    </option>
+
+  </select>
+
+
+  <button
+    class="primary"
+    onclick="loginUser()"
+  >
+
+    🔐 Masuk
+
+  </button>
+
+
+  <div
+    id="loginStatus"
+    style="
+      margin-top:10px;
+      text-align:center;
+      font-size:13px;
+    "
+  >
+  </div>
+
+</div>
 </select>
 
 <button
@@ -1661,40 +1699,56 @@ user.role
 
 
 
-window.onload=function(){
+window.onload = function() {
 
-    const savedUser =
+  const savedUser =
     localStorage.getItem(
-        "operator"
+      "operator"
     );
 
 
-    if(savedUser){
+  if (savedUser) {
 
-        currentUser =
-        savedUser;
+    try {
+
+      currentUser =
+        JSON.parse(
+          savedUser
+        );
 
 
-        document
+      document
         .getElementById(
-        "loginCard"
+          "loginCard"
         )
         .style.display =
         "none";
 
 
-        document
+      document
         .getElementById(
-        "userInfo"
+          "userInfo"
         )
         .innerHTML =
-        "👤 Operator: <b>"
-        +
-        savedUser
-        +
-        "</b>";
+          "👤 Operator: <b>" +
+          currentUser.nama +
+          "</b> (" +
+          currentUser.role +
+          ")";
+
+
+    } catch(error) {
+
+      localStorage.removeItem(
+        "operator"
+      );
 
     }
+
+  }
+
+
+  loadUsers();
 
 };
 
@@ -1797,6 +1851,179 @@ option
 
 });
 
+
+}
+
+
+  async function loadUsers() {
+
+  const select =
+    document.getElementById(
+      "userSelect"
+    );
+
+  const status =
+    document.getElementById(
+      "loginStatus"
+    );
+
+
+  try {
+
+    status.innerHTML =
+      "⏳ Mengambil daftar user...";
+
+
+    const response =
+      await fetch(
+        "/api/users"
+      );
+
+
+    const result =
+      await response.json();
+
+
+    console.log(
+      "MASTER USER:",
+      result
+    );
+
+
+    if (
+      !result.success
+    ) {
+
+      throw new Error(
+        result.message ||
+        "Gagal mengambil user"
+      );
+
+    }
+
+
+    select.innerHTML =
+      '<option value="">-- Pilih Operator --</option>';
+
+
+    if (
+      !result.users ||
+      result.users.length === 0
+    ) {
+
+      status.innerHTML =
+        "❌ Tidak ada user aktif";
+
+      return;
+
+    }
+
+
+    result.users.forEach(
+      user => {
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+
+        option.value =
+          JSON.stringify(
+            user
+          );
+
+
+        option.textContent =
+          user.nama +
+          " — " +
+          user.role;
+
+
+        select.appendChild(
+          option
+        );
+
+      }
+    );
+
+
+    status.innerHTML =
+      "✅ Daftar operator siap";
+
+
+  } catch(error) {
+
+    console.error(error);
+
+
+    status.innerHTML =
+      "❌ Gagal mengambil user: " +
+      error.message;
+
+  }
+
+}
+
+  function loginUser() {
+
+  const select =
+    document.getElementById(
+      "userSelect"
+    );
+
+
+  if (!select.value) {
+
+    alert(
+      "Silakan pilih operator terlebih dahulu"
+    );
+
+    return;
+
+  }
+
+
+  const user =
+    JSON.parse(
+      select.value
+    );
+
+
+  currentUser =
+    user;
+
+
+  localStorage.setItem(
+    "operator",
+    JSON.stringify(user)
+  );
+
+
+  document
+    .getElementById(
+      "loginCard"
+    )
+    .style.display =
+    "none";
+
+
+  document
+    .getElementById(
+      "userInfo"
+    )
+    .innerHTML =
+      "👤 Operator: <b>" +
+      user.nama +
+      "</b> (" +
+      user.role +
+      ")";
+
+
+  console.log(
+    "LOGIN:",
+    user
+  );
 
 }
 </script>
