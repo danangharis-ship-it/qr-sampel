@@ -262,12 +262,21 @@ textarea {
 Nama User
 </label>
 
-<input
-id="username"
-type="text"
-placeholder="Masukkan nama user">
+<select id="userSelect">
 
+<option>
+Memuat user...
+</option>
 
+</select>
+
+<button
+class="primary"
+onclick="loginUser()">
+
+Masuk
+
+</button>
 <button
 class="primary"
 onclick="loginUser()">
@@ -279,7 +288,32 @@ Masuk
 </div>
 
 <div class="header">
+
   <h2>📷 Scan Label Sampel</h2>
+
+  <div id="userInfo"
+       style="
+       margin-top:10px;
+       font-size:14px;
+       ">
+  </div>
+
+  <button
+    onclick="logoutUser()"
+    style="
+    width:auto;
+    padding:8px 18px;
+    background:#ffffff;
+    color:#0078bd;
+    margin-top:8px;
+    border-radius:20px;
+    font-size:14px;
+    ">
+    
+    🚪 Logout
+
+  </button>
+
 </div>
 
 
@@ -1564,7 +1598,8 @@ function loginUser(){
     }
 
 
-    currentUser = nama;
+    currentUser =
+    nama;
 
 
     localStorage.setItem(
@@ -1577,13 +1612,18 @@ function loginUser(){
     .getElementById(
         "loginCard"
     )
-    .style.display="none";
+    .style.display =
+    "none";
 
 
-    alert(
-    "Login berhasil sebagai "
+    document
+    .getElementById(
+        "userInfo"
+    )
+    .innerHTML =
+    "👤 Operator: <b>"
     + nama
-    );
+    + "</b>";
 
 
 }
@@ -1608,11 +1648,64 @@ window.onload=function(){
         .getElementById(
         "loginCard"
         )
-        .style.display="none";
+        .style.display =
+        "none";
+
+
+        document
+        .getElementById(
+        "userInfo"
+        )
+        .innerHTML =
+        "👤 Operator: <b>"
+        +
+        savedUser
+        +
+        "</b>";
 
     }
 
 };
+
+  function logoutUser(){
+
+    localStorage.removeItem(
+        "operator"
+    );
+
+
+    currentUser = "";
+
+
+    document
+    .getElementById(
+        "loginCard"
+    )
+    .style.display =
+    "block";
+
+
+    document
+    .getElementById(
+        "username"
+    )
+    .value =
+    "";
+
+
+    document
+    .getElementById(
+        "userInfo"
+    )
+    .innerHTML =
+    "";
+
+
+    alert(
+      "Anda telah logout"
+    );
+
+}
 </script>
 
 
