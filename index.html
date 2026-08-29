@@ -1343,31 +1343,48 @@ async function saveData() {
 
   const data = {
 
+
+userID:
+currentUser.id,
+
+
 user:
-currentUser,
+currentUser.nama,
+
+
+role:
+currentUser.role,
 
 
 idSampel:
 document
-.getElementById("idSampel")
+.getElementById(
+"idSampel"
+)
 .value,
 
 
 tanggal:
 document
-.getElementById("tanggal")
+.getElementById(
+"tanggal"
+)
 .value,
 
 
 posisi:
 document
-.getElementById("posisi")
+.getElementById(
+"posisi"
+)
 .value,
 
 
 pengujian:
 document
-.getElementById("pengujian")
+.getElementById(
+"pengujian"
+)
 .value
 
 };
@@ -1580,50 +1597,64 @@ function scanLagi() {
 
 function loginUser(){
 
-    const nama =
-    document
-    .getElementById("username")
-    .value
-    .trim();
+
+const value =
+document
+.getElementById(
+"userSelect"
+)
+.value;
 
 
-    if(!nama){
 
-        alert(
-        "Nama user harus diisi"
-        );
-
-        return;
-
-    }
+const user =
+JSON.parse(
+value
+);
 
 
-    currentUser =
-    nama;
+
+currentUser =
+user;
 
 
-    localStorage.setItem(
-        "operator",
-        nama
-    );
+
+localStorage.setItem(
+
+"operator",
+
+JSON.stringify(
+user
+)
+
+);
 
 
-    document
-    .getElementById(
-        "loginCard"
-    )
-    .style.display =
-    "none";
+
+document
+.getElementById(
+"loginCard"
+)
+.style.display=
+"none";
 
 
-    document
-    .getElementById(
-        "userInfo"
-    )
-    .innerHTML =
-    "👤 Operator: <b>"
-    + nama
-    + "</b>";
+
+document
+.getElementById(
+"userInfo"
+)
+.innerHTML =
+
+"👤 "
++
+user.nama
++
+" ("
++
+user.role
++
+")";
 
 
 }
@@ -1704,6 +1735,68 @@ window.onload=function(){
     alert(
       "Anda telah logout"
     );
+
+}
+
+  const API_USER =
+"/api/users";
+
+
+async function loadUsers(){
+
+
+const response =
+await fetch(
+API_USER
+);
+
+
+const result =
+await response.json();
+
+
+const select =
+document
+.getElementById(
+"userSelect"
+);
+
+
+
+select.innerHTML="";
+
+
+result.users.forEach(
+user=>{
+
+
+let option =
+document.createElement(
+"option"
+);
+
+
+option.value =
+JSON.stringify(
+user
+);
+
+
+option.text =
+user.nama
++
+" - "
++
+user.role;
+
+
+select.appendChild(
+option
+);
+
+
+});
+
 
 }
 </script>
