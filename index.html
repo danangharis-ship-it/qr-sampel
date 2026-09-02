@@ -3,1169 +3,423 @@
 
 <head>
 
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  >
-
-  <meta
-    name="theme-color"
-    content="#087fbd"
-  >
-
-  <title>
-    LAB SAMPLE SCANNER
-  </title>
-
-
-  <!-- =====================================================
-       TESSERACT OCR
-       ===================================================== -->
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
-  </script>
-
-
-  <style>
-
-    /* =====================================================
-       GLOBAL
-       ===================================================== */
-
-    * {
-      box-sizing: border-box;
-    }
-
-
-    html,
-    body {
-
-      margin: 0;
-      padding: 0;
-
-      width: 100%;
-
-      min-height: 100%;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      background:
-        #f2f6f9;
-
-      color:
-        #17202a;
-
-    }
-
-
-    body {
-
-      overflow-x: hidden;
-
-    }
-
-
-    button,
-    input,
-    select,
-    textarea {
-
-      font-family: inherit;
-
-    }
-
-
-    button {
-
-      cursor: pointer;
-
-    }
-
-
-    /* =====================================================
-       HEADER
-       ===================================================== */
-
-    .header {
-
-      width: 100%;
-
-      background:
-        #087fbd;
-
-      color:
-        white;
-
-      text-align:
-        center;
-
-      padding:
-        22px 16px 24px;
-
-    }
-
-
-    .header-title {
-
-      font-size:
-        clamp(26px, 5vw, 38px);
-
-      font-weight:
-        700;
-
-      line-height:
-        1.2;
-
-    }
-
-
-    .header-user {
-
-      margin-top:
-        10px;
-
-      font-size:
-        17px;
-
-    }
-
-
-    .logout-btn {
-
-      margin-top:
-        12px;
-
-      width:
-        auto;
-
-      min-width:
-        130px;
-
-      padding:
-        10px 20px;
-
-      border:
-        none;
-
-      border-radius:
-        25px;
-
-      background:
-        white;
-
-      color:
-        #087fbd;
-
-      font-size:
-        15px;
-
-      font-weight:
-        700;
-
-    }
-
-
-    .logout-btn:hover {
-
-      opacity:
-        0.9;
-
-    }
-
-
-    /* =====================================================
-       CONTAINER
-       ===================================================== */
-
-    .container {
-
-      width:
-        min(920px, calc(100% - 24px));
-
-      margin:
-        24px auto 50px;
-
-    }
-
-
-    /* =====================================================
-       CARD
-       ===================================================== */
-
-    .card {
-
-      background:
-        white;
-
-      border-radius:
-        22px;
-
-      padding:
-        22px;
-
-      margin-bottom:
-        20px;
-
-      box-shadow:
-        0 8px 25px rgba(
-          0,
-          0,
-          0,
-          0.08
-        );
-
-    }
-
-
-    .card-title {
-
-      font-size:
-        23px;
-
-      font-weight:
-        700;
-
-      margin:
-        0 0 18px;
-
-    }
-
-
-    /* =====================================================
-       LOGIN
-       ===================================================== */
-
-    #loginCard {
-
-      max-width:
-        600px;
-
-      margin:
-        50px auto;
-
-    }
-
-
-    .login-icon {
-
-      font-size:
-        42px;
-
-      text-align:
-        center;
-
-      margin-bottom:
-        8px;
-
-    }
-
-
-    .login-title {
-
-      text-align:
-        center;
-
-      font-size:
-        27px;
-
-      font-weight:
-        700;
-
-      margin-bottom:
-        8px;
-
-    }
-
-
-    .login-subtitle {
-
-      text-align:
-        center;
-
-      color:
-        #6b7280;
-
-      margin-bottom:
-        25px;
-
-    }
-
-
-    label {
-
-      display:
-        block;
-
-      font-size:
-        15px;
-
-      color:
-        #59636e;
-
-      margin:
-        14px 0 7px;
-
-    }
-
-
-    select,
-    input,
-    textarea {
-
-      width:
-        100%;
-
-      border:
-        1px solid #ccd4da;
-
-      border-radius:
-        12px;
-
-      background:
-        white;
-
-      padding:
-        14px;
-
-      font-size:
-        16px;
-
-      color:
-        #17202a;
-
-      outline:
-        none;
-
-    }
-
-
-    select:focus,
-    input:focus,
-    textarea:focus {
-
-      border-color:
-        #087fbd;
-
-      box-shadow:
-        0 0 0 3px rgba(
-          8,
-          127,
-          189,
-          0.12
-        );
-
-    }
-
-
-    .primary-btn {
-
-      width:
-        100%;
-
-      min-height:
-        54px;
-
-      margin-top:
-        18px;
-
-      border:
-        none;
-
-      border-radius:
-        14px;
-
-      background:
-        #087fbd;
-
-      color:
-        white;
-
-      font-size:
-        18px;
-
-      font-weight:
-        700;
-
-    }
-
-
-    .primary-btn:hover {
-
-      background:
-        #076fa7;
-
-    }
-
-
-    .primary-btn:disabled {
-
-      opacity:
-        0.55;
-
-      cursor:
-        not-allowed;
-
-    }
-
-
-    .success-btn {
-
-      background:
-        #168542;
-
-    }
-
-
-    .success-btn:hover {
-
-      background:
-        #117239;
-
-    }
-
-
-    .secondary-btn {
-
-      width:
-        100%;
-
-      min-height:
-        52px;
-
-      margin-top:
-        12px;
-
-      border:
-        none;
-
-      border-radius:
-        14px;
-
-      background:
-        #e9edf1;
-
-      color:
-        #17202a;
-
-      font-size:
-        17px;
-
-      font-weight:
-        700;
-
-    }
-
-
-    /* =====================================================
-       STATUS
-       ===================================================== */
-
-    .status {
-
-      padding:
-        15px;
-
-      border-radius:
-        14px;
-
-      margin-bottom:
-        18px;
-
-      text-align:
-        center;
-
-      font-size:
-        16px;
-
-      font-weight:
-        600;
-
-      background:
-        #eaf5fb;
-
-    }
-
-
-    .status.success {
-
-      background:
-        #e9f8ee;
-
-      color:
-        #116b32;
-
-    }
-
-
-    .status.error {
-
-      background:
-        #fdeaea;
-
-      color:
-        #a51f1f;
-
-    }
-
-
-    .status.warning {
-
-      background:
-        #fff6df;
-
-      color:
-        #8a5b00;
-
-    }
-
-
-    /* =====================================================
-       CAMERA
-       ===================================================== */
-
-    .camera-title {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        8px;
-
-      font-size:
-        22px;
-
-      font-weight:
-        700;
-
-      margin-bottom:
-        15px;
-
-    }
-
-
-    .camera-box {
-
-      position:
-        relative;
-
-      width:
-        100%;
-
-      height:
-        330px;
-
-      overflow:
-        hidden;
-
-      border-radius:
-        20px;
-
-      background:
-        #000;
-
-    }
-
-
-    #video {
-
-      position:
-        absolute;
-
-      inset:
-        0;
-
-      width:
-        100%;
-
-      height:
-        100%;
-
-      object-fit:
-        cover;
-
-      display:
-        block;
-
-      background:
-        #000;
-
-    }
-
-
-    /*
-     * Scanner frame
-     *
-     * Frame ini menjadi sumber koordinat
-     * crop OCR.
-     */
-
-    .guide {
-
-      position:
-        absolute;
-
-      left:
-        3%;
-
-      width:
-        94%;
-
-      top:
-        28%;
-
-      height:
-        44%;
-
-      border:
-        4px solid #00e676;
-
-      border-radius:
-        16px;
-
-      z-index:
-        10;
-
-      pointer-events:
-        none;
-
-      box-shadow:
-        0 0 0 9999px rgba(
-          0,
-          0,
-          0,
-          0.18
-        );
-
-    }
-
-
-    /*
-     * Garis scanning
-     */
-
-    .scan-line {
-
-      position:
-        absolute;
-
-      left:
-        4px;
-
-      right:
-        4px;
-
-      height:
-        2px;
-
-      background:
-        #00e676;
-
-      top:
-        5px;
-
-      animation:
-        scanLine 2.2s linear infinite;
-
-    }
-
-
-    @keyframes scanLine {
-
-      0% {
-        top: 5px;
-      }
-
-      50% {
-        top: calc(100% - 7px);
-      }
-
-      100% {
-        top: 5px;
-      }
-
-    }
-
-
-    .guide-label {
-
-      position:
-        absolute;
-
-      left:
-        0;
-
-      right:
-        0;
-
-      bottom:
-        12px;
-
-      z-index:
-        11;
-
-      text-align:
-        center;
-
-      color:
-        white;
-
-      font-size:
-        15px;
-
-      font-weight:
-        700;
-
-      padding:
-        0 10px;
-
-      text-shadow:
-        0 1px 4px #000;
-
-    }
-
-
-    .camera-instruction {
-
-      text-align:
-        center;
-
-      color:
-        #68737d;
-
-      font-size:
-        14px;
-
-      margin:
-        13px 0 0;
-
-      line-height:
-        1.5;
-
-    }
-
-
-    /* =====================================================
-       PREVIEW OCR
-       ===================================================== */
-
-    #ocrPreview {
-
-      width:
-        100%;
-
-      max-height:
-        240px;
-
-      object-fit:
-        contain;
-
-      display:
-        none;
-
-      border:
-        1px solid #d3d9de;
-
-      border-radius:
-        12px;
-
-      background:
-        #f5f5f5;
-
-      margin-top:
-        8px;
-
-    }
-
-
-    /* =====================================================
-       DATA RESULT
-       ===================================================== */
-
-    .data-grid {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
-      gap:
-        15px;
-
-    }
-
-
-    .field-group {
-
-      margin-bottom:
-        2px;
-
-    }
-
-
-    .field-group.full {
-
-      grid-column:
-        1 / -1;
-
-    }
-
-
-    .field-label {
-
-      display:
-        block;
-
-      color:
-        #6b7280;
-
-      font-size:
-        14px;
-
-      margin-bottom:
-        6px;
-
-    }
-
-
-    .validation {
-
-      margin-top:
-        5px;
-
-      font-size:
-        12px;
-
-      color:
-        #168542;
-
-    }
-
-
-    /* =====================================================
-       RAW OCR
-       ===================================================== */
-
-    .raw-toggle {
-
-      margin-top:
-        20px;
-
-      border:
-        1px solid #d7dde2;
-
-      border-radius:
-        12px;
-
-      overflow:
-        hidden;
-
-    }
-
-
-    .raw-toggle summary {
-
-      cursor:
-        pointer;
-
-      padding:
-        13px;
-
-      font-weight:
-        700;
-
-      background:
-        #f5f7f9;
-
-    }
-
-
-    #rawText {
-
-      border:
-        none;
-
-      border-radius:
-        0;
-
-      min-height:
-        130px;
-
-      font-family:
-        monospace;
-
-      font-size:
-        13px;
-
-      background:
-        #fafafa;
-
-    }
-
-
-    /* =====================================================
-       SAVE RESULT
-       ===================================================== */
-
-    .success-panel {
-
-      display:
-        none;
-
-      text-align:
-        center;
-
-      padding:
-        15px 5px;
-
-    }
-
-
-    .success-icon {
-
-      font-size:
-        60px;
-
-      margin-bottom:
-        5px;
-
-    }
-
-
-    .success-title {
-
-      font-size:
-        25px;
-
-      font-weight:
-        700;
-
-      color:
-        #168542;
-
-    }
-
-
-    .saved-info {
-
-      margin-top:
-        18px;
-
-      padding:
-        15px;
-
-      background:
-        #f3f8f5;
-
-      border-radius:
-        14px;
-
-      text-align:
-        left;
-
-      line-height:
-        1.8;
-
-    }
-
-
-    /* =====================================================
-       LOADING
-       ===================================================== */
-
-    .loading {
-
-      display:
-        inline-flex;
-
-      align-items:
-        center;
-
-      gap:
-        8px;
-
-    }
-
-
-    .spinner {
-
-      width:
-        18px;
-
-      height:
-        18px;
-
-      border:
-        3px solid rgba(
-          255,
-          255,
-          255,
-          0.4
-        );
-
-      border-top-color:
-        white;
-
-      border-radius:
-        50%;
-
-      animation:
-        spin 0.8s linear infinite;
-
-    }
-
-
-    @keyframes spin {
-
-      to {
-        transform:
-          rotate(360deg);
-      }
-
-    }
-
-
-    /* =====================================================
-       HIDDEN
-       ===================================================== */
-
-    .hidden {
-
-      display:
-        none !important;
-
-    }
-
-
-    /* =====================================================
-       MOBILE
-       ===================================================== */
-
-    @media (
-      max-width: 600px
-    ) {
-
-      .header {
-
-        padding:
-          17px 12px 20px;
-
-      }
-
-
-      .header-title {
-
-        font-size:
-          27px;
-
-      }
-
-
-      .header-user {
-
-        font-size:
-          15px;
-
-      }
-
-
-      .container {
-
-        width:
-          calc(100% - 16px);
-
-        margin-top:
-          14px;
-
-      }
-
-
-      .card {
-
-        padding:
-          16px;
-
-        border-radius:
-          18px;
-
-      }
-
-
-      .camera-box {
-
-        height:
-          270px;
-
-        border-radius:
-          16px;
-
-      }
-
-
-      .guide {
-
-        left:
-          2.5%;
-
-        width:
-          95%;
-
-        top:
-          27%;
-
-        height:
-          46%;
-
-      }
-
-
-      .guide-label {
-
-        font-size:
-          13px;
-
-      }
-
-
-      .data-grid {
-
-        grid-template-columns:
-          1fr;
-
-        gap:
-          4px;
-
-      }
-
-
-      .field-group.full {
-
-        grid-column:
-          auto;
-
-      }
-
-
-      .login-title {
-
-        font-size:
-          24px;
-
-      }
-
-    }
-
-
-  </style>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<meta name="theme-color" content="#087fbd">
+
+<title>LAB SAMPLE SCANNER</title>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f2f6f9;
+  color:#17202a;
+}
+
+button,input,select,textarea{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+  width:100%;
+  background:#087fbd;
+  color:white;
+  text-align:center;
+  padding:20px 15px 22px;
+}
+
+.header-title{
+  font-size:clamp(26px,5vw,38px);
+  font-weight:700;
+}
+
+.header-user{
+  margin-top:9px;
+  font-size:17px;
+}
+
+.logout-btn{
+  margin-top:12px;
+  padding:10px 22px;
+  border:none;
+  border-radius:25px;
+  background:white;
+  color:#087fbd;
+  font-weight:700;
+  font-size:15px;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container{
+  width:min(920px,calc(100% - 20px));
+  margin:20px auto 50px;
+}
+
+.card{
+  background:white;
+  border-radius:22px;
+  padding:22px;
+  margin-bottom:20px;
+  box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+#loginCard{
+  max-width:600px;
+  margin:50px auto;
+}
+
+.login-icon{
+  text-align:center;
+  font-size:42px;
+}
+
+.login-title{
+  text-align:center;
+  font-size:27px;
+  font-weight:700;
+  margin-top:5px;
+}
+
+.login-subtitle{
+  text-align:center;
+  color:#68737d;
+  margin:8px 0 25px;
+}
+
+label{
+  display:block;
+  color:#59636e;
+  font-size:15px;
+  margin:13px 0 7px;
+}
+
+select,
+input,
+textarea{
+  width:100%;
+  border:1px solid #ccd4da;
+  border-radius:12px;
+  padding:13px;
+  font-size:16px;
+  background:white;
+  color:#17202a;
+  outline:none;
+}
+
+input:focus,
+select:focus{
+  border-color:#087fbd;
+}
+
+.primary-btn{
+  width:100%;
+  min-height:54px;
+  margin-top:16px;
+  border:none;
+  border-radius:14px;
+  background:#087fbd;
+  color:white;
+  font-size:18px;
+  font-weight:700;
+}
+
+.primary-btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.success-btn{
+  background:#168542;
+}
+
+.secondary-btn{
+  width:100%;
+  min-height:52px;
+  margin-top:12px;
+  border:none;
+  border-radius:14px;
+  background:#e9edf1;
+  color:#17202a;
+  font-size:17px;
+  font-weight:700;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status{
+  padding:15px;
+  border-radius:14px;
+  margin-bottom:16px;
+  text-align:center;
+  font-weight:600;
+  background:#eaf5fb;
+}
+
+.status.success{
+  background:#e9f8ee;
+  color:#116b32;
+}
+
+.status.error{
+  background:#fdeaea;
+  color:#a51f1f;
+}
+
+.status.warning{
+  background:#fff6df;
+  color:#8a5b00;
+}
+
+/* =========================
+   CAMERA
+========================= */
+
+.camera-title{
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:15px;
+}
+
+.camera-box{
+  position:relative;
+  width:100%;
+  height:330px;
+  background:#000;
+  overflow:hidden;
+  border-radius:18px;
+}
+
+#video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  background:#000;
+}
+
+/*
+  FRAME OCR
+
+  Frame dibuat lebar supaya
+  label tidak harus sangat presisi.
+*/
+
+.guide{
+  position:absolute;
+
+  left:2%;
+  width:96%;
+
+  top:25%;
+  height:50%;
+
+  border:4px solid #00e676;
+  border-radius:16px;
+
+  z-index:10;
+
+  pointer-events:none;
+
+  box-shadow:
+    0 0 0 9999px rgba(0,0,0,.20);
+}
+
+.scan-line{
+  position:absolute;
+  left:4px;
+  right:4px;
+  top:5px;
+  height:2px;
+  background:#00e676;
+
+  animation:scanLine 2s linear infinite;
+}
+
+@keyframes scanLine{
+
+  0%{
+    top:5px;
+  }
+
+  50%{
+    top:calc(100% - 7px);
+  }
+
+  100%{
+    top:5px;
+  }
+
+}
+
+.guide-label{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:10px;
+
+  color:white;
+  text-align:center;
+
+  font-size:14px;
+  font-weight:700;
+
+  text-shadow:0 1px 4px #000;
+  z-index:11;
+}
+
+.camera-instruction{
+  margin-top:12px;
+  text-align:center;
+  color:#68737d;
+  font-size:14px;
+  line-height:1.5;
+}
+
+/* =========================
+   OCR PREVIEW
+========================= */
+
+#ocrPreview{
+  width:100%;
+  max-height:280px;
+  display:none;
+  object-fit:contain;
+
+  background:#f5f5f5;
+
+  border:1px solid #d3d9de;
+  border-radius:12px;
+
+  margin-top:8px;
+}
+
+/* =========================
+   DATA
+========================= */
+
+.data-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  margin-top:20px;
+}
+
+.field-label{
+  display:block;
+  color:#6b7280;
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+.validation{
+  font-size:12px;
+  margin-top:5px;
+  color:#168542;
+}
+
+/* =========================
+   RAW OCR
+========================= */
+
+.raw-toggle{
+  margin-top:20px;
+  border:1px solid #d7dde2;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.raw-toggle summary{
+  cursor:pointer;
+  padding:13px;
+  background:#f5f7f9;
+  font-weight:700;
+}
+
+#rawText{
+  border:none;
+  border-radius:0;
+  min-height:140px;
+  font-family:monospace;
+  font-size:13px;
+}
+
+/* =========================
+   HIDDEN
+========================= */
+
+.hidden{
+  display:none!important;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+  .container{
+    width:calc(100% - 14px);
+    margin-top:12px;
+  }
+
+  .card{
+    padding:15px;
+    border-radius:18px;
+  }
+
+  .camera-box{
+    height:275px;
+  }
+
+  .guide{
+    left:2%;
+    width:96%;
+    top:25%;
+    height:50%;
+  }
+
+  .data-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
 
 </head>
 
@@ -1173,75 +427,284 @@
 <body>
 
 
-  <!-- =====================================================
-       LOGIN
-       ===================================================== -->
+<!-- =====================================================
+     LOGIN
+===================================================== -->
 
-  <div
-    id="loginPage"
-    class="container"
-  >
+<div id="loginPage" class="container">
+
+  <div id="loginCard" class="card">
+
+    <div class="login-icon">
+      🔐
+    </div>
+
+    <div class="login-title">
+      Login Operator
+    </div>
+
+    <div class="login-subtitle">
+      LAB SAMPLE SCANNER
+    </div>
+
+    <label>
+      Operator
+    </label>
+
+    <select id="userSelect">
+
+      <option value="">
+        ⏳ Memuat user...
+      </option>
+
+    </select>
+
+    <button
+      id="loginButton"
+      class="primary-btn"
+      onclick="loginUser()"
+    >
+      🔐 Masuk
+    </button>
 
     <div
-      id="loginCard"
-      class="card"
+      id="loginStatus"
+      style="text-align:center;margin-top:12px;"
+    ></div>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
+
+<div id="appPage" class="hidden">
+
+
+<header class="header">
+
+  <div class="header-title">
+    📷 Scan Label Sampel
+  </div>
+
+  <div
+    id="headerUser"
+    class="header-user"
+  ></div>
+
+  <button
+    class="logout-btn"
+    onclick="logoutUser()"
+  >
+    🚪 Logout
+  </button>
+
+</header>
+
+
+
+<main class="container">
+
+
+<!-- =====================================================
+     CAMERA
+===================================================== -->
+
+<section class="card">
+
+  <div class="camera-title">
+    📷 Kamera Scanner
+  </div>
+
+  <div
+    id="cameraStatus"
+    class="status"
+  >
+    Tekan "Aktifkan Kamera"
+  </div>
+
+
+  <div class="camera-box">
+
+    <video
+      id="video"
+      autoplay
+      playsinline
+      muted
+    ></video>
+
+
+    <div
+      id="guide"
+      class="guide"
     >
 
-      <div class="login-icon">
-        🔐
-      </div>
+      <div class="scan-line"></div>
+
+    </div>
 
 
-      <div class="login-title">
-        Login Operator
-      </div>
+    <div class="guide-label">
+
+      Tempatkan 4 baris teks label di dalam kotak hijau
+
+    </div>
+
+  </div>
 
 
-      <div class="login-subtitle">
+  <div class="camera-instruction">
 
-        LAB SAMPLE SCANNER
+    Arahkan kamera ke tulisan di bawah QR Code.
 
-        <br>
+    <br>
 
-        Digital Sample Identification System
+    QR Code tidak perlu masuk kotak hijau.
 
-      </div>
-
-
-      <label for="userSelect">
-        Operator
-      </label>
+  </div>
 
 
-      <select
-        id="userSelect"
+  <button
+    id="startCameraButton"
+    class="primary-btn"
+    onclick="startCamera()"
+  >
+    📷 Aktifkan Kamera
+  </button>
+
+
+  <button
+    id="captureButton"
+    class="primary-btn success-btn"
+    onclick="captureAndOCR()"
+    disabled
+  >
+    📸 Ambil Gambar & Baca Teks
+  </button>
+
+</section>
+
+
+
+<!-- =====================================================
+     RESULT
+===================================================== -->
+
+<section
+  id="resultCard"
+  class="card hidden"
+>
+
+  <div class="camera-title">
+    📋 Hasil Pembacaan
+  </div>
+
+
+  <div
+    id="resultStatus"
+    class="status"
+  >
+    Menunggu OCR...
+  </div>
+
+
+  <label>
+    Area gambar yang dibaca OCR
+  </label>
+
+
+  <img
+    id="ocrPreview"
+    alt="Area OCR"
+  >
+
+
+  <div class="data-grid">
+
+
+    <!-- ID -->
+
+    <div>
+
+      <span class="field-label">
+        ID Sampel
+      </span>
+
+      <input
+        id="idSampel"
+        type="text"
       >
-
-        <option value="">
-          ⏳ Memuat user...
-        </option>
-
-      </select>
-
-
-      <button
-        id="loginButton"
-        class="primary-btn"
-        onclick="loginUser()"
-      >
-
-        🔐 Masuk
-
-      </button>
-
 
       <div
-        id="loginStatus"
-        style="
-          text-align:center;
-          margin-top:12px;
-          font-size:14px;
-        "
+        id="idValidation"
+        class="validation"
+      ></div>
+
+    </div>
+
+
+    <!-- TANGGAL -->
+
+    <div>
+
+      <span class="field-label">
+        Tanggal
+      </span>
+
+      <input
+        id="tanggal"
+        type="text"
+      >
+
+      <div
+        id="tanggalValidation"
+        class="validation"
+      ></div>
+
+    </div>
+
+
+    <!-- POSISI -->
+
+    <div>
+
+      <span class="field-label">
+        Posisi
+      </span>
+
+      <input
+        id="posisi"
+        type="text"
+      >
+
+      <div
+        id="posisiValidation"
+        class="validation"
+      ></div>
+
+    </div>
+
+
+    <!-- PENGUJIAN -->
+
+    <div>
+
+      <span class="field-label">
+        Pengujian
+      </span>
+
+      <input
+        id="pengujian"
+        type="text"
+      >
+
+      <div
+        id="pengujianValidation"
+        class="validation"
       ></div>
 
     </div>
@@ -1250,2895 +713,2505 @@
 
 
 
-  <!-- =====================================================
-       MAIN APPLICATION
-       ===================================================== -->
+  <!-- RAW OCR -->
+
+  <details class="raw-toggle">
+
+    <summary>
+      🔎 Lihat Raw OCR
+    </summary>
+
+    <textarea
+      id="rawText"
+      readonly
+    ></textarea>
+
+  </details>
+
+
+  <!-- SAVE -->
+
+  <button
+    id="saveButton"
+    class="primary-btn success-btn"
+    onclick="saveData()"
+  >
+    💾 Simpan ke Google Sheet
+  </button>
+
+
+  <button
+    class="secondary-btn"
+    onclick="resetForNextScan()"
+  >
+    🔄 Scan Sampel Berikutnya
+  </button>
+
 
   <div
-    id="appPage"
-    class="hidden"
-  >
+    id="saveStatus"
+    class="status hidden"
+    style="margin-top:15px;"
+  ></div>
 
+</section>
 
-    <!-- HEADER -->
 
-    <header class="header">
+</main>
 
-      <div class="header-title">
+</div>
 
-        📷 Scan Label Sampel
 
-      </div>
 
+<script>
 
-      <div
-        id="headerUser"
-        class="header-user"
-      ></div>
+/* =====================================================
+   GLOBAL
+===================================================== */
 
+let currentUser = null;
 
-      <button
-        class="logout-btn"
-        onclick="logoutUser()"
-      >
+let stream = null;
 
-        🚪 Logout
+let ocrRunning = false;
 
-      </button>
 
-    </header>
+/* =====================================================
+   HELPER
+===================================================== */
 
+function $(id){
 
+  return document.getElementById(id);
 
-    <!-- MAIN -->
+}
 
-    <main class="container">
 
+function showStatus(
+  id,
+  message,
+  type=""
+){
 
-      <!-- =================================================
-           CAMERA CARD
-           ================================================= -->
+  const el=$(id);
 
-      <section class="card">
+  if(!el)return;
 
-        <div class="camera-title">
+  el.className="status";
 
-          📷 Kamera Scanner
+  if(type){
 
-        </div>
+    el.classList.add(type);
 
+  }
 
-        <div
-          id="cameraStatus"
-          class="status"
-        >
+  el.innerHTML=message;
 
-          Tekan "Aktifkan Kamera"
+}
 
-        </div>
 
+function escapeHtml(value){
 
-        <div class="camera-box">
+  return String(value||"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
-          <video
-            id="video"
-            autoplay
-            playsinline
-            muted
-          ></video>
+}
 
 
-          <div
-            id="guide"
-            class="guide"
-          >
+/* =====================================================
+   MASTER USER
+===================================================== */
 
-            <div
-              class="scan-line"
-            ></div>
+async function loadUsers(){
 
-          </div>
+  const select=$("userSelect");
 
+  const status=$("loginStatus");
 
-          <div class="guide-label">
+  const button=$("loginButton");
 
-            Tempatkan 4 baris teks label di dalam kotak hijau
+  try{
 
-          </div>
+    status.innerHTML=
+      "⏳ Mengambil daftar operator...";
 
-        </div>
+    button.disabled=true;
 
 
-        <div class="camera-instruction">
+    const response=
+      await fetch(
+        "/api/users",
+        {
+          method:"GET",
+          cache:"no-store"
+        }
+      );
 
-          Arahkan kamera ke teks di bawah QR Code.
 
-          <br>
+    const text=
+      await response.text();
 
-          QR Code tidak perlu masuk ke kotak hijau.
 
-        </div>
+    console.log(
+      "USERS RESPONSE:",
+      text
+    );
 
 
-        <button
-          id="startCameraButton"
-          class="primary-btn"
-          onclick="startCamera()"
-        >
+    let result;
 
-          📷 Aktifkan Kamera
+    try{
 
-        </button>
+      result=JSON.parse(text);
 
+    }catch(e){
 
-        <button
-          id="captureButton"
-          class="primary-btn success-btn"
-          onclick="captureAndOCR()"
-          disabled
-        >
-
-          📸 Ambil Gambar & Baca Teks
-
-        </button>
-
-      </section>
-
-
-
-      <!-- =================================================
-           RESULT CARD
-           ================================================= -->
-
-      <section
-        id="resultCard"
-        class="card hidden"
-      >
-
-        <div class="camera-title">
-
-          📋 Hasil Pembacaan
-
-        </div>
-
-
-        <div
-          id="resultStatus"
-          class="status"
-        >
-
-          Menunggu hasil OCR...
-
-        </div>
-
-
-        <!-- PREVIEW -->
-
-        <label>
-          Preview Area OCR
-        </label>
-
-
-        <img
-          id="ocrPreview"
-          alt="Preview area OCR"
-        >
-
-
-        <!-- DATA -->
-
-        <div
-          class="data-grid"
-          style="margin-top:20px;"
-        >
-
-
-          <!-- ID -->
-
-          <div class="field-group">
-
-            <span class="field-label">
-              ID Sampel
-            </span>
-
-
-            <input
-              id="idSampel"
-              type="text"
-              placeholder="ID Sampel"
-            >
-
-
-            <div
-              id="idValidation"
-              class="validation"
-            ></div>
-
-          </div>
-
-
-
-          <!-- TANGGAL -->
-
-          <div class="field-group">
-
-            <span class="field-label">
-              Tanggal
-            </span>
-
-
-            <input
-              id="tanggal"
-              type="text"
-              placeholder="DD-MM-YYYY"
-            >
-
-
-            <div
-              id="tanggalValidation"
-              class="validation"
-            ></div>
-
-          </div>
-
-
-
-          <!-- POSISI -->
-
-          <div class="field-group">
-
-            <span class="field-label">
-              Posisi
-            </span>
-
-
-            <input
-              id="posisi"
-              type="text"
-              placeholder="Posisi sampling"
-            >
-
-
-            <div
-              id="posisiValidation"
-              class="validation"
-            ></div>
-
-          </div>
-
-
-
-          <!-- PENGUJIAN -->
-
-          <div class="field-group">
-
-            <span class="field-label">
-              Pengujian
-            </span>
-
-
-            <input
-              id="pengujian"
-              type="text"
-              placeholder="Jenis pengujian"
-            >
-
-
-            <div
-              id="pengujianValidation"
-              class="validation"
-            ></div>
-
-          </div>
-
-
-        </div>
-
-
-
-        <!-- RAW OCR -->
-
-        <details class="raw-toggle">
-
-          <summary>
-            🔎 Lihat Raw OCR
-          </summary>
-
-
-          <textarea
-            id="rawText"
-            readonly
-          ></textarea>
-
-        </details>
-
-
-
-        <!-- SAVE -->
-
-        <button
-          id="saveButton"
-          class="primary-btn success-btn"
-          onclick="saveData()"
-        >
-
-          💾 Simpan ke Google Sheet
-
-        </button>
-
-
-        <button
-          class="secondary-btn"
-          onclick="resetForNextScan()"
-        >
-
-          🔄 Scan Sampel Berikutnya
-
-        </button>
-
-
-        <!-- SAVE STATUS -->
-
-        <div
-          id="saveStatus"
-          class="status hidden"
-          style="margin-top:15px;"
-        ></div>
-
-
-      </section>
-
-
-    </main>
-
-
-  </div>
-
-
-
-  <!-- =====================================================
-       JAVASCRIPT
-       ===================================================== -->
-
-  <script>
-
-
-    /* =====================================================
-       GLOBAL VARIABLES
-       ===================================================== */
-
-    let currentUser = null;
-
-    let stream = null;
-
-    let ocrRunning = false;
-
-
-    /* =====================================================
-       ELEMENT HELPER
-       ===================================================== */
-
-    function $(id) {
-
-      return document.getElementById(id);
+      throw new Error(
+        "Server tidak mengembalikan JSON"
+      );
 
     }
 
 
+    if(!result.success){
 
-    /* =====================================================
-       STATUS HELPER
-       ===================================================== */
+      throw new Error(
+        result.message ||
+        "Gagal mengambil user"
+      );
 
-    function showStatus(
-      elementId,
-      message,
-      type = ""
-    ) {
-
-      const el =
-        $(elementId);
+    }
 
 
-      if (!el) return;
+    select.innerHTML="";
 
 
-      el.className =
-        "status";
+    const first=
+      document.createElement("option");
+
+    first.value="";
+
+    first.textContent=
+      "-- Pilih Operator --";
+
+    select.appendChild(first);
 
 
-      if (type) {
+    result.users.forEach(
+      function(user){
 
-        el.classList.add(type);
+        const option=
+          document.createElement("option");
+
+        option.value=
+          JSON.stringify(user);
+
+        option.textContent=
+          user.nama+
+          " — "+
+          user.role;
+
+        select.appendChild(option);
+
+      }
+    );
+
+
+    status.innerHTML=
+      "✅ Operator siap dipilih";
+
+    button.disabled=false;
+
+
+  }catch(error){
+
+    console.error(error);
+
+    status.innerHTML=
+      "❌ Gagal mengambil user: "+
+      escapeHtml(error.message);
+
+    button.disabled=true;
+
+  }
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function loginUser(){
+
+  const value=
+    $("userSelect").value;
+
+  if(!value){
+
+    alert(
+      "Silakan pilih operator."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    currentUser=
+      JSON.parse(value);
+
+
+    localStorage.setItem(
+      "operator",
+      JSON.stringify(currentUser)
+    );
+
+
+    $("loginPage")
+      .classList
+      .add("hidden");
+
+
+    $("appPage")
+      .classList
+      .remove("hidden");
+
+
+    updateHeaderUser();
+
+
+    showStatus(
+      "cameraStatus",
+      "📷 Tekan 'Aktifkan Kamera' untuk memulai kamera."
+    );
+
+
+  }catch(error){
+
+    alert(
+      "Data operator tidak valid."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   HEADER USER
+===================================================== */
+
+function updateHeaderUser(){
+
+  if(!currentUser)return;
+
+  $("headerUser").innerHTML=
+    "👤 Operator: <b>"+
+    escapeHtml(currentUser.nama)+
+    "</b> ("+
+    escapeHtml(currentUser.role)+
+    ")";
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logoutUser(){
+
+  stopCamera();
+
+  localStorage.removeItem(
+    "operator"
+  );
+
+  currentUser=null;
+
+  $("appPage")
+    .classList
+    .add("hidden");
+
+  $("loginPage")
+    .classList
+    .remove("hidden");
+
+  $("userSelect").value="";
+
+  window.scrollTo(0,0);
+
+}
+
+
+/* =====================================================
+   CAMERA
+===================================================== */
+
+async function startCamera(){
+
+  const video=$("video");
+
+  const start=$("startCameraButton");
+
+  const capture=$("captureButton");
+
+
+  try{
+
+    stopCamera();
+
+
+    showStatus(
+      "cameraStatus",
+      "⏳ Meminta akses kamera..."
+    );
+
+
+    start.disabled=true;
+
+
+    if(
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ){
+
+      throw new Error(
+        "Browser tidak mendukung akses kamera."
+      );
+
+    }
+
+
+    /*
+      Kamera belakang.
+
+      Resolusi tinggi diprioritaskan
+      agar teks kecil lebih jelas.
+    */
+
+    const constraints={
+
+      audio:false,
+
+      video:{
+
+        facingMode:{
+          ideal:"environment"
+        },
+
+        width:{
+          ideal:1920
+        },
+
+        height:{
+          ideal:1080
+        }
 
       }
 
+    };
 
-      el.innerHTML =
-        message;
 
-    }
+    stream=
+      await navigator
+      .mediaDevices
+      .getUserMedia(
+        constraints
+      );
 
 
+    video.srcObject=
+      stream;
 
-    /* =====================================================
-       LOAD MASTER USER
-       ===================================================== */
 
-    async function loadUsers() {
+    await video.play();
 
-      const select =
-        $("userSelect");
 
-      const status =
-        $("loginStatus");
+    await waitVideoReady(video);
 
-      const button =
-        $("loginButton");
 
+    showStatus(
+      "cameraStatus",
+      "📷 Kamera siap — arahkan label ke kotak hijau.",
+      "success"
+    );
 
-      try {
 
-        status.innerHTML =
-          "⏳ Mengambil daftar operator...";
+    start.innerHTML=
+      "📷 Kamera Aktif";
 
 
-        button.disabled =
-          true;
+    capture.disabled=false;
 
 
-        const response =
-          await fetch(
-            "/api/users",
-            {
-              method: "GET",
-              cache: "no-store"
-            }
-          );
+  }catch(error){
 
+    console.error(
+      "CAMERA:",
+      error
+    );
 
-        const text =
-          await response.text();
 
+    start.disabled=false;
 
-        console.log(
-          "API USERS:",
-          text
-        );
+    capture.disabled=true;
 
 
-        let result;
+    showStatus(
+      "cameraStatus",
+      "❌ "+
+      escapeHtml(
+        error.message ||
+        "Kamera gagal."
+      ),
+      "error"
+    );
 
+  }
 
-        try {
+}
 
-          result =
-            JSON.parse(text);
 
-        } catch (error) {
+/* =====================================================
+   STOP CAMERA
+===================================================== */
 
-          throw new Error(
-            "Server tidak mengembalikan JSON"
-          );
+function stopCamera(){
 
-        }
+  if(stream){
 
+    stream
+      .getTracks()
+      .forEach(
+        track=>track.stop()
+      );
 
-        if (
-          !result.success
-        ) {
+    stream=null;
 
-          throw new Error(
-            result.message ||
-            "Gagal mengambil user"
-          );
+  }
 
-        }
 
+  const video=$("video");
 
-        if (
-          !Array.isArray(
-            result.users
-          )
-        ) {
+  if(video){
 
-          throw new Error(
-            "Format data user tidak valid"
-          );
+    video.srcObject=null;
 
-        }
+  }
 
 
-        select.innerHTML =
-          "";
+}
 
 
-        const defaultOption =
-          document.createElement(
-            "option"
-          );
+/* =====================================================
+   VIDEO READY
+===================================================== */
 
+function waitVideoReady(video){
 
-        defaultOption.value =
-          "";
-
-
-        defaultOption.textContent =
-          "-- Pilih Operator --";
-
-
-        select.appendChild(
-          defaultOption
-        );
-
-
-        result.users.forEach(
-          function(user) {
-
-
-            const option =
-              document.createElement(
-                "option"
-              );
-
-
-            option.value =
-              JSON.stringify(
-                user
-              );
-
-
-            option.textContent =
-              user.nama +
-              " — " +
-              user.role;
-
-
-            select.appendChild(
-              option
-            );
-
-
-          }
-        );
-
-
-        if (
-          result.users.length === 0
-        ) {
-
-          status.innerHTML =
-            "❌ Tidak ada operator aktif";
-
-        } else {
-
-          status.innerHTML =
-            "✅ Daftar operator siap";
-
-        }
-
-
-        button.disabled =
-          false;
-
-
-      } catch(error) {
-
-        console.error(
-          "LOAD USERS ERROR:",
-          error
-        );
-
-
-        status.innerHTML =
-          "❌ Gagal mengambil user: " +
-          error.message;
-
-
-        button.disabled =
-          true;
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       LOGIN
-       ===================================================== */
-
-    function loginUser() {
-
-      const select =
-        $("userSelect");
-
-
-      if (
-        !select.value
-      ) {
-
-        alert(
-          "Silakan pilih operator terlebih dahulu."
-        );
+  return new Promise(
+    function(resolve){
+
+      if(
+        video.readyState>=2 &&
+        video.videoWidth>0
+      ){
+
+        resolve();
 
         return;
 
       }
 
 
-      try {
-
-        const user =
-          JSON.parse(
-            select.value
-          );
-
-
-        currentUser =
-          user;
-
-
-        /*
-         * Simpan session
-         */
-
-        localStorage.setItem(
-          "operator",
-          JSON.stringify(
-            user
-          )
+      const timer=
+        setTimeout(
+          resolve,
+          3000
         );
 
 
-        /*
-         * Sembunyikan login
-         */
+      video.addEventListener(
+        "loadedmetadata",
+        function(){
 
-        $("loginPage")
-          .classList.add(
-            "hidden"
-          );
+          clearTimeout(timer);
 
+          resolve();
 
-        /*
-         * Tampilkan aplikasi
-         */
+        },
+        {once:true}
+      );
 
-        $("appPage")
-          .classList.remove(
-            "hidden"
-          );
+    }
+  );
+
+}
 
 
-        /*
-         * Tampilkan user
-         */
+/* =====================================================
+   CROP EXACT GREEN FRAME
+===================================================== */
 
-        updateHeaderUser();
+function captureGuideArea(){
 
+  const video=$("video");
 
-        /*
-         * Coba aktifkan kamera
-         *
-         * Karena fungsi ini dipanggil
-         * setelah klik tombol login,
-         * browser lebih memungkinkan
-         * memberikan akses kamera.
-         */
-
-        startCamera();
+  const guide=$("guide");
 
 
-      } catch(error) {
+  const videoWidth=
+    video.videoWidth;
 
-        console.error(
-          error
+  const videoHeight=
+    video.videoHeight;
+
+
+  if(
+    !videoWidth ||
+    !videoHeight
+  ){
+
+    throw new Error(
+      "Kamera belum siap."
+    );
+
+  }
+
+
+  const videoRect=
+    video.getBoundingClientRect();
+
+  const guideRect=
+    guide.getBoundingClientRect();
+
+
+  /*
+    Karena video menggunakan:
+
+    object-fit:cover
+
+    kita harus menghitung
+    bagian gambar yang terpotong.
+  */
+
+
+  const scale=
+    Math.max(
+
+      videoRect.width/videoWidth,
+
+      videoRect.height/videoHeight
+
+    );
+
+
+  const renderedWidth=
+    videoWidth*scale;
+
+  const renderedHeight=
+    videoHeight*scale;
+
+
+  const offsetX=
+    (
+      renderedWidth-
+      videoRect.width
+    )/2;
+
+
+  const offsetY=
+    (
+      renderedHeight-
+      videoRect.height
+    )/2;
+
+
+  const relativeX=
+    guideRect.left-
+    videoRect.left;
+
+  const relativeY=
+    guideRect.top-
+    videoRect.top;
+
+
+  let sourceX=
+    (relativeX+offsetX)/scale;
+
+  let sourceY=
+    (relativeY+offsetY)/scale;
+
+
+  let sourceWidth=
+    guideRect.width/scale;
+
+  let sourceHeight=
+    guideRect.height/scale;
+
+
+  sourceX=
+    Math.max(
+      0,
+      Math.min(
+        sourceX,
+        videoWidth
+      )
+    );
+
+
+  sourceY=
+    Math.max(
+      0,
+      Math.min(
+        sourceY,
+        videoHeight
+      )
+    );
+
+
+  sourceWidth=
+    Math.min(
+      sourceWidth,
+      videoWidth-sourceX
+    );
+
+
+  sourceHeight=
+    Math.min(
+      sourceHeight,
+      videoHeight-sourceY
+    );
+
+
+  const canvas=
+    document.createElement(
+      "canvas"
+    );
+
+
+  canvas.width=
+    Math.round(sourceWidth);
+
+  canvas.height=
+    Math.round(sourceHeight);
+
+
+  const ctx=
+    canvas.getContext("2d");
+
+
+  ctx.drawImage(
+
+    video,
+
+    Math.round(sourceX),
+    Math.round(sourceY),
+
+    Math.round(sourceWidth),
+    Math.round(sourceHeight),
+
+    0,
+    0,
+
+    canvas.width,
+    canvas.height
+
+  );
+
+
+  return canvas;
+
+}
+
+
+/* =====================================================
+   IMAGE PREPROCESSING
+===================================================== */
+
+/*
+  Kita membuat beberapa versi gambar.
+
+  OCR akan dicoba pada beberapa versi
+  karena kondisi label bisa berbeda.
+*/
+
+
+function createOCRVersions(source){
+
+  const versions=[];
+
+
+  /*
+    VERSION 1
+    grayscale + contrast
+  */
+
+  versions.push(
+    createProcessedCanvas(
+      source,
+      {
+        scale:3,
+        contrast:145,
+        brightness:105,
+        threshold:null,
+        sharpen:true
+      }
+    )
+  );
+
+
+  /*
+    VERSION 2
+    grayscale + threshold
+  */
+
+  versions.push(
+    createProcessedCanvas(
+      source,
+      {
+        scale:3,
+        contrast:160,
+        brightness:110,
+        threshold:175,
+        sharpen:true
+      }
+    )
+  );
+
+
+  /*
+    VERSION 3
+    threshold sedikit lebih tinggi
+  */
+
+  versions.push(
+    createProcessedCanvas(
+      source,
+      {
+        scale:4,
+        contrast:175,
+        brightness:110,
+        threshold:195,
+        sharpen:true
+      }
+    )
+  );
+
+
+  return versions;
+
+}
+
+
+/* =====================================================
+   CREATE PROCESSED CANVAS
+===================================================== */
+
+function createProcessedCanvas(
+  source,
+  options
+){
+
+  const scale=
+    options.scale || 3;
+
+
+  const canvas=
+    document.createElement(
+      "canvas"
+    );
+
+
+  canvas.width=
+    source.width*scale;
+
+  canvas.height=
+    source.height*scale;
+
+
+  const ctx=
+    canvas.getContext("2d");
+
+
+  /*
+    Putih sebagai background.
+  */
+
+  ctx.fillStyle=
+    "#ffffff";
+
+  ctx.fillRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+
+  ctx.drawImage(
+
+    source,
+
+    0,
+    0,
+
+    canvas.width,
+    canvas.height
+
+  );
+
+
+  const imageData=
+    ctx.getImageData(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+
+  const data=
+    imageData.data;
+
+
+  for(
+    let i=0;
+    i<data.length;
+    i+=4
+  ){
+
+    let r=data[i];
+
+    let g=data[i+1];
+
+    let b=data[i+2];
+
+
+    /*
+      Grayscale
+    */
+
+    let gray=
+      0.299*r+
+      0.587*g+
+      0.114*b;
+
+
+    /*
+      Contrast
+    */
+
+    gray=
+      (
+        gray-128
+      )*
+      (
+        options.contrast/100
+      )+
+      128;
+
+
+    /*
+      Brightness
+    */
+
+    gray+=
+      options.brightness-
+      100;
+
+
+    /*
+      Threshold optional
+    */
+
+    if(
+      options.threshold!==null
+    ){
+
+      gray=
+        gray<
+        options.threshold
+          ? 0
+          : 255;
+
+    }
+
+
+    gray=
+      Math.max(
+        0,
+        Math.min(
+          255,
+          gray
+        )
+      );
+
+
+    data[i]=gray;
+
+    data[i+1]=gray;
+
+    data[i+2]=gray;
+
+  }
+
+
+  ctx.putImageData(
+    imageData,
+    0,
+    0
+  );
+
+
+  /*
+    Sharpen ringan.
+
+    Tidak menggunakan filter keras
+    agar huruf kecil tidak hilang.
+  */
+
+  if(options.sharpen){
+
+    const sharp=
+      document.createElement(
+        "canvas"
+      );
+
+    sharp.width=
+      canvas.width;
+
+    sharp.height=
+      canvas.height;
+
+
+    const sctx=
+      sharp.getContext("2d");
+
+
+    sctx.filter=
+      "contrast(115%)";
+
+    sctx.drawImage(
+      canvas,
+      0,
+      0
+    );
+
+
+    ctx.clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+
+    ctx.drawImage(
+      sharp,
+      0,
+      0
+    );
+
+  }
+
+
+  return canvas;
+
+}
+
+
+/* =====================================================
+   OCR MULTI PASS
+===================================================== */
+
+async function runMultiOCR(
+  versions
+){
+
+  const results=[];
+
+
+  /*
+    OCR PASS 1
+
+    Cocok untuk beberapa baris.
+  */
+
+  for(
+    let i=0;
+    i<versions.length;
+    i++
+  ){
+
+    showStatus(
+      "resultStatus",
+      "🔎 Membaca teks... "+
+      (i+1)+"/"+
+      versions.length
+    );
+
+
+    try{
+
+      const result=
+        await Tesseract.recognize(
+
+          versions[i],
+
+          "eng",
+
+          {
+
+            logger:
+              function(info){
+
+                if(
+                  info.status===
+                  "recognizing text"
+                ){
+
+                  console.log(
+                    "OCR",
+                    i+1,
+                    info.progress
+                  );
+
+                }
+
+              },
+
+            /*
+              PSM 6 =
+              uniform block of text
+            */
+
+            tessedit_pageseg_mode:
+              "6",
+
+            preserve_interword_spaces:
+              "1"
+
+          }
+
         );
 
 
-        alert(
-          "Data user tidak valid."
-        );
+      const text=
+        (
+          result.data.text ||
+          ""
+        )
+        .trim();
+
+
+      const confidence=
+        result.data.confidence ||
+        0;
+
+
+      if(text){
+
+        results.push({
+
+          text:text,
+
+          confidence:confidence
+
+        });
+
+      }
+
+
+    }catch(error){
+
+      console.error(
+        "OCR PASS ERROR",
+        error
+      );
+
+    }
+
+  }
+
+
+  /*
+    Pilih hasil dengan confidence
+    terbaik.
+  */
+
+  results.sort(
+    function(a,b){
+
+      return b.confidence-
+             a.confidence;
+
+    }
+  );
+
+
+  /*
+    Gabungkan hasil OCR.
+
+    Ini berguna jika satu pass
+    gagal membaca OLTC tetapi
+    pass lainnya berhasil.
+  */
+
+  let combined="";
+
+
+  results.forEach(
+    function(item){
+
+      combined+=
+        item.text+
+        "\n";
+
+    }
+  );
+
+
+  return {
+
+    best:
+      results.length
+        ? results[0].text
+        : "",
+
+    combined:
+      combined.trim(),
+
+    confidence:
+      results.length
+        ? results[0].confidence
+        : 0
+
+  };
+
+}
+
+
+/* =====================================================
+   CAPTURE + OCR
+===================================================== */
+
+async function captureAndOCR(){
+
+  if(ocrRunning)return;
+
+
+  try{
+
+    ocrRunning=true;
+
+
+    $("captureButton")
+      .disabled=true;
+
+
+    $("saveButton")
+      .disabled=true;
+
+
+    showStatus(
+      "cameraStatus",
+      "📸 Mengambil gambar..."
+    );
+
+
+    /*
+      Ambil PERSIS area hijau.
+    */
+
+    const crop=
+      captureGuideArea();
+
+
+    /*
+      Preview yang ditampilkan
+      adalah gambar yang sama
+      yang digunakan OCR.
+    */
+
+    const preview=
+      $("ocrPreview");
+
+
+    preview.src=
+      crop.toDataURL(
+        "image/jpeg",
+        0.98
+      );
+
+
+    preview.style.display=
+      "block";
+
+
+    $("resultCard")
+      .classList
+      .remove("hidden");
+
+
+    /*
+      Buat beberapa versi
+      preprocessing.
+    */
+
+    const versions=
+      createOCRVersions(
+        crop
+      );
+
+
+    /*
+      Jalankan OCR
+    */
+
+    const ocr=
+      await runMultiOCR(
+        versions
+      );
+
+
+    /*
+      Raw OCR hanya ditampilkan.
+      TIDAK disimpan ke Sheet.
+    */
+
+    $("rawText")
+      .value=
+      ocr.combined;
+
+
+    if(!ocr.best){
+
+      throw new Error(
+        "Tulisan tidak berhasil dibaca."
+      );
+
+    }
+
+
+    /*
+      Parsing hasil.
+    */
+
+    parseSampleLabel(
+      ocr.combined
+    );
+
+
+    const valid=
+      validateFields();
+
+
+    if(valid){
+
+      showStatus(
+        "resultStatus",
+        "✅ Semua data berhasil dibaca. Silakan periksa sebelum disimpan.",
+        "success"
+      );
+
+    }else{
+
+      showStatus(
+        "resultStatus",
+        "⚠️ Sebagian data perlu diperiksa. Anda dapat mengoreksi secara manual.",
+        "warning"
+      );
+
+    }
+
+
+    $("resultCard")
+      .scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+
+  }catch(error){
+
+    console.error(
+      "OCR ERROR:",
+      error
+    );
+
+
+    showStatus(
+      "resultStatus",
+      "❌ "+
+      escapeHtml(
+        error.message
+      ),
+      "error"
+    );
+
+
+  }finally{
+
+    ocrRunning=false;
+
+    $("captureButton")
+      .disabled=
+      !stream;
+
+    $("saveButton")
+      .disabled=false;
+
+  }
+
+}
+
+
+/* =====================================================
+   PARSE LABEL
+===================================================== */
+
+function parseSampleLabel(
+  rawText
+){
+
+  /*
+    Bersihkan OCR.
+
+    Jangan terlalu agresif karena
+    huruf pada "Karakteristik"
+    bisa hilang jika terlalu banyak
+    karakter dibuang.
+  */
+
+  const lines=
+    rawText
+    .split(/\r?\n/)
+    .map(
+      function(line){
+
+        return line
+          .replace(/\s+/g," ")
+          .trim();
+
+      }
+    )
+    .filter(
+      function(line){
+
+        return line.length>0;
+
+      }
+    );
+
+
+  console.log(
+    "CLEAN OCR LINES:",
+    lines
+  );
+
+
+  const fullText=
+    lines.join(" ");
+
+
+  /* ===================================================
+     ID
+  =================================================== */
+
+  let id="";
+
+
+  /*
+    Format utama:
+    260953-1006-28916
+  */
+
+  let match=
+    fullText.match(
+      /\b\d{6,}-\d{3,}-\d{3,}\b/
+    );
+
+
+  if(!match){
+
+    /*
+      OCR kadang memberi spasi:
+      260953 - 1006 - 28916
+    */
+
+    match=
+      fullText.match(
+        /\b\d{6,}\s*-\s*\d{3,}\s*-\s*\d{3,}\b/
+      );
+
+  }
+
+
+  if(match){
+
+    id=
+      match[0]
+      .replace(/\s+/g,"");
+
+  }
+
+
+  $("idSampel")
+    .value=id;
+
+
+  /* ===================================================
+     TANGGAL
+  =================================================== */
+
+  const dateMatch=
+    fullText.match(
+      /\b\d{1,2}\s*[-\/]\s*\d{1,2}\s*[-\/]\s*\d{4}\b/
+    );
+
+
+  if(dateMatch){
+
+    $("tanggal")
+      .value=
+      dateMatch[0]
+      .replace(/\s+/g,"")
+      .replace(/\//g,"-");
+
+  }else{
+
+    $("tanggal")
+      .value="";
+
+  }
+
+
+  /* ===================================================
+     POSISI
+  =================================================== */
+
+  const position=
+    detectPosition(
+      fullText,
+      lines
+    );
+
+
+  $("posisi")
+    .value=
+    position;
+
+
+  /* ===================================================
+     PENGUJIAN
+  =================================================== */
+
+  const testing=
+    detectTesting(
+      fullText,
+      lines
+    );
+
+
+  $("pengujian")
+    .value=
+    testing;
+
+
+}
+
+
+/* =====================================================
+   DETECT POSITION
+===================================================== */
+
+function detectPosition(
+  fullText,
+  lines
+){
+
+  const text=
+    fullText
+    .toUpperCase();
+
+
+  /*
+    Kamus posisi.
+
+    Bisa ditambah kemudian.
+  */
+
+  const positions=[
+
+    "BOTTOM MAINTANK",
+
+    "TOP MAINTANK",
+
+    "BOTTOM MAIN TANK",
+
+    "TOP MAIN TANK",
+
+    "MAINTANK",
+
+    "MAIN TANK",
+
+    "OLTC",
+
+    "HV",
+
+    "LV",
+
+    "TERMINAL",
+
+    "BUSHING",
+
+    "RADIATOR"
+
+  ];
+
+
+  /*
+    Exact/near exact.
+  */
+
+  for(
+    const item of positions
+  ){
+
+    if(
+      text.includes(item)
+    ){
+
+      return normalizePosition(
+        item
+      );
+
+    }
+
+  }
+
+
+  /*
+    Fuzzy OLTC.
+
+    OCR mungkin menghasilkan:
+
+    O LTC
+    OLIC
+    0LTC
+    OL1C
+    OLTC.
+  */
+
+  if(
+    /\bO\s*L[T1I]C\b/i
+      .test(fullText) ||
+
+    /\b0L[T1I]C\b/i
+      .test(fullText) ||
+
+    /\bOL[T1I]C\b/i
+      .test(fullText)
+  ){
+
+    return "OLTC";
+
+  }
+
+
+  /*
+    Cari baris pendek setelah
+    baris ID + tanggal.
+  */
+
+  for(
+    const line of lines
+  ){
+
+    const clean=
+      line
+      .toUpperCase()
+      .trim();
+
+
+    if(
+      clean.length>=2 &&
+      clean.length<=25 &&
+      !/\d{4}/.test(clean) &&
+      !clean.includes("DISSOLVED") &&
+      !clean.includes("GAS ANALYSIS")
+    ){
+
+      /*
+        Jangan langsung ambil
+        "KARAKTERISTIK" sebagai posisi.
+      */
+
+      if(
+        normalizeFuzzy(
+          clean
+        )===
+        "KARAKTERISTIK"
+      ){
+
+        continue;
+
+      }
+
+
+      return normalizePosition(
+        clean
+      );
+
+    }
+
+  }
+
+
+  return "";
+
+}
+
+
+/* =====================================================
+   DETECT TESTING
+===================================================== */
+
+function detectTesting(
+  fullText,
+  lines
+){
+
+  const upper=
+    fullText.toUpperCase();
+
+
+  /*
+    DGA
+  */
+
+  if(
+    upper.includes(
+      "DISSOLVED GAS"
+    ) ||
+
+    upper.includes(
+      "DGA"
+    )
+  ){
+
+    return "Dissolved Gas Analysis (DGA)";
+
+  }
+
+
+  /*
+    KARAKTERISTIK
+
+    OCR variants.
+  */
+
+  const fuzzy=
+    normalizeFuzzy(
+      fullText
+    );
+
+
+  if(
+    fuzzy.includes(
+      "KARAKTERISTIK"
+    )
+  ){
+
+    return "Karakteristik";
+
+  }
+
+
+  /*
+    Cari pada masing-masing baris.
+  */
+
+  for(
+    const line of lines
+  ){
+
+    const normalized=
+      normalizeFuzzy(
+        line
+      );
+
+
+    if(
+      isCloseToKarakteristik(
+        normalized
+      )
+    ){
+
+      return "Karakteristik";
+
+    }
+
+  }
+
+
+  /*
+    Jika tidak dikenali,
+    ambil baris terakhir
+    yang bukan ID/tanggal.
+  */
+
+  for(
+    let i=lines.length-1;
+    i>=0;
+    i--
+  ){
+
+    const line=
+      lines[i].trim();
+
+
+    if(
+      line.length>3 &&
+      !/\d{4}/.test(line) &&
+      !/^\d[\d\s\-\/]+$/.test(line)
+    ){
+
+      return cleanTestingName(
+        line
+      );
+
+    }
+
+  }
+
+
+  return "";
+
+}
+
+
+/* =====================================================
+   FUZZY KARAKTERISTIK
+===================================================== */
+
+function normalizeFuzzy(
+  value
+){
+
+  return String(
+    value || ""
+  )
+  .toUpperCase()
+
+  /*
+    OCR sering salah:
+    1 -> I
+    0 -> O
+  */
+
+  .replace(/1/g,"I")
+  .replace(/0/g,"O")
+
+  /*
+    Hilangkan karakter
+    yang tidak penting.
+  */
+
+  .replace(
+    /[^A-Z]/g,
+    ""
+  );
+
+}
+
+
+/* =====================================================
+   CLOSE KARAKTERISTIK
+===================================================== */
+
+function isCloseToKarakteristik(
+  value
+){
+
+  const target=
+    "KARAKTERISTIK";
+
+
+  if(
+    value===
+    target
+  ){
+
+    return true;
+
+  }
+
+
+  /*
+    Jika panjang hampir sama,
+    hitung perbedaan karakter.
+  */
+
+  if(
+    Math.abs(
+      value.length-
+      target.length
+    )>3
+  ){
+
+    return false;
+
+  }
+
+
+  const distance=
+    levenshtein(
+      value,
+      target
+    );
+
+
+  return distance<=3;
+
+}
+
+
+/* =====================================================
+   LEVENSHTEIN
+===================================================== */
+
+function levenshtein(
+  a,
+  b
+){
+
+  const matrix=[];
+
+
+  for(
+    let i=0;
+    i<=b.length;
+    i++
+  ){
+
+    matrix[i]=[i];
+
+  }
+
+
+  for(
+    let j=0;
+    j<=a.length;
+    j++
+  ){
+
+    matrix[0][j]=j;
+
+  }
+
+
+  for(
+    let i=1;
+    i<=b.length;
+    i++
+  ){
+
+    for(
+      let j=1;
+      j<=a.length;
+      j++
+    ){
+
+      if(
+        b.charAt(i-1)===
+        a.charAt(j-1)
+      ){
+
+        matrix[i][j]=
+          matrix[i-1][j-1];
+
+      }else{
+
+        matrix[i][j]=
+          Math.min(
+
+            matrix[i-1][j-1]+1,
+
+            matrix[i][j-1]+1,
+
+            matrix[i-1][j]+1
+
+          );
 
       }
 
     }
 
+  }
 
 
-    /* =====================================================
-       UPDATE HEADER USER
-       ===================================================== */
+  return matrix[b.length][a.length];
 
-    function updateHeaderUser() {
-
-      if (
-        !currentUser
-      ) return;
+}
 
 
-      $("headerUser")
-        .innerHTML =
-          "👤 Operator: <b>" +
-          escapeHtml(
-            currentUser.nama
-          ) +
-          "</b> (" +
-          escapeHtml(
-            currentUser.role
-          ) +
-          ")";
+/* =====================================================
+   NORMALIZE POSITION
+===================================================== */
+
+function normalizePosition(
+  value
+){
+
+  let result=
+    String(
+      value || ""
+    )
+    .toUpperCase()
+    .replace(
+      /\s+/g,
+      " "
+    )
+    .trim();
+
+
+  result=
+    result.replace(
+      "MAIN TANK",
+      "MAINTANK"
+    );
+
+
+  /*
+    OLTC variants
+  */
+
+  if(
+    /^O\s*L[T1I]C\.?$/
+      .test(result) ||
+
+    /^0L[T1I]C\.?$/
+      .test(result)
+  ){
+
+    return "OLTC";
+
+  }
+
+
+  return result;
+
+}
+
+
+/* =====================================================
+   CLEAN TESTING
+===================================================== */
+
+function cleanTestingName(
+  value
+){
+
+  let result=
+    String(
+      value || ""
+    )
+    .replace(
+      /\s+/g,
+      " "
+    )
+    .trim();
+
+
+  const fuzzy=
+    normalizeFuzzy(
+      result
+    );
+
+
+  if(
+    isCloseToKarakteristik(
+      fuzzy
+    )
+  ){
+
+    return "Karakteristik";
+
+  }
+
+
+  if(
+    fuzzy.includes(
+      "DISSOLVEDGASANALYSIS"
+    ) ||
+    fuzzy==="DGA"
+  ){
+
+    return "Dissolved Gas Analysis (DGA)";
+
+  }
+
+
+  return result;
+
+}
+
+
+/* =====================================================
+   VALIDATION
+===================================================== */
+
+function validateFields(){
+
+  let valid=true;
+
+
+  const id=
+    $("idSampel")
+    .value
+    .trim();
+
+
+  if(
+    /^\d{5,}(?:-\d{2,}){2,}$/
+      .test(id)
+  ){
+
+    $("idValidation")
+      .innerHTML=
+      "✅ ID Sampel valid";
+
+  }else{
+
+    $("idValidation")
+      .innerHTML=
+      "⚠️ Periksa ID Sampel";
+
+    valid=false;
+
+  }
+
+
+  const tanggal=
+    $("tanggal")
+    .value
+    .trim();
+
+
+  if(
+    /^\d{1,2}-\d{1,2}-\d{4}$/
+      .test(tanggal)
+  ){
+
+    $("tanggalValidation")
+      .innerHTML=
+      "✅ Tanggal valid";
+
+  }else{
+
+    $("tanggalValidation")
+      .innerHTML=
+      "⚠️ Periksa tanggal";
+
+    valid=false;
+
+  }
+
+
+  const posisi=
+    $("posisi")
+    .value
+    .trim();
+
+
+  if(posisi){
+
+    $("posisiValidation")
+      .innerHTML=
+      "✅ Posisi terdeteksi";
+
+  }else{
+
+    $("posisiValidation")
+      .innerHTML=
+      "⚠️ Posisi belum terbaca";
+
+    valid=false;
+
+  }
+
+
+  const pengujian=
+    $("pengujian")
+    .value
+    .trim();
+
+
+  if(pengujian){
+
+    $("pengujianValidation")
+      .innerHTML=
+      "✅ Pengujian terdeteksi";
+
+  }else{
+
+    $("pengujianValidation")
+      .innerHTML=
+      "⚠️ Pengujian belum terbaca";
+
+    valid=false;
+
+  }
+
+
+  return valid;
+
+}
+
+
+/* =====================================================
+   SAVE TO GOOGLE SHEET
+===================================================== */
+
+async function saveData(){
+
+  if(!currentUser){
+
+    alert(
+      "Operator belum login."
+    );
+
+    return;
+
+  }
+
+
+  validateFields();
+
+
+  const saveButton=
+    $("saveButton");
+
+
+  try{
+
+    saveButton.disabled=true;
+
+
+    $("saveStatus")
+      .classList
+      .remove("hidden");
+
+
+    showStatus(
+      "saveStatus",
+      "⏳ Menyimpan ke Google Sheet..."
+    );
+
+
+    /*
+      PERHATIKAN:
+
+      rawText TIDAK ADA
+      di object ini.
+
+      Jadi Raw OCR tidak dikirim
+      ke Google Sheet.
+    */
+
+    const data={
+
+      userID:
+        currentUser.id || "",
+
+      user:
+        currentUser.nama || "",
+
+      role:
+        currentUser.role || "",
+
+      idSampel:
+        $("idSampel")
+        .value
+        .trim(),
+
+      tanggal:
+        $("tanggal")
+        .value
+        .trim(),
+
+      posisi:
+        $("posisi")
+        .value
+        .trim(),
+
+      pengujian:
+        $("pengujian")
+        .value
+        .trim()
+
+    };
+
+
+    console.log(
+      "DATA YANG DIKIRIM:",
+      data
+    );
+
+
+    const response=
+      await fetch(
+        "/api/save",
+        {
+
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify(data)
+
+        }
+      );
+
+
+    const text=
+      await response.text();
+
+
+    console.log(
+      "SAVE RESPONSE:",
+      text
+    );
+
+
+    let result;
+
+
+    try{
+
+      result=
+        JSON.parse(text);
+
+    }catch(error){
+
+      throw new Error(
+        "Server tidak mengembalikan JSON."
+      );
 
     }
 
 
+    if(
+      !result.success
+    ){
 
-    /* =====================================================
-       LOGOUT
-       ===================================================== */
+      throw new Error(
+        result.message ||
+        "Data gagal disimpan."
+      );
 
-    function logoutUser() {
-
-      /*
-       * Matikan kamera
-       */
-
-      stopCamera();
+    }
 
 
-      /*
-       * Hapus session
-       */
+    showStatus(
+      "saveStatus",
+      "✅ Data berhasil disimpan ke Google Sheet.",
+      "success"
+    );
+
+
+    showStatus(
+      "resultStatus",
+      "✅ Data tersimpan. Siap scan sampel berikutnya.",
+      "success"
+    );
+
+
+    saveButton.innerHTML=
+      "✅ Data Tersimpan";
+
+
+  }catch(error){
+
+    console.error(
+      "SAVE ERROR:",
+      error
+    );
+
+
+    showStatus(
+      "saveStatus",
+      "❌ Gagal menyimpan: "+
+      escapeHtml(
+        error.message
+      ),
+      "error"
+    );
+
+
+    saveButton.disabled=false;
+
+    saveButton.innerHTML=
+      "💾 Coba Simpan Lagi";
+
+  }
+
+}
+
+
+/* =====================================================
+   NEXT SAMPLE
+===================================================== */
+
+function resetForNextScan(){
+
+  $("idSampel").value="";
+
+  $("tanggal").value="";
+
+  $("posisi").value="";
+
+  $("pengujian").value="";
+
+  $("rawText").value="";
+
+  $("ocrPreview").src="";
+
+  $("ocrPreview")
+    .style
+    .display="none";
+
+
+  $("idValidation").innerHTML="";
+
+  $("tanggalValidation").innerHTML="";
+
+  $("posisiValidation").innerHTML="";
+
+  $("pengujianValidation").innerHTML="";
+
+
+  $("resultCard")
+    .classList
+    .add("hidden");
+
+
+  $("saveStatus")
+    .classList
+    .add("hidden");
+
+
+  $("saveButton")
+    .disabled=false;
+
+  $("saveButton")
+    .innerHTML=
+      "💾 Simpan ke Google Sheet";
+
+
+  window.scrollTo({
+
+    top:0,
+
+    behavior:"smooth"
+
+  });
+
+
+  if(stream){
+
+    showStatus(
+      "cameraStatus",
+      "📷 Kamera siap — arahkan sampel berikutnya.",
+      "success"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+async function initializeApp(){
+
+  await loadUsers();
+
+
+  const saved=
+    localStorage.getItem(
+      "operator"
+    );
+
+
+  if(saved){
+
+    try{
+
+      currentUser=
+        JSON.parse(saved);
+
+
+      $("loginPage")
+        .classList
+        .add("hidden");
+
+
+      $("appPage")
+        .classList
+        .remove("hidden");
+
+
+      updateHeaderUser();
+
+
+      showStatus(
+        "cameraStatus",
+        "📷 Tekan 'Aktifkan Kamera' untuk memulai kamera."
+      );
+
+
+    }catch(error){
 
       localStorage.removeItem(
         "operator"
       );
 
-
-      currentUser =
-        null;
-
-
-      /*
-       * Reset aplikasi
-       */
-
-      $("appPage")
-        .classList.add(
-          "hidden"
-        );
-
-
-      $("loginPage")
-        .classList.remove(
-          "hidden"
-        );
-
-
-      $("userSelect")
-        .value =
-        "";
-
-
-      $("loginStatus")
-        .innerHTML =
-        "Silakan pilih operator.";
-
-
-      /*
-       * Scroll ke atas
-       */
-
-      window.scrollTo(
-        0,
-        0
-      );
-
     }
 
+  }
 
+}
 
-    /* =====================================================
-       START CAMERA
-       ===================================================== */
 
-    async function startCamera() {
+window.addEventListener(
+  "DOMContentLoaded",
+  initializeApp
+);
 
-      const video =
-        $("video");
 
+window.addEventListener(
+  "pagehide",
+  stopCamera
+);
 
-      const button =
-        $("startCameraButton");
-
-
-      const capture =
-        $("captureButton");
-
-
-      try {
-
-        /*
-         * Hentikan stream lama
-         */
-
-        stopCamera();
-
-
-        showStatus(
-          "cameraStatus",
-          "⏳ Meminta akses kamera..."
-        );
-
-
-        button.disabled =
-          true;
-
-
-        /*
-         * Kamera belakang
-         */
-
-        const constraints = {
-
-          audio:
-            false,
-
-          video: {
-
-            facingMode:
-              {
-                ideal:
-                  "environment"
-              },
-
-            width:
-              {
-                ideal:
-                  1920
-              },
-
-            height:
-              {
-                ideal:
-                  1080
-              }
-
-          }
-
-        };
-
-
-        stream =
-          await navigator
-            .mediaDevices
-            .getUserMedia(
-              constraints
-            );
-
-
-        video.srcObject =
-          stream;
-
-
-        /*
-         * Pastikan video mulai
-         */
-
-        await video.play();
-
-
-        /*
-         * Tunggu metadata kamera
-         */
-
-        await waitForVideoReady(
-          video
-        );
-
-
-        showStatus(
-          "cameraStatus",
-          "📷 Kamera siap — arahkan label ke kotak hijau",
-          "success"
-        );
-
-
-        button.innerHTML =
-          "📷 Kamera Aktif";
-
-
-        capture.disabled =
-          false;
-
-
-      } catch(error) {
-
-        console.error(
-          "CAMERA ERROR:",
-          error
-        );
-
-
-        button.disabled =
-          false;
-
-
-        capture.disabled =
-          true;
-
-
-        let message =
-          error.message ||
-          "Kamera gagal digunakan";
-
-
-        if (
-          error.name ===
-          "NotAllowedError"
-        ) {
-
-          message =
-            "Izin kamera ditolak. Silakan izinkan kamera pada pengaturan browser.";
-
-        }
-
-
-        if (
-          error.name ===
-          "NotFoundError"
-        ) {
-
-          message =
-            "Kamera tidak ditemukan pada perangkat.";
-
-        }
-
-
-        if (
-          error.name ===
-          "NotReadableError"
-        ) {
-
-          message =
-            "Kamera sedang digunakan oleh aplikasi lain.";
-
-        }
-
-
-        showStatus(
-          "cameraStatus",
-          "❌ " +
-          escapeHtml(
-            message
-          ),
-          "error"
-        );
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       STOP CAMERA
-       ===================================================== */
-
-    function stopCamera() {
-
-      if (
-        stream
-      ) {
-
-        stream
-          .getTracks()
-          .forEach(
-            function(track) {
-
-              track.stop();
-
-            }
-          );
-
-        stream =
-          null;
-
-      }
-
-
-      const video =
-        $("video");
-
-
-      if (video) {
-
-        video.srcObject =
-          null;
-
-      }
-
-
-      if (
-        $("captureButton")
-      ) {
-
-        $("captureButton")
-          .disabled =
-          true;
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       WAIT VIDEO READY
-       ===================================================== */
-
-    function waitForVideoReady(
-      video
-    ) {
-
-      return new Promise(
-        function(resolve) {
-
-          if (
-            video.readyState >= 2 &&
-            video.videoWidth > 0
-          ) {
-
-            resolve();
-
-            return;
-
-          }
-
-
-          const timeout =
-            setTimeout(
-              function() {
-
-                resolve();
-
-              },
-              3000
-            );
-
-
-          video.addEventListener(
-            "loadedmetadata",
-            function() {
-
-              clearTimeout(
-                timeout
-              );
-
-              resolve();
-
-            },
-            {
-              once: true
-            }
-          );
-
-        }
-      );
-
-    }
-
-
-
-    /* =====================================================
-       CAPTURE EXACT SCANNER FRAME
-       ===================================================== */
-
-    function captureGuideArea() {
-
-      const video =
-        $("video");
-
-
-      const guide =
-        $("guide");
-
-
-      if (
-        !video.videoWidth ||
-        !video.videoHeight
-      ) {
-
-        throw new Error(
-          "Kamera belum siap."
-        );
-
-      }
-
-
-      /*
-       * Ukuran asli video kamera
-       */
-
-      const videoWidth =
-        video.videoWidth;
-
-
-      const videoHeight =
-        video.videoHeight;
-
-
-      /*
-       * Ukuran tampilan video
-       */
-
-      const videoRect =
-        video.getBoundingClientRect();
-
-
-      /*
-       * Posisi scanner frame
-       */
-
-      const guideRect =
-        guide.getBoundingClientRect();
-
-
-      /*
-       * object-fit: cover
-       *
-       * Hitung skala terbesar.
-       */
-
-      const scale =
-        Math.max(
-
-          videoRect.width /
-            videoWidth,
-
-          videoRect.height /
-            videoHeight
-
-        );
-
-
-      /*
-       * Ukuran video setelah
-       * object-fit: cover
-       */
-
-      const renderedWidth =
-        videoWidth *
-        scale;
-
-
-      const renderedHeight =
-        videoHeight *
-        scale;
-
-
-      /*
-       * Bagian gambar asli yang
-       * terpotong dari kiri/kanan
-       */
-
-      const offsetX =
-        (
-          renderedWidth -
-          videoRect.width
-        ) / 2;
-
-
-      /*
-       * Bagian gambar asli yang
-       * terpotong dari atas/bawah
-       */
-
-      const offsetY =
-        (
-          renderedHeight -
-          videoRect.height
-        ) / 2;
-
-
-      /*
-       * Posisi guide terhadap
-       * elemen video
-       */
-
-      const relativeX =
-        guideRect.left -
-        videoRect.left;
-
-
-      const relativeY =
-        guideRect.top -
-        videoRect.top;
-
-
-      /*
-       * Konversi ke koordinat
-       * gambar kamera asli
-       */
-
-      let sourceX =
-        (
-          relativeX +
-          offsetX
-        ) / scale;
-
-
-      let sourceY =
-        (
-          relativeY +
-          offsetY
-        ) / scale;
-
-
-      let sourceWidth =
-        guideRect.width /
-        scale;
-
-
-      let sourceHeight =
-        guideRect.height /
-        scale;
-
-
-      /*
-       * Batasi koordinat
-       */
-
-      sourceX =
-        Math.max(
-          0,
-          Math.min(
-            sourceX,
-            videoWidth
-          )
-        );
-
-
-      sourceY =
-        Math.max(
-          0,
-          Math.min(
-            sourceY,
-            videoHeight
-          )
-        );
-
-
-      sourceWidth =
-        Math.min(
-          sourceWidth,
-          videoWidth -
-          sourceX
-        );
-
-
-      sourceHeight =
-        Math.min(
-          sourceHeight,
-          videoHeight -
-          sourceY
-        );
-
-
-      /*
-       * Canvas crop
-       */
-
-      const canvas =
-        document.createElement(
-          "canvas"
-        );
-
-
-      canvas.width =
-        Math.max(
-          1,
-          Math.round(
-            sourceWidth
-          )
-        );
-
-
-      canvas.height =
-        Math.max(
-          1,
-          Math.round(
-            sourceHeight
-          )
-        );
-
-
-      const ctx =
-        canvas.getContext(
-          "2d"
-        );
-
-
-      /*
-       * PENTING:
-       *
-       * Ambil PERSIS area
-       * kotak hijau.
-       */
-
-      ctx.drawImage(
-
-        video,
-
-        Math.round(
-          sourceX
-        ),
-
-        Math.round(
-          sourceY
-        ),
-
-        Math.round(
-          sourceWidth
-        ),
-
-        Math.round(
-          sourceHeight
-        ),
-
-        0,
-
-        0,
-
-        canvas.width,
-
-        canvas.height
-
-      );
-
-
-      return canvas;
-
-    }
-
-
-
-    /* =====================================================
-       PREPROCESS OCR
-       ===================================================== */
-
-    function preprocessForOCR(
-      sourceCanvas
-    ) {
-
-      /*
-       * Perbesar 2x supaya
-       * teks lebih mudah dibaca.
-       */
-
-      const scale =
-        2;
-
-
-      const canvas =
-        document.createElement(
-          "canvas"
-        );
-
-
-      canvas.width =
-        sourceCanvas.width *
-        scale;
-
-
-      canvas.height =
-        sourceCanvas.height *
-        scale;
-
-
-      const ctx =
-        canvas.getContext(
-          "2d"
-        );
-
-
-      /*
-       * Background putih.
-       */
-
-      ctx.fillStyle =
-        "#ffffff";
-
-
-      ctx.fillRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-
-
-      /*
-       * Jangan threshold keras.
-       *
-       * Gunakan grayscale +
-       * contrast ringan.
-       */
-
-      ctx.filter =
-        "grayscale(100%) contrast(125%)";
-
-
-      ctx.drawImage(
-
-        sourceCanvas,
-
-        0,
-        0,
-
-        canvas.width,
-        canvas.height
-
-      );
-
-
-      ctx.filter =
-        "none";
-
-
-      return canvas;
-
-    }
-
-
-
-    /* =====================================================
-       CAPTURE + OCR
-       ===================================================== */
-
-    async function captureAndOCR() {
-
-      if (
-        ocrRunning
-      ) {
-
-        return;
-
-      }
-
-
-      try {
-
-        ocrRunning =
-          true;
-
-
-        $("captureButton")
-          .disabled =
-          true;
-
-
-        $("saveButton")
-          .disabled =
-          true;
-
-
-        showStatus(
-          "cameraStatus",
-          "📸 Mengambil area teks..."
-        );
-
-
-        /*
-         * Ambil PERSIS scanner frame
-         */
-
-        const cropCanvas =
-          captureGuideArea();
-
-
-        /*
-         * Tampilkan preview
-         *
-         * Preview ini harus sama
-         * dengan area yang dibaca OCR.
-         */
-
-        const preview =
-          $("ocrPreview");
-
-
-        preview.src =
-          cropCanvas.toDataURL(
-            "image/jpeg",
-            0.95
-          );
-
-
-        preview.style.display =
-          "block";
-
-
-        /*
-         * Tampilkan result card
-         */
-
-        $("resultCard")
-          .classList
-          .remove(
-            "hidden"
-          );
-
-
-        showStatus(
-          "resultStatus",
-          "🔎 Mempersiapkan OCR..."
-        );
-
-
-        /*
-         * Preprocessing ringan
-         */
-
-        const ocrCanvas =
-          preprocessForOCR(
-            cropCanvas
-          );
-
-
-        /*
-         * Jalankan OCR
-         */
-
-        const result =
-          await Tesseract.recognize(
-
-            ocrCanvas,
-
-            "eng",
-
-            {
-
-              logger:
-                function(info) {
-
-                  console.log(
-                    "OCR:",
-                    info
-                  );
-
-
-                  if (
-                    info.status ===
-                    "recognizing text"
-                  ) {
-
-                    const percent =
-                      Math.round(
-                        (
-                          info.progress ||
-                          0
-                        ) * 100
-                      );
-
-
-                    showStatus(
-                      "resultStatus",
-                      "🔎 Membaca teks... " +
-                      percent +
-                      "%"
-                    );
-
-                  }
-
-                }
-
-            }
-
-          );
-
-
-        const rawText =
-          (
-            result.data.text ||
-            ""
-          )
-          .trim();
-
-
-        console.log(
-          "RAW OCR:",
-          rawText
-        );
-
-
-        /*
-         * Tampilkan Raw OCR
-         */
-
-        $("rawText")
-          .value =
-          rawText;
-
-
-        if (
-          !rawText
-        ) {
-
-          throw new Error(
-            "OCR tidak menemukan teks."
-          );
-
-        }
-
-
-        /*
-         * Parsing
-         */
-
-        parseOCRText(
-          rawText
-        );
-
-
-        /*
-         * Validasi
-         */
-
-        const valid =
-          validateFields();
-
-
-        if (
-          valid
-        ) {
-
-          showStatus(
-            "resultStatus",
-            "✅ Teks berhasil dibaca dan data siap disimpan.",
-            "success"
-          );
-
-        } else {
-
-          showStatus(
-            "resultStatus",
-            "⚠️ Sebagian data belum terbaca. Silakan periksa dan koreksi.",
-            "warning"
-          );
-
-        }
-
-
-        /*
-         * Scroll ke hasil
-         */
-
-        setTimeout(
-          function() {
-
-            $("resultCard")
-              .scrollIntoView({
-                behavior:
-                  "smooth",
-                block:
-                  "start"
-              });
-
-          },
-          100
-        );
-
-
-      } catch(error) {
-
-        console.error(
-          "OCR ERROR:",
-          error
-        );
-
-
-        showStatus(
-          "resultStatus",
-          "❌ OCR gagal: " +
-          escapeHtml(
-            error.message
-          ),
-          "error"
-        );
-
-
-      } finally {
-
-        ocrRunning =
-          false;
-
-
-        $("captureButton")
-          .disabled =
-          !stream;
-
-
-        $("saveButton")
-          .disabled =
-          false;
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       PARSE OCR TEXT
-       ===================================================== */
-
-    function parseOCRText(
-      rawText
-    ) {
-
-      /*
-       * Bersihkan line
-       */
-
-      const lines =
-        rawText
-          .split(/\r?\n/)
-          .map(
-            function(line) {
-
-              return line
-                .replace(
-                  /\s+/g,
-                  " "
-                )
-                .trim();
-
-            }
-          )
-          .filter(
-            function(line) {
-
-              return line.length > 0;
-
-            }
-          );
-
-
-      console.log(
-        "OCR LINES:",
-        lines
-      );
-
-
-      /*
-       * Gabungkan seluruh OCR
-       */
-
-      const fullText =
-        lines.join(
-          " "
-        );
-
-
-      /*
-       * =========================
-       * ID SAMPEL
-       * =========================
-       *
-       * Pola contoh:
-       *
-       * 260933-1002-28853
-       *
-       */
-
-      const idMatch =
-        fullText.match(
-          /\b\d{6,}-\d{3,}-\d{3,}\b/
-        );
-
-
-      if (
-        idMatch
-      ) {
-
-        $("idSampel")
-          .value =
-          idMatch[0];
-
-      } else {
-
-        /*
-         * fallback:
-         * cari angka dengan dash
-         */
-
-        const fallbackID =
-          fullText.match(
-            /\b\d{5,}(?:-\d{2,}){2,}\b/
-          );
-
-
-        $("idSampel")
-          .value =
-          fallbackID
-            ? fallbackID[0]
-            : "";
-
-      }
-
-
-      /*
-       * =========================
-       * TANGGAL
-       * =========================
-       */
-
-      const dateMatch =
-        fullText.match(
-          /\b\d{1,2}[-\/]\d{1,2}[-\/]\d{4}\b/
-        );
-
-
-      if (
-        dateMatch
-      ) {
-
-        $("tanggal")
-          .value =
-          normalizeDate(
-            dateMatch[0]
-          );
-
-      } else {
-
-        $("tanggal")
-          .value =
-          "";
-
-      }
-
-
-      /*
-       * =========================
-       * POSISI
-       * =========================
-       */
-
-      let position =
-        "";
-
-
-      const positionKeywords = [
-
-        "BOTTOM MAINTANK",
-
-        "TOP MAINTANK",
-
-        "BOTTOM MAIN TANK",
-
-        "TOP MAIN TANK",
-
-        "MAINTANK",
-
-        "MAIN TANK"
-
-      ];
-
-
-      for (
-        const keyword
-        of positionKeywords
-      ) {
-
-        if (
-          fullText
-            .toUpperCase()
-            .includes(
-              keyword
-            )
-        ) {
-
-          position =
-            keyword;
-
-          break;
-
-        }
-
-      }
-
-
-      /*
-       * Jika tidak ditemukan
-       * gunakan baris yang
-       * kemungkinan posisi.
-       */
-
-      if (
-        !position
-      ) {
-
-        for (
-          const line
-          of lines
-        ) {
-
-          const upper =
-            line.toUpperCase();
-
-
-          if (
-            (
-              upper.includes(
-                "BOTTOM"
-              ) ||
-              upper.includes(
-                "TOP"
-              )
-            ) &&
-            !upper.includes(
-              "DISSOLVED"
-            )
-          ) {
-
-            position =
-              normalizePosition(
-                line
-              );
-
-            break;
-
-          }
-
-        }
-
-      }
-
-
-      $("posisi")
-        .value =
-        position;
-
-
-      /*
-       * =========================
-       * PENGUJIAN
-       * =========================
-       */
-
-      let testName =
-        "";
-
-
-      const upperFull =
-        fullText.toUpperCase();
-
-
-      if (
-        upperFull.includes(
-          "DISSOLVED"
-        ) &&
-        upperFull.includes(
-          "GAS"
-        )
-      ) {
-
-        testName =
-          "Dissolved Gas Analysis (DGA)";
-
-      }
-
-
-      /*
-       * Fallback jika DGA
-       */
-
-      if (
-        !testName &&
-        (
-          upperFull.includes(
-            "DGA"
-          ) ||
-          upperFull.includes(
-            "DISSOLVED GAS"
-          )
-        )
-      ) {
-
-        testName =
-          "Dissolved Gas Analysis (DGA)";
-
-      }
-
-
-      $("pengujian")
-        .value =
-        testName;
-
-
-      /*
-       * Normalisasi semua field
-       */
-
-      normalizeFields();
-
-    }
-
-
-
-    /* =====================================================
-       NORMALIZE DATE
-       ===================================================== */
-
-    function normalizeDate(
-      value
-    ) {
-
-      return value
-        .replace(
-          /\//g,
-          "-"
-        );
-
-    }
-
-
-
-    /* =====================================================
-       NORMALIZE POSITION
-       ===================================================== */
-
-    function normalizePosition(
-      value
-    ) {
-
-      let result =
-        value
-          .replace(
-            /\s+/g,
-            " "
-          )
-          .trim()
-          .toUpperCase();
-
-
-      result =
-        result.replace(
-          "MAIN TANK",
-          "MAINTANK"
-        );
-
-
-      return result;
-
-    }
-
-
-
-    /* =====================================================
-       NORMALIZE FIELDS
-       ===================================================== */
-
-    function normalizeFields() {
-
-      /*
-       * ID
-       */
-
-      $("idSampel")
-        .value =
-        $("idSampel")
-          .value
-          .trim();
-
-
-      /*
-       * Posisi
-       */
-
-      $("posisi")
-        .value =
-        normalizePosition(
-          $("posisi")
-            .value
-        );
-
-
-      /*
-       * Pengujian
-       */
-
-      const test =
-        $("pengujian")
-          .value
-          .trim()
-          .toUpperCase();
-
-
-      if (
-        test.includes(
-          "DISSOLVED"
-        ) ||
-        test ===
-        "DGA"
-      ) {
-
-        $("pengujian")
-          .value =
-          "Dissolved Gas Analysis (DGA)";
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       VALIDATE FIELDS
-       ===================================================== */
-
-    function validateFields() {
-
-      normalizeFields();
-
-
-      let valid =
-        true;
-
-
-      /*
-       * ID
-       */
-
-      const id =
-        $("idSampel")
-          .value
-          .trim();
-
-
-      if (
-        /^\d{5,}(?:-\d{2,}){2,}$/
-          .test(id)
-      ) {
-
-        $("idValidation")
-          .innerHTML =
-          "✅ ID Sampel valid";
-
-      } else {
-
-        $("idValidation")
-          .innerHTML =
-          "⚠️ Periksa ID Sampel";
-
-        valid =
-          false;
-
-      }
-
-
-      /*
-       * Tanggal
-       */
-
-      const date =
-        $("tanggal")
-          .value
-          .trim();
-
-
-      if (
-        /^\d{1,2}-\d{1,2}-\d{4}$/
-          .test(date)
-      ) {
-
-        $("tanggalValidation")
-          .innerHTML =
-          "✅ Tanggal valid";
-
-      } else {
-
-        $("tanggalValidation")
-          .innerHTML =
-          "⚠️ Periksa tanggal";
-
-        valid =
-          false;
-
-      }
-
-
-      /*
-       * Posisi
-       */
-
-      const position =
-        $("posisi")
-          .value
-          .trim();
-
-
-      if (
-        position
-      ) {
-
-        $("posisiValidation")
-          .innerHTML =
-          "✅ Posisi terdeteksi";
-
-      } else {
-
-        $("posisiValidation")
-          .innerHTML =
-          "⚠️ Posisi belum terbaca";
-
-        valid =
-          false;
-
-      }
-
-
-      /*
-       * Pengujian
-       */
-
-      const test =
-        $("pengujian")
-          .value
-          .trim();
-
-
-      if (
-        test
-      ) {
-
-        $("pengujianValidation")
-          .innerHTML =
-          "✅ Pengujian terdeteksi";
-
-      } else {
-
-        $("pengujianValidation")
-          .innerHTML =
-          "⚠️ Pengujian belum terbaca";
-
-        valid =
-          false;
-
-      }
-
-
-      return valid;
-
-    }
-
-
-
-    /* =====================================================
-       SAVE DATA
-       ===================================================== */
-
-    async function saveData() {
-
-      /*
-       * Pastikan login
-       */
-
-      if (
-        !currentUser
-      ) {
-
-        alert(
-          "Operator belum login."
-        );
-
-        return;
-
-      }
-
-
-      /*
-       * Validasi
-       */
-
-      const valid =
-        validateFields();
-
-
-      if (
-        !valid
-      ) {
-
-        const lanjut =
-          confirm(
-            "Sebagian data belum valid. Tetap simpan?"
-          );
-
-
-        if (
-          !lanjut
-        ) {
-
-          return;
-
-        }
-
-      }
-
-
-      const saveButton =
-        $("saveButton");
-
-
-      try {
-
-        saveButton.disabled =
-          true;
-
-
-        showStatus(
-          "saveStatus",
-          "⏳ Menyimpan ke Google Sheet..."
-        );
-
-
-        $("saveStatus")
-          .classList
-          .remove(
-            "hidden"
-          );
-
-
-        /*
-         * PENTING:
-         *
-         * Raw OCR TIDAK dikirim.
-         */
-
-        const data = {
-
-          userID:
-            currentUser.id,
-
-          user:
-            currentUser.nama,
-
-          role:
-            currentUser.role,
-
-          idSampel:
-            $("idSampel")
-              .value
-              .trim(),
-
-          tanggal:
-            $("tanggal")
-              .value
-              .trim(),
-
-          posisi:
-            $("posisi")
-              .value
-              .trim(),
-
-          pengujian:
-            $("pengujian")
-              .value
-              .trim()
-
-        };
-
-
-        console.log(
-          "DATA SAVE:",
-          data
-        );
-
-
-        const response =
-          await fetch(
-            "/api/save",
-            {
-
-              method:
-                "POST",
-
-              headers: {
-
-                "Content-Type":
-                  "application/json"
-
-              },
-
-              body:
-                JSON.stringify(
-                  data
-                )
-
-            }
-          );
-
-
-        const text =
-          await response.text();
-
-
-        console.log(
-          "SAVE RESPONSE:",
-          text
-        );
-
-
-        let result;
-
-
-        try {
-
-          result =
-            JSON.parse(
-              text
-            );
-
-        } catch(error) {
-
-          throw new Error(
-            "Server tidak mengembalikan JSON: " +
-            text.substring(
-              0,
-              200
-            )
-          );
-
-        }
-
-
-        if (
-          !result.success
-        ) {
-
-          throw new Error(
-            result.message ||
-            "Data gagal disimpan"
-          );
-
-        }
-
-
-        /*
-         * BERHASIL
-         */
-
-        showStatus(
-          "saveStatus",
-          "✅ Data berhasil disimpan ke Google Sheet.",
-          "success"
-        );
-
-
-        showStatus(
-          "resultStatus",
-          "✅ Data tersimpan. Siap untuk sampel berikutnya.",
-          "success"
-        );
-
-
-        /*
-         * Ubah tombol
-         */
-
-        saveButton.innerHTML =
-          "✅ Data Tersimpan";
-
-
-        /*
-         * Tampilkan informasi
-         */
-
-        const info =
-          document.createElement(
-            "div"
-          );
-
-
-        info.className =
-          "saved-info";
-
-
-        info.innerHTML =
-
-          "<b>ID Sampel:</b> " +
-          escapeHtml(
-            data.idSampel
-          ) +
-
-          "<br>" +
-
-          "<b>Operator:</b> " +
-          escapeHtml(
-            data.user
-          ) +
-
-          "<br>" +
-
-          "<b>Status:</b> " +
-          "Tersimpan ke Google Sheet";
-
-
-        /*
-         * Hapus info lama
-         */
-
-        const oldInfo =
-          document.querySelector(
-            ".saved-info"
-          );
-
-
-        if (
-          oldInfo
-        ) {
-
-          oldInfo.remove();
-
-        }
-
-
-        $("resultCard")
-          .appendChild(
-            info
-          );
-
-
-      } catch(error) {
-
-        console.error(
-          "SAVE ERROR:",
-          error
-        );
-
-
-        showStatus(
-          "saveStatus",
-          "❌ Gagal menyimpan: " +
-          escapeHtml(
-            error.message
-          ),
-          "error"
-        );
-
-
-        /*
-         * PENTING:
-         *
-         * Jangan reset data.
-         *
-         * Operator masih bisa
-         * mencoba Save kembali.
-         */
-
-        saveButton.disabled =
-          false;
-
-
-        saveButton.innerHTML =
-          "💾 Coba Simpan Lagi";
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       RESET UNTUK SAMPLE BERIKUTNYA
-       ===================================================== */
-
-    function resetForNextScan() {
-
-      /*
-       * Reset data
-       */
-
-      $("idSampel")
-        .value =
-        "";
-
-
-      $("tanggal")
-        .value =
-        "";
-
-
-      $("posisi")
-        .value =
-        "";
-
-
-      $("pengujian")
-        .value =
-        "";
-
-
-      $("rawText")
-        .value =
-        "";
-
-
-      $("ocrPreview")
-        .src =
-        "";
-
-
-      $("ocrPreview")
-        .style
-        .display =
-        "none";
-
-
-      /*
-       * Reset validation
-       */
-
-      $("idValidation")
-        .innerHTML =
-        "";
-
-
-      $("tanggalValidation")
-        .innerHTML =
-        "";
-
-
-      $("posisiValidation")
-        .innerHTML =
-        "";
-
-
-      $("pengujianValidation")
-        .innerHTML =
-        "";
-
-
-      /*
-       * Reset status
-       */
-
-      $("saveStatus")
-        .classList
-        .add(
-          "hidden"
-        );
-
-
-      $("resultCard")
-        .classList
-        .add(
-          "hidden"
-        );
-
-
-      /*
-       * Reset tombol save
-       */
-
-      $("saveButton")
-        .disabled =
-        false;
-
-
-      $("saveButton")
-        .innerHTML =
-        "💾 Simpan ke Google Sheet";
-
-
-      /*
-       * Hapus info tersimpan
-       */
-
-      const savedInfo =
-        document.querySelector(
-          ".saved-info"
-        );
-
-
-      if (
-        savedInfo
-      ) {
-
-        savedInfo.remove();
-
-      }
-
-
-      /*
-       * Scroll ke kamera
-       */
-
-      window.scrollTo({
-
-        top:
-          0,
-
-        behavior:
-          "smooth"
-
-      });
-
-
-      /*
-       * Kamera tetap aktif.
-       *
-       * Tidak logout.
-       */
-
-      if (
-        stream
-      ) {
-
-        showStatus(
-          "cameraStatus",
-          "📷 Kamera siap — arahkan sampel berikutnya",
-          "success"
-        );
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       ESCAPE HTML
-       ===================================================== */
-
-    function escapeHtml(
-      value
-    ) {
-
-      return String(
-        value || ""
-      )
-      .replace(
-        /&/g,
-        "&amp;"
-      )
-      .replace(
-        /</g,
-        "&lt;"
-      )
-      .replace(
-        />/g,
-        "&gt;"
-      )
-      .replace(
-        /"/g,
-        "&quot;"
-      )
-      .replace(
-        /'/g,
-        "&#039;"
-      );
-
-    }
-
-
-
-    /* =====================================================
-       LOAD SESSION
-       ===================================================== */
-
-    async function initializeApp() {
-
-      /*
-       * Selalu load Master User
-       */
-
-      await loadUsers();
-
-
-      /*
-       * Cek session
-       */
-
-      const savedUser =
-        localStorage.getItem(
-          "operator"
-        );
-
-
-      if (
-        savedUser
-      ) {
-
-        try {
-
-          currentUser =
-            JSON.parse(
-              savedUser
-            );
-
-
-          /*
-           * Tampilkan aplikasi
-           */
-
-          $("loginPage")
-            .classList
-            .add(
-              "hidden"
-            );
-
-
-          $("appPage")
-            .classList
-            .remove(
-              "hidden"
-            );
-
-
-          updateHeaderUser();
-
-
-          /*
-           * Jangan langsung memaksa kamera
-           * pada page reload.
-           *
-           * Tampilkan tombol kamera.
-           */
-
-          showStatus(
-            "cameraStatus",
-            "📷 Tekan 'Aktifkan Kamera' untuk memulai kamera."
-          );
-
-
-        } catch(error) {
-
-          console.error(
-            error
-          );
-
-
-          localStorage.removeItem(
-            "operator"
-          );
-
-
-          currentUser =
-            null;
-
-        }
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       PAGE LOAD
-       ===================================================== */
-
-    window.addEventListener(
-      "DOMContentLoaded",
-      initializeApp
-    );
-
-
-    /* =====================================================
-       STOP CAMERA SAAT PAGE DITUTUP
-       ===================================================== */
-
-    window.addEventListener(
-      "pagehide",
-      stopCamera
-    );
-
-
-  </script>
-
+</script>
 
 </body>
 
