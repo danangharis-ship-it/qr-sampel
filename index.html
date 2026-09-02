@@ -1,763 +1,824 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-
 <meta charset="UTF-8">
 
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <meta name="theme-color" content="#087fbd">
 
-<title>LAB SAMPLE SCANNER</title>
+<title>Scan Label Sampel</title>
 
+<!-- Tesseract OCR -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
 
-*{
-  box-sizing:border-box;
+/* =========================================================
+   DASAR
+========================================================= */
+
+* {
+    box-sizing: border-box;
 }
 
-html,body{
-  margin:0;
-  padding:0;
-  width:100%;
-  min-height:100%;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f2f6f9;
-  color:#17202a;
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f6f9;
+    color: #17202a;
 }
 
-button,input,select,textarea{
-  font-family:inherit;
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
 }
 
-button{
-  cursor:pointer;
-}
 
-/* =========================
+/* =========================================================
    HEADER
-========================= */
+========================================================= */
 
-.header{
-  width:100%;
-  background:#087fbd;
-  color:white;
-  text-align:center;
-  padding:20px 15px 22px;
+.header {
+    background: #087fbd;
+    color: white;
+    text-align: center;
+    padding: 24px 15px 22px;
 }
 
-.header-title{
-  font-size:clamp(26px,5vw,38px);
-  font-weight:700;
+.title {
+    font-size: 32px;
+    font-weight: bold;
 }
 
-.header-user{
-  margin-top:9px;
-  font-size:17px;
+.operator {
+    margin-top: 10px;
+    font-size: 18px;
 }
 
-.logout-btn{
-  margin-top:12px;
-  padding:10px 22px;
-  border:none;
-  border-radius:25px;
-  background:white;
-  color:#087fbd;
-  font-weight:700;
-  font-size:15px;
+.logout {
+    margin-top: 12px;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 30px;
+    background: white;
+    color: #087fbd;
+    font-size: 16px;
+    font-weight: bold;
 }
 
-/* =========================
+
+/* =========================================================
    CONTAINER
-========================= */
+========================================================= */
 
-.container{
-  width:min(920px,calc(100% - 20px));
-  margin:20px auto 50px;
+.container {
+    width: min(900px, calc(100% - 24px));
+    margin: 20px auto 50px;
 }
 
-.card{
-  background:white;
-  border-radius:22px;
-  padding:22px;
-  margin-bottom:20px;
-  box-shadow:0 8px 25px rgba(0,0,0,.08);
+.card {
+    background: white;
+    border-radius: 22px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
 }
 
-/* =========================
+
+/* =========================================================
    LOGIN
-========================= */
+========================================================= */
 
-#loginCard{
-  max-width:600px;
-  margin:50px auto;
+.login-card {
+    max-width: 600px;
+    margin: 50px auto;
 }
 
-.login-icon{
-  text-align:center;
-  font-size:42px;
+.login-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 8px;
 }
 
-.login-title{
-  text-align:center;
-  font-size:27px;
-  font-weight:700;
-  margin-top:5px;
+.login-subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 25px;
 }
 
-.login-subtitle{
-  text-align:center;
-  color:#68737d;
-  margin:8px 0 25px;
-}
-
-label{
-  display:block;
-  color:#59636e;
-  font-size:15px;
-  margin:13px 0 7px;
+label {
+    display: block;
+    color: #68737d;
+    margin-bottom: 7px;
+    font-size: 15px;
 }
 
 select,
 input,
-textarea{
-  width:100%;
-  border:1px solid #ccd4da;
-  border-radius:12px;
-  padding:13px;
-  font-size:16px;
-  background:white;
-  color:#17202a;
-  outline:none;
+textarea {
+    width: 100%;
+    border: 1px solid #ccd4da;
+    border-radius: 12px;
+    padding: 13px;
+    font-size: 16px;
+    background: white;
 }
 
 input:focus,
-select:focus{
-  border-color:#087fbd;
+select:focus {
+    outline: none;
+    border-color: #087fbd;
 }
 
-.primary-btn{
-  width:100%;
-  min-height:54px;
-  margin-top:16px;
-  border:none;
-  border-radius:14px;
-  background:#087fbd;
-  color:white;
-  font-size:18px;
-  font-weight:700;
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.btn {
+    width: 100%;
+    min-height: 54px;
+    margin-top: 14px;
+    border: none;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.primary-btn:disabled{
-  opacity:.55;
-  cursor:not-allowed;
+.btn-blue {
+    background: #087fbd;
+    color: white;
 }
 
-.success-btn{
-  background:#168542;
+.btn-green {
+    background: #168542;
+    color: white;
 }
 
-.secondary-btn{
-  width:100%;
-  min-height:52px;
-  margin-top:12px;
-  border:none;
-  border-radius:14px;
-  background:#e9edf1;
-  color:#17202a;
-  font-size:17px;
-  font-weight:700;
+.btn-gray {
+    background: #e9edf1;
+    color: #17202a;
 }
 
-/* =========================
+.btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
    STATUS
-========================= */
+========================================================= */
 
-.status{
-  padding:15px;
-  border-radius:14px;
-  margin-bottom:16px;
-  text-align:center;
-  font-weight:600;
-  background:#eaf5fb;
+.status {
+    background: #eaf5fb;
+    border-radius: 14px;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 16px;
 }
 
-.status.success{
-  background:#e9f8ee;
-  color:#116b32;
+.status.success {
+    background: #e8f7ed;
+    color: #147536;
 }
 
-.status.error{
-  background:#fdeaea;
-  color:#a51f1f;
+.status.error {
+    background: #fdeaea;
+    color: #a51f1f;
 }
 
-.status.warning{
-  background:#fff6df;
-  color:#8a5b00;
+.status.warning {
+    background: #fff5dd;
+    color: #805900;
 }
 
-/* =========================
+
+/* =========================================================
    CAMERA
-========================= */
+========================================================= */
 
-.camera-title{
-  font-size:22px;
-  font-weight:700;
-  margin-bottom:15px;
+.section-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
 }
 
-.camera-box{
-  position:relative;
-  width:100%;
-  height:330px;
-  background:#000;
-  overflow:hidden;
-  border-radius:18px;
+.camera-wrapper {
+    position: relative;
+    width: 100%;
+    height: 390px;
+    background: #000;
+    border-radius: 18px;
+    overflow: hidden;
 }
 
-#video{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  background:#000;
+#video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+
+    /*
+       Penting:
+       gambar video memenuhi frame
+    */
+    object-fit: cover;
+
+    background: #000;
 }
 
-/*
-  FRAME OCR
 
-  Frame dibuat lebar supaya
-  label tidak harus sangat presisi.
-*/
+/* =========================================================
+   KOTAK HIJAU
+========================================================= */
 
-.guide{
-  position:absolute;
+#guide {
+    position: absolute;
 
-  left:2%;
-  width:96%;
+    /*
+       Lebih lebar.
+       Hampir memenuhi lebar kamera.
+    */
+    left: 3%;
+    width: 94%;
 
-  top:25%;
-  height:50%;
+    /*
+       Posisi area teks.
+    */
+    top: 36%;
+    height: 42%;
 
-  border:4px solid #00e676;
-  border-radius:16px;
+    border: 4px solid #00e676;
+    border-radius: 16px;
 
-  z-index:10;
+    z-index: 5;
 
-  pointer-events:none;
+    pointer-events: none;
 
-  box-shadow:
-    0 0 0 9999px rgba(0,0,0,.20);
+    box-shadow:
+        0 0 0 9999px rgba(0,0,0,.30);
 }
 
-.scan-line{
-  position:absolute;
-  left:4px;
-  right:4px;
-  top:5px;
-  height:2px;
-  background:#00e676;
 
-  animation:scanLine 2s linear infinite;
+/* Garis scan */
+
+.scan-line {
+    position: absolute;
+    left: 3px;
+    right: 3px;
+    top: 3px;
+
+    height: 2px;
+
+    background: #00e676;
+
+    animation: scanning 2.2s linear infinite;
 }
 
-@keyframes scanLine{
+@keyframes scanning {
 
-  0%{
-    top:5px;
-  }
+    0% {
+        top: 3px;
+    }
 
-  50%{
-    top:calc(100% - 7px);
-  }
+    50% {
+        top: calc(100% - 5px);
+    }
 
-  100%{
-    top:5px;
-  }
+    100% {
+        top: 3px;
+    }
 
 }
 
-.guide-label{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:10px;
 
-  color:white;
-  text-align:center;
+/* =========================================================
+   PETUNJUK
+========================================================= */
 
-  font-size:14px;
-  font-weight:700;
-
-  text-shadow:0 1px 4px #000;
-  z-index:11;
+.camera-help {
+    margin-top: 12px;
+    text-align: center;
+    color: #68737d;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
-.camera-instruction{
-  margin-top:12px;
-  text-align:center;
-  color:#68737d;
-  font-size:14px;
-  line-height:1.5;
+
+/* =========================================================
+   PREVIEW OCR
+========================================================= */
+
+.preview-title {
+    margin-top: 20px;
+    margin-bottom: 8px;
+    color: #68737d;
+    font-size: 15px;
 }
 
-/* =========================
-   OCR PREVIEW
-========================= */
+#ocrPreview {
+    display: none;
 
-#ocrPreview{
-  width:100%;
-  max-height:280px;
-  display:none;
-  object-fit:contain;
+    width: 100%;
 
-  background:#f5f5f5;
+    max-height: 300px;
 
-  border:1px solid #d3d9de;
-  border-radius:12px;
+    object-fit: contain;
 
-  margin-top:8px;
+    background: #f4f4f4;
+
+    border: 1px solid #d2d8dd;
+
+    border-radius: 12px;
 }
 
-/* =========================
-   DATA
-========================= */
 
-.data-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
-  margin-top:20px;
+/* =========================================================
+   HASIL
+========================================================= */
+
+.result-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 16px;
+
+    margin-top: 15px;
 }
 
-.field-label{
-  display:block;
-  color:#6b7280;
-  font-size:14px;
-  margin-bottom:6px;
+.field-box {
+    width: 100%;
 }
 
-.validation{
-  font-size:12px;
-  margin-top:5px;
-  color:#168542;
+.field-title {
+    color: #68737d;
+    font-size: 14px;
+    margin-bottom: 7px;
 }
 
-/* =========================
+.validation {
+    font-size: 12px;
+    color: #168542;
+    margin-top: 5px;
+}
+
+
+/* =========================================================
    RAW OCR
-========================= */
+========================================================= */
 
-.raw-toggle{
-  margin-top:20px;
-  border:1px solid #d7dde2;
-  border-radius:12px;
-  overflow:hidden;
+.raw-box {
+    margin-top: 20px;
+
+    border: 1px solid #d6dce1;
+
+    border-radius: 12px;
+
+    overflow: hidden;
 }
 
-.raw-toggle summary{
-  cursor:pointer;
-  padding:13px;
-  background:#f5f7f9;
-  font-weight:700;
+.raw-box summary {
+    padding: 13px;
+
+    background: #f4f6f8;
+
+    cursor: pointer;
+
+    font-weight: bold;
 }
 
-#rawText{
-  border:none;
-  border-radius:0;
-  min-height:140px;
-  font-family:monospace;
-  font-size:13px;
+#rawOCR {
+    min-height: 150px;
+
+    border: none;
+
+    border-radius: 0;
+
+    font-family: monospace;
+
+    font-size: 13px;
+
+    resize: vertical;
 }
 
-/* =========================
+
+/* =========================================================
    HIDDEN
-========================= */
+========================================================= */
 
-.hidden{
-  display:none!important;
+.hidden {
+    display: none !important;
 }
 
-/* =========================
+
+/* =========================================================
    MOBILE
-========================= */
+========================================================= */
 
-@media(max-width:600px){
+@media (max-width: 600px) {
 
-  .container{
-    width:calc(100% - 14px);
-    margin-top:12px;
-  }
+    .title {
+        font-size: 28px;
+    }
 
-  .card{
-    padding:15px;
-    border-radius:18px;
-  }
+    .container {
+        width: calc(100% - 14px);
+        margin-top: 12px;
+    }
 
-  .camera-box{
-    height:275px;
-  }
+    .card {
+        padding: 15px;
+        border-radius: 18px;
+    }
 
-  .guide{
-    left:2%;
-    width:96%;
-    top:25%;
-    height:50%;
-  }
+    .camera-wrapper {
+        height: 310px;
+    }
 
-  .data-grid{
-    grid-template-columns:1fr;
-  }
+    #guide {
+        left: 2%;
+        width: 96%;
+
+        top: 37%;
+        height: 42%;
+    }
+
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
 
 }
 
 </style>
-
 </head>
 
 
 <body>
 
 
-<!-- =====================================================
-     LOGIN
-===================================================== -->
+<!-- =========================================================
+     LOGIN PAGE
+========================================================= -->
 
-<div id="loginPage" class="container">
+<div id="loginPage">
 
-  <div id="loginCard" class="card">
+    <div class="container">
 
-    <div class="login-icon">
-      🔐
+        <div class="card login-card">
+
+            <div style="text-align:center;font-size:42px;">
+                🔐
+            </div>
+
+            <div class="login-title">
+                Login Operator
+            </div>
+
+            <div class="login-subtitle">
+                LAB SAMPLE SCANNER
+            </div>
+
+
+            <label>
+                Nama User
+            </label>
+
+            <select id="userSelect">
+
+                <option value="">
+                    Memuat user...
+                </option>
+
+            </select>
+
+
+            <button
+                id="loginButton"
+                class="btn btn-blue"
+                onclick="loginUser()">
+
+                🔐 Masuk
+
+            </button>
+
+
+            <div
+                id="loginStatus"
+                style="margin-top:12px;text-align:center;">
+
+            </div>
+
+        </div>
+
     </div>
-
-    <div class="login-title">
-      Login Operator
-    </div>
-
-    <div class="login-subtitle">
-      LAB SAMPLE SCANNER
-    </div>
-
-    <label>
-      Operator
-    </label>
-
-    <select id="userSelect">
-
-      <option value="">
-        ⏳ Memuat user...
-      </option>
-
-    </select>
-
-    <button
-      id="loginButton"
-      class="primary-btn"
-      onclick="loginUser()"
-    >
-      🔐 Masuk
-    </button>
-
-    <div
-      id="loginStatus"
-      style="text-align:center;margin-top:12px;"
-    ></div>
-
-  </div>
 
 </div>
 
 
 
-<!-- =====================================================
+<!-- =========================================================
      APPLICATION
-===================================================== -->
+========================================================= -->
 
 <div id="appPage" class="hidden">
 
 
-<header class="header">
+    <!-- HEADER -->
 
-  <div class="header-title">
-    📷 Scan Label Sampel
-  </div>
+    <div class="header">
 
-  <div
-    id="headerUser"
-    class="header-user"
-  ></div>
+        <div class="title">
+            📷 Scan Label Sampel
+        </div>
 
-  <button
-    class="logout-btn"
-    onclick="logoutUser()"
-  >
-    🚪 Logout
-  </button>
+        <div
+            id="operatorText"
+            class="operator">
+        </div>
 
-</header>
+        <button
+            class="logout"
+            onclick="logoutUser()">
 
+            🚪 Logout
 
-
-<main class="container">
-
-
-<!-- =====================================================
-     CAMERA
-===================================================== -->
-
-<section class="card">
-
-  <div class="camera-title">
-    📷 Kamera Scanner
-  </div>
-
-  <div
-    id="cameraStatus"
-    class="status"
-  >
-    Tekan "Aktifkan Kamera"
-  </div>
-
-
-  <div class="camera-box">
-
-    <video
-      id="video"
-      autoplay
-      playsinline
-      muted
-    ></video>
-
-
-    <div
-      id="guide"
-      class="guide"
-    >
-
-      <div class="scan-line"></div>
+        </button>
 
     </div>
 
 
-    <div class="guide-label">
 
-      Tempatkan 4 baris teks label di dalam kotak hijau
+    <div class="container">
+
+
+        <!-- =================================================
+             CAMERA
+        ================================================= -->
+
+        <div class="card">
+
+            <div class="section-title">
+                📷 Kamera Scanner
+            </div>
+
+
+            <div
+                id="cameraStatus"
+                class="status">
+
+                Tekan "Aktifkan Kamera"
+
+            </div>
+
+
+            <div class="camera-wrapper">
+
+                <video
+                    id="video"
+                    autoplay
+                    muted
+                    playsinline>
+                </video>
+
+
+                <!-- KOTAK HIJAU -->
+
+                <div id="guide">
+
+                    <div class="scan-line"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="camera-help">
+
+                Tempatkan <b>4 baris teks label</b>
+                di dalam kotak hijau.
+
+                <br>
+
+                QR Code boleh berada di luar kotak hijau.
+
+            </div>
+
+
+            <button
+                id="startCameraButton"
+                class="btn btn-blue"
+                onclick="startCamera()">
+
+                📷 Aktifkan Kamera
+
+            </button>
+
+
+            <button
+                id="captureButton"
+                class="btn btn-green"
+                onclick="captureImage()"
+                disabled>
+
+                📸 Ambil Gambar & Baca Teks
+
+            </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             RESULT
+        ================================================= -->
+
+        <div
+            id="resultCard"
+            class="card hidden">
+
+
+            <div class="section-title">
+                📋 Hasil Pembacaan
+            </div>
+
+
+            <div
+                id="ocrStatus"
+                class="status">
+
+                Menunggu OCR...
+
+            </div>
+
+
+            <div class="preview-title">
+                Area gambar yang dibaca OCR
+            </div>
+
+
+            <img
+                id="ocrPreview"
+                alt="Area OCR">
+
+
+            <!-- =============================================
+                 DATA
+            ============================================= -->
+
+            <div class="result-grid">
+
+
+                <!-- ID -->
+
+                <div class="field-box">
+
+                    <div class="field-title">
+                        ID Sampel
+                    </div>
+
+                    <input
+                        id="idSampel"
+                        type="text"
+                        autocomplete="off">
+
+                    <div
+                        id="idCheck"
+                        class="validation">
+                    </div>
+
+                </div>
+
+
+                <!-- TANGGAL -->
+
+                <div class="field-box">
+
+                    <div class="field-title">
+                        Tanggal
+                    </div>
+
+                    <input
+                        id="tanggal"
+                        type="text"
+                        autocomplete="off">
+
+                    <div
+                        id="tanggalCheck"
+                        class="validation">
+                    </div>
+
+                </div>
+
+
+                <!-- POSISI -->
+
+                <div class="field-box">
+
+                    <div class="field-title">
+                        Posisi
+                    </div>
+
+                    <input
+                        id="posisi"
+                        type="text"
+                        autocomplete="off">
+
+                    <div
+                        id="posisiCheck"
+                        class="validation">
+                    </div>
+
+                </div>
+
+
+                <!-- PENGUJIAN -->
+
+                <div class="field-box">
+
+                    <div class="field-title">
+                        Pengujian
+                    </div>
+
+                    <input
+                        id="pengujian"
+                        type="text"
+                        autocomplete="off">
+
+                    <div
+                        id="pengujianCheck"
+                        class="validation">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =============================================
+                 RAW OCR
+            ============================================= -->
+
+            <details class="raw-box">
+
+                <summary>
+                    🔎 Lihat Raw OCR
+                </summary>
+
+                <textarea
+                    id="rawOCR"
+                    readonly>
+                </textarea>
+
+            </details>
+
+
+
+            <!-- =============================================
+                 SAVE
+            ============================================= -->
+
+            <button
+                id="saveButton"
+                class="btn btn-green"
+                onclick="saveData()">
+
+                💾 Simpan ke Google Sheet
+
+            </button>
+
+
+            <button
+                class="btn btn-gray"
+                onclick="newScan()">
+
+                🔄 Scan Sampel Berikutnya
+
+            </button>
+
+
+            <div
+                id="saveStatus"
+                class="status hidden"
+                style="margin-top:15px;">
+            </div>
+
+
+        </div>
 
     </div>
-
-  </div>
-
-
-  <div class="camera-instruction">
-
-    Arahkan kamera ke tulisan di bawah QR Code.
-
-    <br>
-
-    QR Code tidak perlu masuk kotak hijau.
-
-  </div>
-
-
-  <button
-    id="startCameraButton"
-    class="primary-btn"
-    onclick="startCamera()"
-  >
-    📷 Aktifkan Kamera
-  </button>
-
-
-  <button
-    id="captureButton"
-    class="primary-btn success-btn"
-    onclick="captureAndOCR()"
-    disabled
-  >
-    📸 Ambil Gambar & Baca Teks
-  </button>
-
-</section>
-
-
-
-<!-- =====================================================
-     RESULT
-===================================================== -->
-
-<section
-  id="resultCard"
-  class="card hidden"
->
-
-  <div class="camera-title">
-    📋 Hasil Pembacaan
-  </div>
-
-
-  <div
-    id="resultStatus"
-    class="status"
-  >
-    Menunggu OCR...
-  </div>
-
-
-  <label>
-    Area gambar yang dibaca OCR
-  </label>
-
-
-  <img
-    id="ocrPreview"
-    alt="Area OCR"
-  >
-
-
-  <div class="data-grid">
-
-
-    <!-- ID -->
-
-    <div>
-
-      <span class="field-label">
-        ID Sampel
-      </span>
-
-      <input
-        id="idSampel"
-        type="text"
-      >
-
-      <div
-        id="idValidation"
-        class="validation"
-      ></div>
-
-    </div>
-
-
-    <!-- TANGGAL -->
-
-    <div>
-
-      <span class="field-label">
-        Tanggal
-      </span>
-
-      <input
-        id="tanggal"
-        type="text"
-      >
-
-      <div
-        id="tanggalValidation"
-        class="validation"
-      ></div>
-
-    </div>
-
-
-    <!-- POSISI -->
-
-    <div>
-
-      <span class="field-label">
-        Posisi
-      </span>
-
-      <input
-        id="posisi"
-        type="text"
-      >
-
-      <div
-        id="posisiValidation"
-        class="validation"
-      ></div>
-
-    </div>
-
-
-    <!-- PENGUJIAN -->
-
-    <div>
-
-      <span class="field-label">
-        Pengujian
-      </span>
-
-      <input
-        id="pengujian"
-        type="text"
-      >
-
-      <div
-        id="pengujianValidation"
-        class="validation"
-      ></div>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- RAW OCR -->
-
-  <details class="raw-toggle">
-
-    <summary>
-      🔎 Lihat Raw OCR
-    </summary>
-
-    <textarea
-      id="rawText"
-      readonly
-    ></textarea>
-
-  </details>
-
-
-  <!-- SAVE -->
-
-  <button
-    id="saveButton"
-    class="primary-btn success-btn"
-    onclick="saveData()"
-  >
-    💾 Simpan ke Google Sheet
-  </button>
-
-
-  <button
-    class="secondary-btn"
-    onclick="resetForNextScan()"
-  >
-    🔄 Scan Sampel Berikutnya
-  </button>
-
-
-  <div
-    id="saveStatus"
-    class="status hidden"
-    style="margin-top:15px;"
-  ></div>
-
-</section>
-
-
-</main>
 
 </div>
 
@@ -765,2454 +826,2701 @@ select:focus{
 
 <script>
 
-/* =====================================================
-   GLOBAL
-===================================================== */
+/* =========================================================
+   VARIABLE GLOBAL
+========================================================= */
 
 let currentUser = null;
 
-let stream = null;
+let cameraStream = null;
 
-let ocrRunning = false;
-
-
-/* =====================================================
-   HELPER
-===================================================== */
-
-function $(id){
-
-  return document.getElementById(id);
-
-}
+let isOCRRunning = false;
 
 
-function showStatus(
-  id,
-  message,
-  type=""
-){
+/* =========================================================
+   SHORTCUT
+========================================================= */
 
-  const el=$(id);
+function el(id) {
 
-  if(!el)return;
-
-  el.className="status";
-
-  if(type){
-
-    el.classList.add(type);
-
-  }
-
-  el.innerHTML=message;
+    return document.getElementById(id);
 
 }
 
 
-function escapeHtml(value){
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
-  return String(value||"")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+function escapeHTML(text) {
+
+    return String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
 
-/* =====================================================
-   MASTER USER
-===================================================== */
+/* =========================================================
+   STATUS
+========================================================= */
 
-async function loadUsers(){
+function setStatus(
+    id,
+    message,
+    type = ""
+) {
 
-  const select=$("userSelect");
+    const box = el(id);
 
-  const status=$("loginStatus");
+    if (!box) return;
 
-  const button=$("loginButton");
+    box.className = "status";
 
-  try{
+    if (type) {
 
-    status.innerHTML=
-      "⏳ Mengambil daftar operator...";
+        box.classList.add(type);
 
-    button.disabled=true;
+    }
+
+    box.innerHTML = message;
+
+}
 
 
-    const response=
-      await fetch(
-        "/api/users",
-        {
-          method:"GET",
-          cache:"no-store"
+/* =========================================================
+   LOAD MASTER USER
+========================================================= */
+
+async function loadUsers() {
+
+    const select = el("userSelect");
+
+    const status = el("loginStatus");
+
+    const button = el("loginButton");
+
+    try {
+
+        button.disabled = true;
+
+        status.innerHTML =
+            "⏳ Mengambil daftar user...";
+
+
+        const response = await fetch(
+            "/api/users",
+            {
+                method: "GET",
+                cache: "no-store"
+            }
+        );
+
+
+        const text =
+            await response.text();
+
+
+        console.log(
+            "USER API:",
+            text
+        );
+
+
+        let result;
+
+        try {
+
+            result = JSON.parse(text);
+
+        } catch (e) {
+
+            throw new Error(
+                "Server tidak mengembalikan JSON"
+            );
+
         }
-      );
 
 
-    const text=
-      await response.text();
+        if (!result.success) {
+
+            throw new Error(
+                result.message ||
+                "Gagal mengambil user"
+            );
+
+        }
 
 
-    console.log(
-      "USERS RESPONSE:",
-      text
-    );
+        select.innerHTML = "";
 
 
-    let result;
+        const firstOption =
+            document.createElement("option");
 
-    try{
+        firstOption.value = "";
 
-      result=JSON.parse(text);
+        firstOption.textContent =
+            "-- Pilih User --";
 
-    }catch(e){
+        select.appendChild(
+            firstOption
+        );
 
-      throw new Error(
-        "Server tidak mengembalikan JSON"
-      );
+
+        /*
+         * Mendukung struktur:
+         *
+         * result.users
+         *
+         */
+
+        const users =
+            Array.isArray(result.users)
+                ? result.users
+                : [];
+
+
+        users.forEach(
+            function(user) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    JSON.stringify(user);
+
+
+                option.textContent =
+                    (user.nama || user.name || "") +
+                    " — " +
+                    (user.role || "Operator");
+
+
+                select.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        status.innerHTML =
+            "✅ User berhasil dimuat";
+
+
+        button.disabled = false;
+
+
+    } catch (error) {
+
+        console.error(
+            "LOAD USER ERROR:",
+            error
+        );
+
+
+        status.innerHTML =
+            "❌ Gagal mengambil user: " +
+            escapeHTML(
+                error.message
+            );
+
+
+        button.disabled = true;
 
     }
-
-
-    if(!result.success){
-
-      throw new Error(
-        result.message ||
-        "Gagal mengambil user"
-      );
-
-    }
-
-
-    select.innerHTML="";
-
-
-    const first=
-      document.createElement("option");
-
-    first.value="";
-
-    first.textContent=
-      "-- Pilih Operator --";
-
-    select.appendChild(first);
-
-
-    result.users.forEach(
-      function(user){
-
-        const option=
-          document.createElement("option");
-
-        option.value=
-          JSON.stringify(user);
-
-        option.textContent=
-          user.nama+
-          " — "+
-          user.role;
-
-        select.appendChild(option);
-
-      }
-    );
-
-
-    status.innerHTML=
-      "✅ Operator siap dipilih";
-
-    button.disabled=false;
-
-
-  }catch(error){
-
-    console.error(error);
-
-    status.innerHTML=
-      "❌ Gagal mengambil user: "+
-      escapeHtml(error.message);
-
-    button.disabled=true;
-
-  }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    LOGIN
-===================================================== */
+========================================================= */
 
-function loginUser(){
+function loginUser() {
 
-  const value=
-    $("userSelect").value;
+    const selected =
+        el("userSelect").value;
 
-  if(!value){
 
-    alert(
-      "Silakan pilih operator."
-    );
+    if (!selected) {
 
-    return;
-
-  }
-
-
-  try{
-
-    currentUser=
-      JSON.parse(value);
-
-
-    localStorage.setItem(
-      "operator",
-      JSON.stringify(currentUser)
-    );
-
-
-    $("loginPage")
-      .classList
-      .add("hidden");
-
-
-    $("appPage")
-      .classList
-      .remove("hidden");
-
-
-    updateHeaderUser();
-
-
-    showStatus(
-      "cameraStatus",
-      "📷 Tekan 'Aktifkan Kamera' untuk memulai kamera."
-    );
-
-
-  }catch(error){
-
-    alert(
-      "Data operator tidak valid."
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   HEADER USER
-===================================================== */
-
-function updateHeaderUser(){
-
-  if(!currentUser)return;
-
-  $("headerUser").innerHTML=
-    "👤 Operator: <b>"+
-    escapeHtml(currentUser.nama)+
-    "</b> ("+
-    escapeHtml(currentUser.role)+
-    ")";
-
-}
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-function logoutUser(){
-
-  stopCamera();
-
-  localStorage.removeItem(
-    "operator"
-  );
-
-  currentUser=null;
-
-  $("appPage")
-    .classList
-    .add("hidden");
-
-  $("loginPage")
-    .classList
-    .remove("hidden");
-
-  $("userSelect").value="";
-
-  window.scrollTo(0,0);
-
-}
-
-
-/* =====================================================
-   CAMERA
-===================================================== */
-
-async function startCamera(){
-
-  const video=$("video");
-
-  const start=$("startCameraButton");
-
-  const capture=$("captureButton");
-
-
-  try{
-
-    stopCamera();
-
-
-    showStatus(
-      "cameraStatus",
-      "⏳ Meminta akses kamera..."
-    );
-
-
-    start.disabled=true;
-
-
-    if(
-      !navigator.mediaDevices ||
-      !navigator.mediaDevices.getUserMedia
-    ){
-
-      throw new Error(
-        "Browser tidak mendukung akses kamera."
-      );
-
-    }
-
-
-    /*
-      Kamera belakang.
-
-      Resolusi tinggi diprioritaskan
-      agar teks kecil lebih jelas.
-    */
-
-    const constraints={
-
-      audio:false,
-
-      video:{
-
-        facingMode:{
-          ideal:"environment"
-        },
-
-        width:{
-          ideal:1920
-        },
-
-        height:{
-          ideal:1080
-        }
-
-      }
-
-    };
-
-
-    stream=
-      await navigator
-      .mediaDevices
-      .getUserMedia(
-        constraints
-      );
-
-
-    video.srcObject=
-      stream;
-
-
-    await video.play();
-
-
-    await waitVideoReady(video);
-
-
-    showStatus(
-      "cameraStatus",
-      "📷 Kamera siap — arahkan label ke kotak hijau.",
-      "success"
-    );
-
-
-    start.innerHTML=
-      "📷 Kamera Aktif";
-
-
-    capture.disabled=false;
-
-
-  }catch(error){
-
-    console.error(
-      "CAMERA:",
-      error
-    );
-
-
-    start.disabled=false;
-
-    capture.disabled=true;
-
-
-    showStatus(
-      "cameraStatus",
-      "❌ "+
-      escapeHtml(
-        error.message ||
-        "Kamera gagal."
-      ),
-      "error"
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   STOP CAMERA
-===================================================== */
-
-function stopCamera(){
-
-  if(stream){
-
-    stream
-      .getTracks()
-      .forEach(
-        track=>track.stop()
-      );
-
-    stream=null;
-
-  }
-
-
-  const video=$("video");
-
-  if(video){
-
-    video.srcObject=null;
-
-  }
-
-
-}
-
-
-/* =====================================================
-   VIDEO READY
-===================================================== */
-
-function waitVideoReady(video){
-
-  return new Promise(
-    function(resolve){
-
-      if(
-        video.readyState>=2 &&
-        video.videoWidth>0
-      ){
-
-        resolve();
+        alert(
+            "Silakan pilih user terlebih dahulu."
+        );
 
         return;
 
-      }
+    }
 
 
-      const timer=
-        setTimeout(
-          resolve,
-          3000
+    try {
+
+        currentUser =
+            JSON.parse(
+                selected
+            );
+
+
+        localStorage.setItem(
+            "operator",
+            JSON.stringify(
+                currentUser
+            )
         );
 
 
-      video.addEventListener(
-        "loadedmetadata",
-        function(){
+        showApplication();
 
-          clearTimeout(timer);
 
-          resolve();
+    } catch (error) {
 
-        },
-        {once:true}
-      );
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   CROP EXACT GREEN FRAME
-===================================================== */
-
-function captureGuideArea(){
-
-  const video=$("video");
-
-  const guide=$("guide");
-
-
-  const videoWidth=
-    video.videoWidth;
-
-  const videoHeight=
-    video.videoHeight;
-
-
-  if(
-    !videoWidth ||
-    !videoHeight
-  ){
-
-    throw new Error(
-      "Kamera belum siap."
-    );
-
-  }
-
-
-  const videoRect=
-    video.getBoundingClientRect();
-
-  const guideRect=
-    guide.getBoundingClientRect();
-
-
-  /*
-    Karena video menggunakan:
-
-    object-fit:cover
-
-    kita harus menghitung
-    bagian gambar yang terpotong.
-  */
-
-
-  const scale=
-    Math.max(
-
-      videoRect.width/videoWidth,
-
-      videoRect.height/videoHeight
-
-    );
-
-
-  const renderedWidth=
-    videoWidth*scale;
-
-  const renderedHeight=
-    videoHeight*scale;
-
-
-  const offsetX=
-    (
-      renderedWidth-
-      videoRect.width
-    )/2;
-
-
-  const offsetY=
-    (
-      renderedHeight-
-      videoRect.height
-    )/2;
-
-
-  const relativeX=
-    guideRect.left-
-    videoRect.left;
-
-  const relativeY=
-    guideRect.top-
-    videoRect.top;
-
-
-  let sourceX=
-    (relativeX+offsetX)/scale;
-
-  let sourceY=
-    (relativeY+offsetY)/scale;
-
-
-  let sourceWidth=
-    guideRect.width/scale;
-
-  let sourceHeight=
-    guideRect.height/scale;
-
-
-  sourceX=
-    Math.max(
-      0,
-      Math.min(
-        sourceX,
-        videoWidth
-      )
-    );
-
-
-  sourceY=
-    Math.max(
-      0,
-      Math.min(
-        sourceY,
-        videoHeight
-      )
-    );
-
-
-  sourceWidth=
-    Math.min(
-      sourceWidth,
-      videoWidth-sourceX
-    );
-
-
-  sourceHeight=
-    Math.min(
-      sourceHeight,
-      videoHeight-sourceY
-    );
-
-
-  const canvas=
-    document.createElement(
-      "canvas"
-    );
-
-
-  canvas.width=
-    Math.round(sourceWidth);
-
-  canvas.height=
-    Math.round(sourceHeight);
-
-
-  const ctx=
-    canvas.getContext("2d");
-
-
-  ctx.drawImage(
-
-    video,
-
-    Math.round(sourceX),
-    Math.round(sourceY),
-
-    Math.round(sourceWidth),
-    Math.round(sourceHeight),
-
-    0,
-    0,
-
-    canvas.width,
-    canvas.height
-
-  );
-
-
-  return canvas;
-
-}
-
-
-/* =====================================================
-   IMAGE PREPROCESSING
-===================================================== */
-
-/*
-  Kita membuat beberapa versi gambar.
-
-  OCR akan dicoba pada beberapa versi
-  karena kondisi label bisa berbeda.
-*/
-
-
-function createOCRVersions(source){
-
-  const versions=[];
-
-
-  /*
-    VERSION 1
-    grayscale + contrast
-  */
-
-  versions.push(
-    createProcessedCanvas(
-      source,
-      {
-        scale:3,
-        contrast:145,
-        brightness:105,
-        threshold:null,
-        sharpen:true
-      }
-    )
-  );
-
-
-  /*
-    VERSION 2
-    grayscale + threshold
-  */
-
-  versions.push(
-    createProcessedCanvas(
-      source,
-      {
-        scale:3,
-        contrast:160,
-        brightness:110,
-        threshold:175,
-        sharpen:true
-      }
-    )
-  );
-
-
-  /*
-    VERSION 3
-    threshold sedikit lebih tinggi
-  */
-
-  versions.push(
-    createProcessedCanvas(
-      source,
-      {
-        scale:4,
-        contrast:175,
-        brightness:110,
-        threshold:195,
-        sharpen:true
-      }
-    )
-  );
-
-
-  return versions;
-
-}
-
-
-/* =====================================================
-   CREATE PROCESSED CANVAS
-===================================================== */
-
-function createProcessedCanvas(
-  source,
-  options
-){
-
-  const scale=
-    options.scale || 3;
-
-
-  const canvas=
-    document.createElement(
-      "canvas"
-    );
-
-
-  canvas.width=
-    source.width*scale;
-
-  canvas.height=
-    source.height*scale;
-
-
-  const ctx=
-    canvas.getContext("2d");
-
-
-  /*
-    Putih sebagai background.
-  */
-
-  ctx.fillStyle=
-    "#ffffff";
-
-  ctx.fillRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
-
-  ctx.drawImage(
-
-    source,
-
-    0,
-    0,
-
-    canvas.width,
-    canvas.height
-
-  );
-
-
-  const imageData=
-    ctx.getImageData(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-
-  const data=
-    imageData.data;
-
-
-  for(
-    let i=0;
-    i<data.length;
-    i+=4
-  ){
-
-    let r=data[i];
-
-    let g=data[i+1];
-
-    let b=data[i+2];
-
-
-    /*
-      Grayscale
-    */
-
-    let gray=
-      0.299*r+
-      0.587*g+
-      0.114*b;
-
-
-    /*
-      Contrast
-    */
-
-    gray=
-      (
-        gray-128
-      )*
-      (
-        options.contrast/100
-      )+
-      128;
-
-
-    /*
-      Brightness
-    */
-
-    gray+=
-      options.brightness-
-      100;
-
-
-    /*
-      Threshold optional
-    */
-
-    if(
-      options.threshold!==null
-    ){
-
-      gray=
-        gray<
-        options.threshold
-          ? 0
-          : 255;
-
-    }
-
-
-    gray=
-      Math.max(
-        0,
-        Math.min(
-          255,
-          gray
-        )
-      );
-
-
-    data[i]=gray;
-
-    data[i+1]=gray;
-
-    data[i+2]=gray;
-
-  }
-
-
-  ctx.putImageData(
-    imageData,
-    0,
-    0
-  );
-
-
-  /*
-    Sharpen ringan.
-
-    Tidak menggunakan filter keras
-    agar huruf kecil tidak hilang.
-  */
-
-  if(options.sharpen){
-
-    const sharp=
-      document.createElement(
-        "canvas"
-      );
-
-    sharp.width=
-      canvas.width;
-
-    sharp.height=
-      canvas.height;
-
-
-    const sctx=
-      sharp.getContext("2d");
-
-
-    sctx.filter=
-      "contrast(115%)";
-
-    sctx.drawImage(
-      canvas,
-      0,
-      0
-    );
-
-
-    ctx.clearRect(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-
-    ctx.drawImage(
-      sharp,
-      0,
-      0
-    );
-
-  }
-
-
-  return canvas;
-
-}
-
-
-/* =====================================================
-   OCR MULTI PASS
-===================================================== */
-
-async function runMultiOCR(
-  versions
-){
-
-  const results=[];
-
-
-  /*
-    OCR PASS 1
-
-    Cocok untuk beberapa baris.
-  */
-
-  for(
-    let i=0;
-    i<versions.length;
-    i++
-  ){
-
-    showStatus(
-      "resultStatus",
-      "🔎 Membaca teks... "+
-      (i+1)+"/"+
-      versions.length
-    );
-
-
-    try{
-
-      const result=
-        await Tesseract.recognize(
-
-          versions[i],
-
-          "eng",
-
-          {
-
-            logger:
-              function(info){
-
-                if(
-                  info.status===
-                  "recognizing text"
-                ){
-
-                  console.log(
-                    "OCR",
-                    i+1,
-                    info.progress
-                  );
-
-                }
-
-              },
-
-            /*
-              PSM 6 =
-              uniform block of text
-            */
-
-            tessedit_pageseg_mode:
-              "6",
-
-            preserve_interword_spaces:
-              "1"
-
-          }
-
+        alert(
+            "Data user tidak valid."
         );
 
-
-      const text=
-        (
-          result.data.text ||
-          ""
-        )
-        .trim();
-
-
-      const confidence=
-        result.data.confidence ||
-        0;
-
-
-      if(text){
-
-        results.push({
-
-          text:text,
-
-          confidence:confidence
-
-        });
-
-      }
-
-
-    }catch(error){
-
-      console.error(
-        "OCR PASS ERROR",
-        error
-      );
-
     }
 
-  }
-
-
-  /*
-    Pilih hasil dengan confidence
-    terbaik.
-  */
-
-  results.sort(
-    function(a,b){
-
-      return b.confidence-
-             a.confidence;
-
-    }
-  );
-
-
-  /*
-    Gabungkan hasil OCR.
-
-    Ini berguna jika satu pass
-    gagal membaca OLTC tetapi
-    pass lainnya berhasil.
-  */
-
-  let combined="";
-
-
-  results.forEach(
-    function(item){
-
-      combined+=
-        item.text+
-        "\n";
-
-    }
-  );
-
-
-  return {
-
-    best:
-      results.length
-        ? results[0].text
-        : "",
-
-    combined:
-      combined.trim(),
-
-    confidence:
-      results.length
-        ? results[0].confidence
-        : 0
-
-  };
-
 }
 
 
-/* =====================================================
-   CAPTURE + OCR
-===================================================== */
+/* =========================================================
+   SHOW APPLICATION
+========================================================= */
 
-async function captureAndOCR(){
+function showApplication() {
 
-  if(ocrRunning)return;
-
-
-  try{
-
-    ocrRunning=true;
-
-
-    $("captureButton")
-      .disabled=true;
-
-
-    $("saveButton")
-      .disabled=true;
-
-
-    showStatus(
-      "cameraStatus",
-      "📸 Mengambil gambar..."
-    );
-
-
-    /*
-      Ambil PERSIS area hijau.
-    */
-
-    const crop=
-      captureGuideArea();
-
-
-    /*
-      Preview yang ditampilkan
-      adalah gambar yang sama
-      yang digunakan OCR.
-    */
-
-    const preview=
-      $("ocrPreview");
-
-
-    preview.src=
-      crop.toDataURL(
-        "image/jpeg",
-        0.98
-      );
-
-
-    preview.style.display=
-      "block";
-
-
-    $("resultCard")
-      .classList
-      .remove("hidden");
-
-
-    /*
-      Buat beberapa versi
-      preprocessing.
-    */
-
-    const versions=
-      createOCRVersions(
-        crop
-      );
-
-
-    /*
-      Jalankan OCR
-    */
-
-    const ocr=
-      await runMultiOCR(
-        versions
-      );
-
-
-    /*
-      Raw OCR hanya ditampilkan.
-      TIDAK disimpan ke Sheet.
-    */
-
-    $("rawText")
-      .value=
-      ocr.combined;
-
-
-    if(!ocr.best){
-
-      throw new Error(
-        "Tulisan tidak berhasil dibaca."
-      );
-
-    }
-
-
-    /*
-      Parsing hasil.
-    */
-
-    parseSampleLabel(
-      ocr.combined
-    );
-
-
-    const valid=
-      validateFields();
-
-
-    if(valid){
-
-      showStatus(
-        "resultStatus",
-        "✅ Semua data berhasil dibaca. Silakan periksa sebelum disimpan.",
-        "success"
-      );
-
-    }else{
-
-      showStatus(
-        "resultStatus",
-        "⚠️ Sebagian data perlu diperiksa. Anda dapat mengoreksi secara manual.",
-        "warning"
-      );
-
-    }
-
-
-    $("resultCard")
-      .scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-      });
-
-
-  }catch(error){
-
-    console.error(
-      "OCR ERROR:",
-      error
-    );
-
-
-    showStatus(
-      "resultStatus",
-      "❌ "+
-      escapeHtml(
-        error.message
-      ),
-      "error"
-    );
-
-
-  }finally{
-
-    ocrRunning=false;
-
-    $("captureButton")
-      .disabled=
-      !stream;
-
-    $("saveButton")
-      .disabled=false;
-
-  }
-
-}
-
-
-/* =====================================================
-   PARSE LABEL
-===================================================== */
-
-function parseSampleLabel(
-  rawText
-){
-
-  /*
-    Bersihkan OCR.
-
-    Jangan terlalu agresif karena
-    huruf pada "Karakteristik"
-    bisa hilang jika terlalu banyak
-    karakter dibuang.
-  */
-
-  const lines=
-    rawText
-    .split(/\r?\n/)
-    .map(
-      function(line){
-
-        return line
-          .replace(/\s+/g," ")
-          .trim();
-
-      }
-    )
-    .filter(
-      function(line){
-
-        return line.length>0;
-
-      }
-    );
-
-
-  console.log(
-    "CLEAN OCR LINES:",
-    lines
-  );
-
-
-  const fullText=
-    lines.join(" ");
-
-
-  /* ===================================================
-     ID
-  =================================================== */
-
-  let id="";
-
-
-  /*
-    Format utama:
-    260953-1006-28916
-  */
-
-  let match=
-    fullText.match(
-      /\b\d{6,}-\d{3,}-\d{3,}\b/
-    );
-
-
-  if(!match){
-
-    /*
-      OCR kadang memberi spasi:
-      260953 - 1006 - 28916
-    */
-
-    match=
-      fullText.match(
-        /\b\d{6,}\s*-\s*\d{3,}\s*-\s*\d{3,}\b/
-      );
-
-  }
-
-
-  if(match){
-
-    id=
-      match[0]
-      .replace(/\s+/g,"");
-
-  }
-
-
-  $("idSampel")
-    .value=id;
-
-
-  /* ===================================================
-     TANGGAL
-  =================================================== */
-
-  const dateMatch=
-    fullText.match(
-      /\b\d{1,2}\s*[-\/]\s*\d{1,2}\s*[-\/]\s*\d{4}\b/
-    );
-
-
-  if(dateMatch){
-
-    $("tanggal")
-      .value=
-      dateMatch[0]
-      .replace(/\s+/g,"")
-      .replace(/\//g,"-");
-
-  }else{
-
-    $("tanggal")
-      .value="";
-
-  }
-
-
-  /* ===================================================
-     POSISI
-  =================================================== */
-
-  const position=
-    detectPosition(
-      fullText,
-      lines
-    );
-
-
-  $("posisi")
-    .value=
-    position;
-
-
-  /* ===================================================
-     PENGUJIAN
-  =================================================== */
-
-  const testing=
-    detectTesting(
-      fullText,
-      lines
-    );
-
-
-  $("pengujian")
-    .value=
-    testing;
-
-
-}
-
-
-/* =====================================================
-   DETECT POSITION
-===================================================== */
-
-function detectPosition(
-  fullText,
-  lines
-){
-
-  const text=
-    fullText
-    .toUpperCase();
-
-
-  /*
-    Kamus posisi.
-
-    Bisa ditambah kemudian.
-  */
-
-  const positions=[
-
-    "BOTTOM MAINTANK",
-
-    "TOP MAINTANK",
-
-    "BOTTOM MAIN TANK",
-
-    "TOP MAIN TANK",
-
-    "MAINTANK",
-
-    "MAIN TANK",
-
-    "OLTC",
-
-    "HV",
-
-    "LV",
-
-    "TERMINAL",
-
-    "BUSHING",
-
-    "RADIATOR"
-
-  ];
-
-
-  /*
-    Exact/near exact.
-  */
-
-  for(
-    const item of positions
-  ){
-
-    if(
-      text.includes(item)
-    ){
-
-      return normalizePosition(
-        item
-      );
-
-    }
-
-  }
-
-
-  /*
-    Fuzzy OLTC.
-
-    OCR mungkin menghasilkan:
-
-    O LTC
-    OLIC
-    0LTC
-    OL1C
-    OLTC.
-  */
-
-  if(
-    /\bO\s*L[T1I]C\b/i
-      .test(fullText) ||
-
-    /\b0L[T1I]C\b/i
-      .test(fullText) ||
-
-    /\bOL[T1I]C\b/i
-      .test(fullText)
-  ){
-
-    return "OLTC";
-
-  }
-
-
-  /*
-    Cari baris pendek setelah
-    baris ID + tanggal.
-  */
-
-  for(
-    const line of lines
-  ){
-
-    const clean=
-      line
-      .toUpperCase()
-      .trim();
-
-
-    if(
-      clean.length>=2 &&
-      clean.length<=25 &&
-      !/\d{4}/.test(clean) &&
-      !clean.includes("DISSOLVED") &&
-      !clean.includes("GAS ANALYSIS")
-    ){
-
-      /*
-        Jangan langsung ambil
-        "KARAKTERISTIK" sebagai posisi.
-      */
-
-      if(
-        normalizeFuzzy(
-          clean
-        )===
-        "KARAKTERISTIK"
-      ){
-
-        continue;
-
-      }
-
-
-      return normalizePosition(
-        clean
-      );
-
-    }
-
-  }
-
-
-  return "";
-
-}
-
-
-/* =====================================================
-   DETECT TESTING
-===================================================== */
-
-function detectTesting(
-  fullText,
-  lines
-){
-
-  const upper=
-    fullText.toUpperCase();
-
-
-  /*
-    DGA
-  */
-
-  if(
-    upper.includes(
-      "DISSOLVED GAS"
-    ) ||
-
-    upper.includes(
-      "DGA"
-    )
-  ){
-
-    return "Dissolved Gas Analysis (DGA)";
-
-  }
-
-
-  /*
-    KARAKTERISTIK
-
-    OCR variants.
-  */
-
-  const fuzzy=
-    normalizeFuzzy(
-      fullText
-    );
-
-
-  if(
-    fuzzy.includes(
-      "KARAKTERISTIK"
-    )
-  ){
-
-    return "Karakteristik";
-
-  }
-
-
-  /*
-    Cari pada masing-masing baris.
-  */
-
-  for(
-    const line of lines
-  ){
-
-    const normalized=
-      normalizeFuzzy(
-        line
-      );
-
-
-    if(
-      isCloseToKarakteristik(
-        normalized
-      )
-    ){
-
-      return "Karakteristik";
-
-    }
-
-  }
-
-
-  /*
-    Jika tidak dikenali,
-    ambil baris terakhir
-    yang bukan ID/tanggal.
-  */
-
-  for(
-    let i=lines.length-1;
-    i>=0;
-    i--
-  ){
-
-    const line=
-      lines[i].trim();
-
-
-    if(
-      line.length>3 &&
-      !/\d{4}/.test(line) &&
-      !/^\d[\d\s\-\/]+$/.test(line)
-    ){
-
-      return cleanTestingName(
-        line
-      );
-
-    }
-
-  }
-
-
-  return "";
-
-}
-
-
-/* =====================================================
-   FUZZY KARAKTERISTIK
-===================================================== */
-
-function normalizeFuzzy(
-  value
-){
-
-  return String(
-    value || ""
-  )
-  .toUpperCase()
-
-  /*
-    OCR sering salah:
-    1 -> I
-    0 -> O
-  */
-
-  .replace(/1/g,"I")
-  .replace(/0/g,"O")
-
-  /*
-    Hilangkan karakter
-    yang tidak penting.
-  */
-
-  .replace(
-    /[^A-Z]/g,
-    ""
-  );
-
-}
-
-
-/* =====================================================
-   CLOSE KARAKTERISTIK
-===================================================== */
-
-function isCloseToKarakteristik(
-  value
-){
-
-  const target=
-    "KARAKTERISTIK";
-
-
-  if(
-    value===
-    target
-  ){
-
-    return true;
-
-  }
-
-
-  /*
-    Jika panjang hampir sama,
-    hitung perbedaan karakter.
-  */
-
-  if(
-    Math.abs(
-      value.length-
-      target.length
-    )>3
-  ){
-
-    return false;
-
-  }
-
-
-  const distance=
-    levenshtein(
-      value,
-      target
-    );
-
-
-  return distance<=3;
-
-}
-
-
-/* =====================================================
-   LEVENSHTEIN
-===================================================== */
-
-function levenshtein(
-  a,
-  b
-){
-
-  const matrix=[];
-
-
-  for(
-    let i=0;
-    i<=b.length;
-    i++
-  ){
-
-    matrix[i]=[i];
-
-  }
-
-
-  for(
-    let j=0;
-    j<=a.length;
-    j++
-  ){
-
-    matrix[0][j]=j;
-
-  }
-
-
-  for(
-    let i=1;
-    i<=b.length;
-    i++
-  ){
-
-    for(
-      let j=1;
-      j<=a.length;
-      j++
-    ){
-
-      if(
-        b.charAt(i-1)===
-        a.charAt(j-1)
-      ){
-
-        matrix[i][j]=
-          matrix[i-1][j-1];
-
-      }else{
-
-        matrix[i][j]=
-          Math.min(
-
-            matrix[i-1][j-1]+1,
-
-            matrix[i][j-1]+1,
-
-            matrix[i-1][j]+1
-
-          );
-
-      }
-
-    }
-
-  }
-
-
-  return matrix[b.length][a.length];
-
-}
-
-
-/* =====================================================
-   NORMALIZE POSITION
-===================================================== */
-
-function normalizePosition(
-  value
-){
-
-  let result=
-    String(
-      value || ""
-    )
-    .toUpperCase()
-    .replace(
-      /\s+/g,
-      " "
-    )
-    .trim();
-
-
-  result=
-    result.replace(
-      "MAIN TANK",
-      "MAINTANK"
-    );
-
-
-  /*
-    OLTC variants
-  */
-
-  if(
-    /^O\s*L[T1I]C\.?$/
-      .test(result) ||
-
-    /^0L[T1I]C\.?$/
-      .test(result)
-  ){
-
-    return "OLTC";
-
-  }
-
-
-  return result;
-
-}
-
-
-/* =====================================================
-   CLEAN TESTING
-===================================================== */
-
-function cleanTestingName(
-  value
-){
-
-  let result=
-    String(
-      value || ""
-    )
-    .replace(
-      /\s+/g,
-      " "
-    )
-    .trim();
-
-
-  const fuzzy=
-    normalizeFuzzy(
-      result
-    );
-
-
-  if(
-    isCloseToKarakteristik(
-      fuzzy
-    )
-  ){
-
-    return "Karakteristik";
-
-  }
-
-
-  if(
-    fuzzy.includes(
-      "DISSOLVEDGASANALYSIS"
-    ) ||
-    fuzzy==="DGA"
-  ){
-
-    return "Dissolved Gas Analysis (DGA)";
-
-  }
-
-
-  return result;
-
-}
-
-
-/* =====================================================
-   VALIDATION
-===================================================== */
-
-function validateFields(){
-
-  let valid=true;
-
-
-  const id=
-    $("idSampel")
-    .value
-    .trim();
-
-
-  if(
-    /^\d{5,}(?:-\d{2,}){2,}$/
-      .test(id)
-  ){
-
-    $("idValidation")
-      .innerHTML=
-      "✅ ID Sampel valid";
-
-  }else{
-
-    $("idValidation")
-      .innerHTML=
-      "⚠️ Periksa ID Sampel";
-
-    valid=false;
-
-  }
-
-
-  const tanggal=
-    $("tanggal")
-    .value
-    .trim();
-
-
-  if(
-    /^\d{1,2}-\d{1,2}-\d{4}$/
-      .test(tanggal)
-  ){
-
-    $("tanggalValidation")
-      .innerHTML=
-      "✅ Tanggal valid";
-
-  }else{
-
-    $("tanggalValidation")
-      .innerHTML=
-      "⚠️ Periksa tanggal";
-
-    valid=false;
-
-  }
-
-
-  const posisi=
-    $("posisi")
-    .value
-    .trim();
-
-
-  if(posisi){
-
-    $("posisiValidation")
-      .innerHTML=
-      "✅ Posisi terdeteksi";
-
-  }else{
-
-    $("posisiValidation")
-      .innerHTML=
-      "⚠️ Posisi belum terbaca";
-
-    valid=false;
-
-  }
-
-
-  const pengujian=
-    $("pengujian")
-    .value
-    .trim();
-
-
-  if(pengujian){
-
-    $("pengujianValidation")
-      .innerHTML=
-      "✅ Pengujian terdeteksi";
-
-  }else{
-
-    $("pengujianValidation")
-      .innerHTML=
-      "⚠️ Pengujian belum terbaca";
-
-    valid=false;
-
-  }
-
-
-  return valid;
-
-}
-
-
-/* =====================================================
-   SAVE TO GOOGLE SHEET
-===================================================== */
-
-async function saveData(){
-
-  if(!currentUser){
-
-    alert(
-      "Operator belum login."
-    );
-
-    return;
-
-  }
-
-
-  validateFields();
-
-
-  const saveButton=
-    $("saveButton");
-
-
-  try{
-
-    saveButton.disabled=true;
-
-
-    $("saveStatus")
-      .classList
-      .remove("hidden");
-
-
-    showStatus(
-      "saveStatus",
-      "⏳ Menyimpan ke Google Sheet..."
-    );
-
-
-    /*
-      PERHATIKAN:
-
-      rawText TIDAK ADA
-      di object ini.
-
-      Jadi Raw OCR tidak dikirim
-      ke Google Sheet.
-    */
-
-    const data={
-
-      userID:
-        currentUser.id || "",
-
-      user:
-        currentUser.nama || "",
-
-      role:
-        currentUser.role || "",
-
-      idSampel:
-        $("idSampel")
-        .value
-        .trim(),
-
-      tanggal:
-        $("tanggal")
-        .value
-        .trim(),
-
-      posisi:
-        $("posisi")
-        .value
-        .trim(),
-
-      pengujian:
-        $("pengujian")
-        .value
-        .trim()
-
-    };
-
-
-    console.log(
-      "DATA YANG DIKIRIM:",
-      data
-    );
-
-
-    const response=
-      await fetch(
-        "/api/save",
-        {
-
-          method:"POST",
-
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify(data)
-
-        }
-      );
-
-
-    const text=
-      await response.text();
-
-
-    console.log(
-      "SAVE RESPONSE:",
-      text
-    );
-
-
-    let result;
-
-
-    try{
-
-      result=
-        JSON.parse(text);
-
-    }catch(error){
-
-      throw new Error(
-        "Server tidak mengembalikan JSON."
-      );
-
-    }
-
-
-    if(
-      !result.success
-    ){
-
-      throw new Error(
-        result.message ||
-        "Data gagal disimpan."
-      );
-
-    }
-
-
-    showStatus(
-      "saveStatus",
-      "✅ Data berhasil disimpan ke Google Sheet.",
-      "success"
-    );
-
-
-    showStatus(
-      "resultStatus",
-      "✅ Data tersimpan. Siap scan sampel berikutnya.",
-      "success"
-    );
-
-
-    saveButton.innerHTML=
-      "✅ Data Tersimpan";
-
-
-  }catch(error){
-
-    console.error(
-      "SAVE ERROR:",
-      error
-    );
-
-
-    showStatus(
-      "saveStatus",
-      "❌ Gagal menyimpan: "+
-      escapeHtml(
-        error.message
-      ),
-      "error"
-    );
-
-
-    saveButton.disabled=false;
-
-    saveButton.innerHTML=
-      "💾 Coba Simpan Lagi";
-
-  }
-
-}
-
-
-/* =====================================================
-   NEXT SAMPLE
-===================================================== */
-
-function resetForNextScan(){
-
-  $("idSampel").value="";
-
-  $("tanggal").value="";
-
-  $("posisi").value="";
-
-  $("pengujian").value="";
-
-  $("rawText").value="";
-
-  $("ocrPreview").src="";
-
-  $("ocrPreview")
-    .style
-    .display="none";
-
-
-  $("idValidation").innerHTML="";
-
-  $("tanggalValidation").innerHTML="";
-
-  $("posisiValidation").innerHTML="";
-
-  $("pengujianValidation").innerHTML="";
-
-
-  $("resultCard")
-    .classList
-    .add("hidden");
-
-
-  $("saveStatus")
-    .classList
-    .add("hidden");
-
-
-  $("saveButton")
-    .disabled=false;
-
-  $("saveButton")
-    .innerHTML=
-      "💾 Simpan ke Google Sheet";
-
-
-  window.scrollTo({
-
-    top:0,
-
-    behavior:"smooth"
-
-  });
-
-
-  if(stream){
-
-    showStatus(
-      "cameraStatus",
-      "📷 Kamera siap — arahkan sampel berikutnya.",
-      "success"
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   INITIALIZE
-===================================================== */
-
-async function initializeApp(){
-
-  await loadUsers();
-
-
-  const saved=
-    localStorage.getItem(
-      "operator"
-    );
-
-
-  if(saved){
-
-    try{
-
-      currentUser=
-        JSON.parse(saved);
-
-
-      $("loginPage")
+    el("loginPage")
         .classList
         .add("hidden");
 
 
-      $("appPage")
+    el("appPage")
         .classList
         .remove("hidden");
 
 
-      updateHeaderUser();
+    const nama =
+        currentUser.nama ||
+        currentUser.name ||
+        "";
 
 
-      showStatus(
+    const role =
+        currentUser.role ||
+        "Operator";
+
+
+    el("operatorText").innerHTML =
+        "👤 Operator: <b>" +
+        escapeHTML(nama) +
+        "</b> (" +
+        escapeHTML(role) +
+        ")";
+
+
+    setStatus(
         "cameraStatus",
-        "📷 Tekan 'Aktifkan Kamera' untuk memulai kamera."
-      );
-
-
-    }catch(error){
-
-      localStorage.removeItem(
-        "operator"
-      );
-
-    }
-
-  }
+        "📷 Tekan \"Aktifkan Kamera\" untuk memulai kamera."
+    );
 
 }
 
 
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+function logoutUser() {
+
+    stopCamera();
+
+
+    localStorage.removeItem(
+        "operator"
+    );
+
+
+    currentUser = null;
+
+
+    el("appPage")
+        .classList
+        .add("hidden");
+
+
+    el("loginPage")
+        .classList
+        .remove("hidden");
+
+
+    el("userSelect").value = "";
+
+
+    window.scrollTo(
+        0,
+        0
+    );
+
+}
+
+
+/* =========================================================
+   START CAMERA
+========================================================= */
+
+async function startCamera() {
+
+    const video =
+        el("video");
+
+    const startButton =
+        el("startCameraButton");
+
+    const captureButton =
+        el("captureButton");
+
+
+    try {
+
+        stopCamera();
+
+
+        startButton.disabled = true;
+
+
+        setStatus(
+            "cameraStatus",
+            "⏳ Membuka kamera..."
+        );
+
+
+        /*
+         * Jangan gunakan:
+         *
+         * facingMode: "environment"
+         *
+         * secara langsung sebagai string
+         * apabila sebelumnya muncul error.
+         *
+         * Kita menggunakan ideal.
+         */
+
+        const constraints = {
+
+            audio: false,
+
+            video: {
+
+                facingMode: {
+                    ideal: "environment"
+                },
+
+                width: {
+                    ideal: 1920
+                },
+
+                height: {
+                    ideal: 1080
+                }
+
+            }
+
+        };
+
+
+        cameraStream =
+            await navigator
+                .mediaDevices
+                .getUserMedia(
+                    constraints
+                );
+
+
+        video.srcObject =
+            cameraStream;
+
+
+        await video.play();
+
+
+        /*
+         * Tunggu video benar-benar
+         * mempunyai ukuran.
+         */
+
+        await waitForVideo(
+            video
+        );
+
+
+        setStatus(
+            "cameraStatus",
+            "📷 Kamera siap — arahkan tulisan label ke kotak hijau.",
+            "success"
+        );
+
+
+        startButton.innerHTML =
+            "📷 Kamera Aktif";
+
+
+        captureButton.disabled =
+            false;
+
+
+    } catch (error) {
+
+        console.error(
+            "CAMERA ERROR:",
+            error
+        );
+
+
+        startButton.disabled =
+            false;
+
+
+        captureButton.disabled =
+            true;
+
+
+        let message =
+            error.message ||
+            "Kamera tidak dapat dibuka.";
+
+
+        if (
+            error.name ===
+            "NotAllowedError"
+        ) {
+
+            message =
+                "Izin kamera ditolak. Silakan izinkan kamera untuk website ini.";
+
+        }
+
+
+        if (
+            error.name ===
+            "NotFoundError"
+        ) {
+
+            message =
+                "Kamera tidak ditemukan pada perangkat.";
+
+        }
+
+
+        setStatus(
+            "cameraStatus",
+            "❌ " +
+            escapeHTML(
+                message
+            ),
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   WAIT VIDEO
+========================================================= */
+
+function waitForVideo(video) {
+
+    return new Promise(
+        function(resolve) {
+
+            if (
+                video.readyState >= 2 &&
+                video.videoWidth > 0
+            ) {
+
+                resolve();
+
+                return;
+
+            }
+
+
+            const timeout =
+                setTimeout(
+                    function() {
+
+                        resolve();
+
+                    },
+                    3000
+                );
+
+
+            video.addEventListener(
+                "loadedmetadata",
+                function() {
+
+                    clearTimeout(
+                        timeout
+                    );
+
+                    resolve();
+
+                },
+                {
+                    once: true
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   STOP CAMERA
+========================================================= */
+
+function stopCamera() {
+
+    if (cameraStream) {
+
+        cameraStream
+            .getTracks()
+            .forEach(
+                function(track) {
+
+                    track.stop();
+
+                }
+            );
+
+
+        cameraStream = null;
+
+    }
+
+
+    const video =
+        el("video");
+
+
+    if (video) {
+
+        video.srcObject = null;
+
+    }
+
+}
+
+
+/* =========================================================
+   CAPTURE AREA SESUAI KOTAK HIJAU
+========================================================= */
+
+function captureGuideArea() {
+
+    const video =
+        el("video");
+
+    const guide =
+        el("guide");
+
+
+    const videoWidth =
+        video.videoWidth;
+
+    const videoHeight =
+        video.videoHeight;
+
+
+    if (
+        !videoWidth ||
+        !videoHeight
+    ) {
+
+        throw new Error(
+            "Kamera belum siap."
+        );
+
+    }
+
+
+    /*
+     * Ukuran tampilan video
+     */
+
+    const videoRect =
+        video.getBoundingClientRect();
+
+
+    const guideRect =
+        guide.getBoundingClientRect();
+
+
+    /*
+     * object-fit: cover
+     *
+     * Kita hitung skala gambar asli
+     * terhadap tampilan video.
+     */
+
+    const scale =
+        Math.max(
+
+            videoRect.width /
+            videoWidth,
+
+            videoRect.height /
+            videoHeight
+
+        );
+
+
+    const displayedWidth =
+        videoWidth *
+        scale;
+
+
+    const displayedHeight =
+        videoHeight *
+        scale;
+
+
+    /*
+     * Bagian gambar asli yang
+     * terpotong karena object-fit cover.
+     */
+
+    const cropX =
+        (
+            displayedWidth -
+            videoRect.width
+        ) / 2;
+
+
+    const cropY =
+        (
+            displayedHeight -
+            videoRect.height
+        ) / 2;
+
+
+    /*
+     * Posisi kotak hijau
+     * terhadap video.
+     */
+
+    const x =
+        guideRect.left -
+        videoRect.left;
+
+
+    const y =
+        guideRect.top -
+        videoRect.top;
+
+
+    /*
+     * Konversi kembali ke
+     * koordinat gambar kamera asli.
+     */
+
+    let sourceX =
+        (
+            x +
+            cropX
+        ) / scale;
+
+
+    let sourceY =
+        (
+            y +
+            cropY
+        ) / scale;
+
+
+    let sourceWidth =
+        guideRect.width /
+        scale;
+
+
+    let sourceHeight =
+        guideRect.height /
+        scale;
+
+
+    /*
+     * Batasi supaya tidak keluar
+     * dari gambar kamera.
+     */
+
+    sourceX =
+        Math.max(
+            0,
+            Math.min(
+                sourceX,
+                videoWidth
+            )
+        );
+
+
+    sourceY =
+        Math.max(
+            0,
+            Math.min(
+                sourceY,
+                videoHeight
+            )
+        );
+
+
+    sourceWidth =
+        Math.min(
+            sourceWidth,
+            videoWidth -
+            sourceX
+        );
+
+
+    sourceHeight =
+        Math.min(
+            sourceHeight,
+            videoHeight -
+            sourceY
+        );
+
+
+    /*
+     * Canvas hasil crop.
+     */
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+    canvas.width =
+        Math.round(
+            sourceWidth
+        );
+
+
+    canvas.height =
+        Math.round(
+            sourceHeight
+        );
+
+
+    const ctx =
+        canvas.getContext(
+            "2d"
+        );
+
+
+    ctx.drawImage(
+
+        video,
+
+        Math.round(sourceX),
+        Math.round(sourceY),
+
+        Math.round(sourceWidth),
+        Math.round(sourceHeight),
+
+        0,
+        0,
+
+        canvas.width,
+        canvas.height
+
+    );
+
+
+    return canvas;
+
+}
+
+
+/* =========================================================
+   PREPROCESSING
+========================================================= */
+
+function createProcessedImage(
+    source,
+    scale,
+    threshold
+) {
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+    canvas.width =
+        source.width *
+        scale;
+
+
+    canvas.height =
+        source.height *
+        scale;
+
+
+    const ctx =
+        canvas.getContext(
+            "2d"
+        );
+
+
+    ctx.drawImage(
+
+        source,
+
+        0,
+        0,
+
+        canvas.width,
+        canvas.height
+
+    );
+
+
+    const image =
+        ctx.getImageData(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+    const data =
+        image.data;
+
+
+    for (
+        let i = 0;
+        i < data.length;
+        i += 4
+    ) {
+
+        /*
+         * Grayscale
+         */
+
+        let gray =
+            0.299 * data[i] +
+            0.587 * data[i + 1] +
+            0.114 * data[i + 2];
+
+
+        /*
+         * Contrast.
+         */
+
+        gray =
+            (
+                gray - 128
+            ) *
+            1.55 +
+            128;
+
+
+        /*
+         * Brightness sedikit.
+         */
+
+        gray += 8;
+
+
+        /*
+         * Threshold hanya
+         * untuk versi tertentu.
+         */
+
+        if (
+            threshold !== null
+        ) {
+
+            gray =
+                gray <
+                threshold
+                    ? 0
+                    : 255;
+
+        }
+
+
+        gray =
+            Math.max(
+                0,
+                Math.min(
+                    255,
+                    gray
+                )
+            );
+
+
+        data[i] =
+            gray;
+
+        data[i + 1] =
+            gray;
+
+        data[i + 2] =
+            gray;
+
+    }
+
+
+    ctx.putImageData(
+        image,
+        0,
+        0
+    );
+
+
+    return canvas;
+
+}
+
+
+/* =========================================================
+   OCR SATU GAMBAR
+========================================================= */
+
+async function performOCR(
+    image
+) {
+
+    const result =
+        await Tesseract.recognize(
+
+            image,
+
+            "eng",
+
+            {
+
+                logger:
+                    function(info) {
+
+                        if (
+                            info.status ===
+                            "recognizing text"
+                        ) {
+
+                            const percent =
+                                Math.round(
+                                    (
+                                        info.progress ||
+                                        0
+                                    ) * 100
+                                );
+
+
+                            setStatus(
+                                "ocrStatus",
+                                "🔎 Membaca teks... " +
+                                percent +
+                                "%"
+                            );
+
+                        }
+
+                    }
+
+            }
+
+        );
+
+
+    return {
+
+        text:
+            result.data.text ||
+            "",
+
+        confidence:
+            result.data.confidence ||
+            0
+
+    };
+
+}
+
+
+/* =========================================================
+   MULTI OCR
+========================================================= */
+
+async function runOCR(
+    original
+) {
+
+    /*
+     * Tiga versi gambar.
+     */
+
+    const image1 =
+        createProcessedImage(
+            original,
+            3,
+            null
+        );
+
+
+    const image2 =
+        createProcessedImage(
+            original,
+            4,
+            175
+        );
+
+
+    const image3 =
+        createProcessedImage(
+            original,
+            4,
+            195
+        );
+
+
+    const results = [];
+
+
+    setStatus(
+        "ocrStatus",
+        "🔎 OCR 1/3..."
+    );
+
+
+    results.push(
+        await performOCR(
+            image1
+        )
+    );
+
+
+    setStatus(
+        "ocrStatus",
+        "🔎 OCR 2/3..."
+    );
+
+
+    results.push(
+        await performOCR(
+            image2
+        )
+    );
+
+
+    setStatus(
+        "ocrStatus",
+        "🔎 OCR 3/3..."
+    );
+
+
+    results.push(
+        await performOCR(
+            image3
+        )
+    );
+
+
+    /*
+     * Gabungkan seluruh hasil.
+     *
+     * Ini penting karena:
+     *
+     * OCR 1 mungkin membaca ID
+     * OCR 2 mungkin membaca OLTC
+     * OCR 3 mungkin membaca
+     * Karakteristik.
+     */
+
+    let combined = "";
+
+
+    results.forEach(
+        function(item) {
+
+            if (
+                item.text &&
+                item.text.trim()
+            ) {
+
+                combined +=
+                    "\n" +
+                    item.text.trim() +
+                    "\n";
+
+            }
+
+        }
+    );
+
+
+    /*
+     * Hasil dengan confidence
+     * tertinggi.
+     */
+
+    results.sort(
+        function(a, b) {
+
+            return b.confidence -
+                   a.confidence;
+
+        }
+    );
+
+
+    return {
+
+        best:
+            results.length
+                ? results[0].text
+                : "",
+
+        combined:
+            combined.trim()
+
+    };
+
+}
+
+
+/* =========================================================
+   CAPTURE IMAGE + OCR
+========================================================= */
+
+async function captureImage() {
+
+    if (
+        isOCRRunning
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        isOCRRunning = true;
+
+
+        el("captureButton")
+            .disabled = true;
+
+
+        el("saveButton")
+            .disabled = true;
+
+
+        /*
+         * Ambil area persis
+         * kotak hijau.
+         */
+
+        const crop =
+            captureGuideArea();
+
+
+        /*
+         * Tampilkan hasil crop.
+         */
+
+        const preview =
+            el("ocrPreview");
+
+
+        preview.src =
+            crop.toDataURL(
+                "image/jpeg",
+                0.98
+            );
+
+
+        preview.style.display =
+            "block";
+
+
+        /*
+         * Buka hasil.
+         */
+
+        el("resultCard")
+            .classList
+            .remove("hidden");
+
+
+        /*
+         * Jalankan OCR.
+         */
+
+        const result =
+            await runOCR(
+                crop
+            );
+
+
+        /*
+         * Raw OCR hanya ditampilkan.
+         */
+
+        el("rawOCR")
+            .value =
+            result.combined;
+
+
+        if (
+            !result.combined
+        ) {
+
+            throw new Error(
+                "Tulisan tidak berhasil dibaca."
+            );
+
+        }
+
+
+        /*
+         * Parse menjadi
+         * 4 field.
+         */
+
+        parseLabel(
+            result.combined
+        );
+
+
+        validateFields();
+
+
+        setStatus(
+            "ocrStatus",
+            "✅ OCR selesai. Periksa hasil sebelum disimpan.",
+            "success"
+        );
+
+
+        el("resultCard")
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+
+    } catch (error) {
+
+        console.error(
+            "OCR ERROR:",
+            error
+        );
+
+
+        setStatus(
+            "ocrStatus",
+            "❌ " +
+            escapeHTML(
+                error.message
+            ),
+            "error"
+        );
+
+
+    } finally {
+
+        isOCRRunning = false;
+
+
+        el("captureButton")
+            .disabled =
+            !cameraStream;
+
+
+        el("saveButton")
+            .disabled = false;
+
+    }
+
+}
+
+
+/* =========================================================
+   NORMALIZE TEXT
+========================================================= */
+
+function cleanText(text) {
+
+    return String(
+        text || ""
+    )
+    .replace(
+        /\s+/g,
+        " "
+    )
+    .trim();
+
+}
+
+
+/* =========================================================
+   NORMALIZE ID
+========================================================= */
+
+function findSampleID(
+    text
+) {
+
+    /*
+     * Format normal:
+     *
+     * 260953-1006-28916
+     */
+
+    let match =
+        text.match(
+            /\b\d{6,}\s*-\s*\d{3,}\s*-\s*\d{3,}\b/
+        );
+
+
+    if (
+        match
+    ) {
+
+        return match[0]
+            .replace(
+                /\s+/g,
+                ""
+            );
+
+    }
+
+
+    /*
+     * OCR kadang membaca
+     * tanda minus secara aneh.
+     */
+
+    match =
+        text.match(
+            /\b\d{6,}\s*[-–—]\s*\d{3,}\s*[-–—]\s*\d{3,}\b/
+        );
+
+
+    if (
+        match
+    ) {
+
+        return match[0]
+            .replace(
+                /\s+/g,
+                ""
+            )
+            .replace(
+                /–|—/g,
+                "-"
+            );
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================================================
+   NORMALIZE DATE
+========================================================= */
+
+function findDate(
+    text
+) {
+
+    const match =
+        text.match(
+            /\b\d{1,2}\s*[-\/]\s*\d{1,2}\s*[-\/]\s*\d{4}\b/
+        );
+
+
+    if (
+        !match
+    ) {
+
+        return "";
+
+    }
+
+
+    return match[0]
+        .replace(
+            /\s+/g,
+            ""
+        )
+        .replace(
+            /\//g,
+            "-"
+        );
+
+}
+
+
+/* =========================================================
+   FUZZY DISTANCE
+========================================================= */
+
+function levenshtein(
+    a,
+    b
+) {
+
+    const matrix = [];
+
+
+    for (
+        let i = 0;
+        i <= b.length;
+        i++
+    ) {
+
+        matrix[i] = [i];
+
+    }
+
+
+    for (
+        let j = 0;
+        j <= a.length;
+        j++
+    ) {
+
+        matrix[0][j] = j;
+
+    }
+
+
+    for (
+        let i = 1;
+        i <= b.length;
+        i++
+    ) {
+
+        for (
+            let j = 1;
+            j <= a.length;
+            j++
+        ) {
+
+            if (
+                b.charAt(i - 1) ===
+                a.charAt(j - 1)
+            ) {
+
+                matrix[i][j] =
+                    matrix[i - 1][j - 1];
+
+            } else {
+
+                matrix[i][j] =
+                    Math.min(
+
+                        matrix[i - 1][j - 1] + 1,
+
+                        matrix[i][j - 1] + 1,
+
+                        matrix[i - 1][j] + 1
+
+                    );
+
+            }
+
+        }
+
+    }
+
+
+    return matrix[b.length][a.length];
+
+}
+
+
+/* =========================================================
+   DETECT OLTC
+========================================================= */
+
+function detectOLTC(
+    text
+) {
+
+    const upper =
+        String(
+            text || ""
+        )
+        .toUpperCase();
+
+
+    /*
+     * Bentuk normal.
+     */
+
+    if (
+        upper.includes(
+            "OLTC"
+        )
+    ) {
+
+        return "OLTC";
+
+    }
+
+
+    /*
+     * OCR variants.
+     */
+
+    const variants = [
+
+        "O LTC",
+
+        "0LTC",
+
+        "OL1C",
+
+        "OLIC",
+
+        "0L1C",
+
+        "O L T C",
+
+        "OL TC"
+
+    ];
+
+
+    for (
+        const variant of variants
+    ) {
+
+        if (
+            upper.includes(
+                variant
+            )
+        ) {
+
+            return "OLTC";
+
+        }
+
+    }
+
+
+    /*
+     * Cari kata 4 karakter
+     * yang sangat dekat OLTC.
+     */
+
+    const words =
+        upper.match(
+            /[A-Z0-9]{3,5}/g
+        ) || [];
+
+
+    for (
+        const word of words
+    ) {
+
+        const normalized =
+            word
+            .replace(
+                /0/g,
+                "O"
+            )
+            .replace(
+                /1/g,
+                "I"
+            );
+
+
+        if (
+            levenshtein(
+                normalized,
+                "OLTC"
+            ) <= 1
+        ) {
+
+            return "OLTC";
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================================================
+   DETECT KARAKTERISTIK
+========================================================= */
+
+function detectKarakteristik(
+    text
+) {
+
+    const upper =
+        String(
+            text || ""
+        )
+        .toUpperCase()
+        .replace(
+            /0/g,
+            "O"
+        )
+        .replace(
+            /1/g,
+            "I"
+        );
+
+
+    /*
+     * Hilangkan spasi untuk
+     * pencarian.
+     */
+
+    const compact =
+        upper.replace(
+            /[^A-Z]/g,
+            ""
+        );
+
+
+    const target =
+        "KARAKTERISTIK";
+
+
+    /*
+     * Exact.
+     */
+
+    if (
+        compact.includes(
+            target
+        )
+    ) {
+
+        return true;
+
+    }
+
+
+    /*
+     * Cari setiap kata OCR.
+     */
+
+    const words =
+        upper.match(
+            /[A-Z]+/g
+        ) || [];
+
+
+    for (
+        const word of words
+    ) {
+
+        if (
+            Math.abs(
+                word.length -
+                target.length
+            ) <= 3
+        ) {
+
+            if (
+                levenshtein(
+                    word,
+                    target
+                ) <= 3
+            ) {
+
+                return true;
+
+            }
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   DETECT DGA
+========================================================= */
+
+function detectDGA(
+    text
+) {
+
+    const upper =
+        String(
+            text || ""
+        )
+        .toUpperCase();
+
+
+    if (
+        upper.includes(
+            "DISSOLVED GAS"
+        )
+    ) {
+
+        return true;
+
+    }
+
+
+    if (
+        upper.includes(
+            "DGA"
+        )
+    ) {
+
+        return true;
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   DETECT POSITION
+========================================================= */
+
+function findPosition(
+    lines,
+    fullText
+) {
+
+    /*
+     * PRIORITAS 1:
+     * OLTC
+     */
+
+    const oltc =
+        detectOLTC(
+            fullText
+        );
+
+
+    if (
+        oltc
+    ) {
+
+        return "OLTC";
+
+    }
+
+
+    /*
+     * Posisi yang umum.
+     */
+
+    const positionList = [
+
+        "BOTTOM MAINTANK",
+
+        "TOP MAINTANK",
+
+        "BOTTOM MAIN TANK",
+
+        "TOP MAIN TANK",
+
+        "MAIN TANK",
+
+        "MAINTANK",
+
+        "OLTC",
+
+        "BUSHING",
+
+        "RADIATOR",
+
+        "TERMINAL",
+
+        "HV",
+
+        "LV"
+
+    ];
+
+
+    const upper =
+        fullText
+        .toUpperCase();
+
+
+    for (
+        const item of positionList
+    ) {
+
+        if (
+            upper.includes(
+                item
+            )
+        ) {
+
+            return item
+                .replace(
+                    "MAIN TANK",
+                    "MAINTANK"
+                );
+
+        }
+
+    }
+
+
+    /*
+     * Cari baris yang terlihat
+     * seperti posisi.
+     */
+
+    for (
+        const line of lines
+    ) {
+
+        const clean =
+            cleanText(
+                line
+            );
+
+
+        if (
+            !clean
+        ) {
+
+            continue;
+
+        }
+
+
+        /*
+         * Jangan ambil baris ID.
+         */
+
+        if (
+            /\d{4}/.test(
+                clean
+            )
+        ) {
+
+            continue;
+
+        }
+
+
+        /*
+         * Jangan ambil pengujian.
+         */
+
+        if (
+            detectDGA(
+                clean
+            )
+        ) {
+
+            continue;
+
+        }
+
+
+        if (
+            detectKarakteristik(
+                clean
+            )
+        ) {
+
+            continue;
+
+        }
+
+
+        if (
+            clean.length >= 2 &&
+            clean.length <= 30
+        ) {
+
+            return clean
+                .toUpperCase();
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================================================
+   DETECT PENGUJIAN
+========================================================= */
+
+function findTesting(
+    lines,
+    fullText
+) {
+
+    /*
+     * DGA
+     */
+
+    if (
+        detectDGA(
+            fullText
+        )
+    ) {
+
+        return "Dissolved Gas Analysis (DGA)";
+
+    }
+
+
+    /*
+     * Karakteristik
+     */
+
+    if (
+        detectKarakteristik(
+            fullText
+        )
+    ) {
+
+        return "Karakteristik";
+
+    }
+
+
+    /*
+     * Cari baris terakhir
+     * yang bukan ID/tanggal.
+     */
+
+    for (
+        let i =
+            lines.length - 1;
+
+        i >= 0;
+
+        i--
+    ) {
+
+        const line =
+            cleanText(
+                lines[i]
+            );
+
+
+        if (
+            !line
+        ) {
+
+            continue;
+
+        }
+
+
+        if (
+            /\d{4}/.test(
+                line
+            )
+        ) {
+
+            continue;
+
+        }
+
+
+        if (
+            detectOLTC(
+                line
+            )
+        ) {
+
+            continue;
+
+        }
+
+
+        /*
+         * Jika sangat dekat
+         * dengan Karakteristik.
+         */
+
+        if (
+            detectKarakteristik(
+                line
+            )
+        ) {
+
+            return "Karakteristik";
+
+        }
+
+
+        if (
+            line.length > 3
+        ) {
+
+            return line;
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================================================
+   PARSE LABEL
+========================================================= */
+
+function parseLabel(
+    raw
+) {
+
+    const lines =
+        raw
+        .split(
+            /\r?\n/
+        )
+        .map(
+            function(line) {
+
+                return cleanText(
+                    line
+                );
+
+            }
+        )
+        .filter(
+            function(line) {
+
+                return line.length > 0;
+
+            }
+        );
+
+
+    const fullText =
+        lines.join(
+            " "
+        );
+
+
+    console.log(
+        "OCR LINES:",
+        lines
+    );
+
+
+    /*
+     * ID
+     */
+
+    const id =
+        findSampleID(
+            fullText
+        );
+
+
+    el("idSampel")
+        .value =
+        id;
+
+
+    /*
+     * DATE
+     */
+
+    const tanggal =
+        findDate(
+            fullText
+        );
+
+
+    el("tanggal")
+        .value =
+        tanggal;
+
+
+    /*
+     * POSITION
+     */
+
+    const posisi =
+        findPosition(
+            lines,
+            fullText
+        );
+
+
+    el("posisi")
+        .value =
+        posisi;
+
+
+    /*
+     * TEST
+     */
+
+    const pengujian =
+        findTesting(
+            lines,
+            fullText
+        );
+
+
+    el("pengujian")
+        .value =
+        pengujian;
+
+
+    console.log(
+        "HASIL PARSING:",
+        {
+            id,
+            tanggal,
+            posisi,
+            pengujian
+        }
+    );
+
+}
+
+
+/* =========================================================
+   VALIDATE
+========================================================= */
+
+function validateFields() {
+
+    let valid = true;
+
+
+    const id =
+        el("idSampel")
+        .value
+        .trim();
+
+
+    if (
+        id
+    ) {
+
+        el("idCheck")
+            .innerHTML =
+            "✅ ID terbaca";
+
+    } else {
+
+        el("idCheck")
+            .innerHTML =
+            "⚠️ ID belum terbaca";
+
+        valid = false;
+
+    }
+
+
+    const tanggal =
+        el("tanggal")
+        .value
+        .trim();
+
+
+    if (
+        tanggal
+    ) {
+
+        el("tanggalCheck")
+            .innerHTML =
+            "✅ Tanggal terbaca";
+
+    } else {
+
+        el("tanggalCheck")
+            .innerHTML =
+            "⚠️ Tanggal belum terbaca";
+
+        valid = false;
+
+    }
+
+
+    const posisi =
+        el("posisi")
+        .value
+        .trim();
+
+
+    if (
+        posisi
+    ) {
+
+        el("posisiCheck")
+            .innerHTML =
+            "✅ Posisi terbaca";
+
+    } else {
+
+        el("posisiCheck")
+            .innerHTML =
+            "⚠️ Posisi belum terbaca";
+
+        valid = false;
+
+    }
+
+
+    const pengujian =
+        el("pengujian")
+        .value
+        .trim();
+
+
+    if (
+        pengujian
+    ) {
+
+        el("pengujianCheck")
+            .innerHTML =
+            "✅ Pengujian terbaca";
+
+    } else {
+
+        el("pengujianCheck")
+            .innerHTML =
+            "⚠️ Pengujian belum terbaca";
+
+        valid = false;
+
+    }
+
+
+    return valid;
+
+}
+
+
+/* =========================================================
+   SAVE DATA
+========================================================= */
+
+async function saveData() {
+
+    if (
+        !currentUser
+    ) {
+
+        alert(
+            "Operator belum login."
+        );
+
+        return;
+
+    }
+
+
+    const saveButton =
+        el("saveButton");
+
+
+    try {
+
+        saveButton.disabled =
+            true;
+
+
+        el("saveStatus")
+            .classList
+            .remove("hidden");
+
+
+        setStatus(
+            "saveStatus",
+            "⏳ Menyimpan data..."
+        );
+
+
+        /*
+         * DATA YANG DIKIRIM
+         *
+         * Raw OCR SENGAJA TIDAK
+         * dimasukkan.
+         */
+
+        const data = {
+
+            userID:
+                currentUser.id ||
+                currentUser.userID ||
+                "",
+
+            user:
+                currentUser.nama ||
+                currentUser.name ||
+                "",
+
+            role:
+                currentUser.role ||
+                "Operator",
+
+            idSampel:
+                el("idSampel")
+                    .value
+                    .trim(),
+
+            tanggal:
+                el("tanggal")
+                    .value
+                    .trim(),
+
+            posisi:
+                el("posisi")
+                    .value
+                    .trim(),
+
+            pengujian:
+                el("pengujian")
+                    .value
+                    .trim()
+
+        };
+
+
+        console.log(
+            "DATA SAVE:",
+            data
+        );
+
+
+        /*
+         * API VERCEL
+         */
+
+        const response =
+            await fetch(
+                "/api/save",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            data
+                        )
+
+                }
+            );
+
+
+        const text =
+            await response.text();
+
+
+        console.log(
+            "SAVE RESPONSE:",
+            text
+        );
+
+
+        let result;
+
+
+        try {
+
+            result =
+                JSON.parse(
+                    text
+                );
+
+        } catch (error) {
+
+            throw new Error(
+                "Server tidak mengembalikan JSON."
+            );
+
+        }
+
+
+        if (
+            !result.success
+        ) {
+
+            throw new Error(
+                result.message ||
+                "Data gagal disimpan."
+            );
+
+        }
+
+
+        setStatus(
+            "saveStatus",
+            "✅ Data berhasil disimpan ke Google Sheet.",
+            "success"
+        );
+
+
+        saveButton.innerHTML =
+            "✅ Data Tersimpan";
+
+
+    } catch (error) {
+
+        console.error(
+            "SAVE ERROR:",
+            error
+        );
+
+
+        setStatus(
+            "saveStatus",
+            "❌ Gagal menyimpan: " +
+            escapeHTML(
+                error.message
+            ),
+            "error"
+        );
+
+
+        saveButton.disabled =
+            false;
+
+
+        saveButton.innerHTML =
+            "💾 Coba Simpan Lagi";
+
+    }
+
+}
+
+
+/* =========================================================
+   NEW SCAN
+========================================================= */
+
+function newScan() {
+
+    /*
+     * Kosongkan hasil.
+     */
+
+    el("idSampel")
+        .value = "";
+
+    el("tanggal")
+        .value = "";
+
+    el("posisi")
+        .value = "";
+
+    el("pengujian")
+        .value = "";
+
+    el("rawOCR")
+        .value = "";
+
+
+    /*
+     * Hapus preview.
+     */
+
+    el("ocrPreview")
+        .src = "";
+
+    el("ocrPreview")
+        .style
+        .display = "none";
+
+
+    /*
+     * Reset validasi.
+     */
+
+    el("idCheck")
+        .innerHTML = "";
+
+    el("tanggalCheck")
+        .innerHTML = "";
+
+    el("posisiCheck")
+        .innerHTML = "";
+
+    el("pengujianCheck")
+        .innerHTML = "";
+
+
+    /*
+     * Reset save.
+     */
+
+    el("saveStatus")
+        .classList
+        .add("hidden");
+
+
+    el("saveButton")
+        .disabled = false;
+
+
+    el("saveButton")
+        .innerHTML =
+        "💾 Simpan ke Google Sheet";
+
+
+    /*
+     * Sembunyikan hasil.
+     */
+
+    el("resultCard")
+        .classList
+        .add("hidden");
+
+
+    /*
+     * Scroll ke kamera.
+     */
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+
+    if (
+        cameraStream
+    ) {
+
+        setStatus(
+            "cameraStatus",
+            "📷 Kamera siap — arahkan sampel berikutnya.",
+            "success"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+async function initialize() {
+
+    /*
+     * Selalu load master user.
+     */
+
+    await loadUsers();
+
+
+    /*
+     * Cek apakah operator
+     * sudah pernah login.
+     */
+
+    const saved =
+        localStorage.getItem(
+            "operator"
+        );
+
+
+    if (
+        saved
+    ) {
+
+        try {
+
+            currentUser =
+                JSON.parse(
+                    saved
+                );
+
+
+            showApplication();
+
+
+        } catch (error) {
+
+            localStorage.removeItem(
+                "operator"
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   PAGE LOAD
+========================================================= */
+
 window.addEventListener(
-  "DOMContentLoaded",
-  initializeApp
+    "DOMContentLoaded",
+    initialize
 );
 
 
+/* =========================================================
+   PAGE LEAVE
+========================================================= */
+
 window.addEventListener(
-  "pagehide",
-  stopCamera
+    "pagehide",
+    stopCamera
 );
 
 </script>
 
 </body>
-
 </html>
